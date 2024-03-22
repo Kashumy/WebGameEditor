@@ -119,6 +119,7 @@ for (var i = 0; i < y.length; i++) {
 <!-- author: none -->
 
  <img src="./watermark.gif" onclick="config.testmode = config.testmode === 1 ? 0 : 1;up1()"style="position: fixed; top:0; left:10px; image-rendering: pixelated; width:100px;height:30px; transform: translate(0,25%); z-index: 99999999999" >
+
  <style>
  :root{
    position:fixed;
@@ -599,6 +600,12 @@ top:20px; right:20px; width: 30px ; height:30px ; background: red;"> -->
   <div id="project2">
 
   </div>
+   <div class="playPauseButton" id="playPauseButton" onclick="togglePlayPause()">
+     <span id="icon">⏸️</span>
+   </div>
+   <div class="playPauseButton" id="playPauseButton" style="right:40px" onclick="restart()">
+     <span id="icon">🔁</span>
+   </div>
 <script>
   document.querySelector('#viewport').style.width = config.width + "px"
   document.querySelector('#viewport').style.height = config.height + "px"
@@ -1080,7 +1087,7 @@ function up1() {
         element.style.right = '1px';
       });
     }
-  }, 30)
+  }, 300)
 }
 setTimeout(up1,1000)
 function updateViewport() {
@@ -5497,11 +5504,11 @@ namr.innerText=key
     <title>Customowy Play/Pause</title>
     <style>
         /* Styl dla customowego diva */
-        #playPauseButton {
-            position: fixed;
+        .playPauseButton {
+            position: absolute;
             top: 10px;
-            left: 150px;
-            z-index: 99999999;
+            right: 0px;
+            z-index: 0;
             cursor: pointer;
             background-color: #3498DB;
             opacity: 0.4;
@@ -5524,16 +5531,11 @@ namr.innerText=key
 <body>
 
 <!-- Dodaj customowy div -->
-<div id="playPauseButton" onclick="togglePlayPause()">
-    <span id="icon">⏸️</span>
-</div>
-<div id="playPauseButton" style="left:190px" onclick="restart()">
-  <span id="icon">🔁</span>
-</div>
+
 <script>
 
 function restart(){
-  bgimg=config.bg
+  config=config
   const playerskin69 = config.playerskin1
 //alert(playerskin69)
 document.querySelector('.player').style.background = `url(${playerskin69})`
@@ -5555,7 +5557,7 @@ setTimeout(function() {
     }
   }
 }, 1000)
-
+bgimg=config.bg
 
 
 deletedtiles = []
@@ -5604,8 +5606,9 @@ if (config.customcamera == 1) {
 const contentElement = document.getElementById("content");
 document.querySelector('gui').innerHTML = config.guiHTML
 ukonczoneGUI()
-
-contentElement.style.backgroundImage = `url('${config.bg}')`;
+//contentElement.style.backgroundImage = `url('${config.bg}')`;
+//alert(bgimg)
+contentElement.style.backgroundImage = `url('${bgimg}')`;
 document.getElementById('Scontent').innerHTML = ''
 document.getElementById('Econtent').innerHTML = ''
 tileConfig = config.entities
