@@ -2864,6 +2864,84 @@ function testa() {
           attack2();
         });
       }
+      
+      
+
+
+
+
+
+
+document.addEventListener('keydown', function(event) {
+    switch(event.key) {
+        case 'w':
+            if (document.getElementById('Up')) {
+                upButtonDown = 1;
+            }
+            break;
+        case 'a':
+            if (document.getElementById('Left')) {
+                leftButtonDown = 1;
+            }
+            break;
+        case 's':
+            if (document.getElementById('Down')) {
+                downButtonDown = 1;
+            }
+            break;
+        case 'd':
+            if (document.getElementById('Right')) {
+                rightButtonDown = 1;
+            }
+            break;
+        case 'x':
+            if (document.getElementById('Attack')) {
+attack2();
+            }
+            break;
+        case 'z':
+            if (document.getElementById('Jump')) {
+jump2();
+            }
+            break;
+    }
+});
+
+document.addEventListener('keyup', function(event) {
+    switch(event.key) {
+        case 'w':
+            if (document.getElementById('Up')) {
+                upButtonDown = 0;
+            }
+            break;
+        case 'a':
+            if (document.getElementById('Left')) {
+                leftButtonDown = 0;
+            }
+            break;
+        case 's':
+            if (document.getElementById('Down')) {
+                downButtonDown = 0;
+            }
+            break;
+        case 'd':
+            if (document.getElementById('Right')) {
+                rightButtonDown = 0;
+            }
+            break;
+        case 'x':
+            if (document.getElementById('Attack')) {
+                // Dodaj tutaj odpowiednią funkcję dla puszczenia klawisza X
+            }
+            break;
+        case 'z':
+            if (document.getElementById('Jump')) {
+                // Dodaj tutaj odpowiednią funkcję dla puszczenia klawisza Z
+            }
+            break;
+    }
+});
+
     }
   }, 1000);
 }
