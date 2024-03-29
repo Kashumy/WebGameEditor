@@ -67,7 +67,22 @@ root:
 
 -->
 
+<script>
+  function loadtestgame(){
 
+  var gccpath='./defaul (Robot).json'
+setTimeout(function (){
+  fetch(gccpath)
+    .then(response => response.text())
+    .then(data => handleFileContent(data))
+    .catch(error => {
+    	
+    }
+    );
+},1000)
+ }
+ // loadtestgame()
+</script>
 
 <script>
   var shader={
@@ -169,6 +184,7 @@ var downButtonDown = 0;
 
 </script>
 <script src="./defaul.js"></script>
+<script src="./bigexample.js"></script>
 <script>
   var sizescale=config.tilesize;
 </script>
@@ -284,7 +300,7 @@ CONFIG VABLES
 var tileMap =
 [[[9, 10, 1]],[],[]]
 
-let update3=()=>{ document.querySelector('#player').style.background=`url("${config.playerskin1}");`;config.playerskin1=playerskin;config.bg=bgimg;config.blocks=TILES;config.savedTileMap=tileMap;config.px=(playerX)/tileSize;config.py=playerY/tileSize; console.log(config) }
+let update3=()=>{ document.querySelector('#player').style.background=`url("${config.playerskin1}");`;config.playerskin1=playerskin;config.bg=bgimg;config.blocks=TILES;config.savedTileMap=tileMap;config.px=(playerX)/tileSize;config.py=playerY/tileSize; /*console.log(config)*/ }
 //playerskin=config.playerskin1
 setTimeout(function(){
  // alert(config.bg)
@@ -368,7 +384,7 @@ function handleClick() {
 }
 
 // Dodaj nasłuchiwanie na kliknięcie
-document.addEventListener('click', handleClick);
+document.addEventListener('touchstart', handleClick);
 
 function chooseFile() {
     // Utwórz element input typu file
@@ -589,10 +605,13 @@ top:20px; right:20px; width: 30px ; height:30px ; background: red;"> -->
 
 <div id="project">
 
+  <div id="content2">
 
+  </div>
   <div id="viewport">
   <div id="player" class="player">
   </div>
+
   <div id="content"></div>
     <div id="Econtent"></div>
     <div id="Scontent"></div>
@@ -609,6 +628,8 @@ top:20px; right:20px; width: 30px ; height:30px ; background: red;"> -->
 <script>
   document.querySelector('#viewport').style.width = config.width + "px"
   document.querySelector('#viewport').style.height = config.height + "px"
+  document.querySelector('#content2').style.width = config.width + "px"
+  document.querySelector('#content2').style.height = config.height + "px"
 </script>
 	<div class="joystick">	  <div class="stick"></div>
   </div>
@@ -778,16 +799,18 @@ var translateY=0;
 </script>
 
   <input type="file" class="a hide2" style="position: absolute ;top:calc(5% + 30px);left:20%;" accept="image/png/gif" id="imageInput" style="display: none;">
-  <button class="a hide2" style="position: absolute ;top:calc(5% + 30px);left:20%;" id="addButton">Dodaj cb <br></button>
+  <button class="a hide2" style="position: absolute ;top:calc(5% + 30px);left:20%;" id="addButton">Dodaj block <br></button>
   
   
   
     <input type="file" class="a hide2" style="position: absolute; top:calc(5% + 60px);left:20%; width: 30px" accept="image/png/gif" id="imageInput2" style="display: none;">
-  <button class="a hide2" style="position: fixed; top:calc(5% + 60px);left:20%;"id="addButton2">Dodaj no cb <br></button>
+  <button class="a hide2" style="position: fixed; top:calc(5% + 60px);left:20%;"id="addButton2">Dodaj deco <br></button>
   
         <input type="file" class="a hide2" style="position: absolute; top:calc(5%);left:20%;width: 30px" accept="image/png/gif" id="imageInput5" style="display: none;">
-        <button class="a hide2" style="position: fixed; top:calc(5%);left:20%;" id="addButton5">dodaj eb noc<br></button>
-      <input type="file" class="a hide2" style="position: absolute; top:calc(5% + 90px);left:20%;width: 30px" accept="image/png" id="imageInput3" style="display: none;">
+        <button class="a hide2" style="position: fixed; top:calc(5%);left:20%;" id="addButton5">dodaj entity<br></button>
+        <input type="file" class="a hide2" style="position: absolute; top:calc(70%);left:20%;width: 30px" accept="image/png/gif" id="imageInput6" style="display: none;">
+        <button class="a hide2" style="position: fixed; top:calc(70%);left:20%;" id="addButton6">dodaj projetitle<br></button>
+      <input type="file" class="a hide2" style="position: absolute; top:calc(5% + 90px);left:20%;width: 30px"  id="imageInput3" style="display: none;">
       <button class="a hide2" style="position: fixed; top:calc(5% + 90px);left:20%;" id="addButton3">zmień gracza<br></button>
   
   
@@ -909,11 +932,25 @@ position: fixed;
   position :absolute ;
   
 }
+#content2 {
+
+  overflow: auto;
+  transform: translate(-50%, -50%);
+  top: 50%;
+  left: 50%;
+  position: fixed;
+background-size: 100%;
+}
 #content {
   position: relative;
   
   image-rendering: pixelated;
   
+}
+#content2 {
+  
+  image-rendering: pixelated;
+
 }
 .tile {
   position: absolute;
@@ -975,22 +1012,27 @@ var cfigZ = config.zoomoff;
 var vp = document.getElementById("viewport");
 
 vp.style.zoom = cfigZ*config.zoomadd;
-
+document.querySelector('#content2').style.zoom = cfigZ*config.zoomadd;
 var originalWidth = parseInt(vp.style.width);
 var originalHeight = parseInt(vp.style.height);
 
 var newWidth = originalWidth /cfigZ;
 var newHeight = originalHeight / cfigZ;
-
+document.querySelector('#content2').style.width = newWidth + "px";
+document.querySelector('#content2').style.height = newHeight + "px";
 vp.style.width = newWidth + "px";
 vp.style.height = newHeight + "px";
+
 if(config.testmode==0){
+  
   newWidth = config.width;
 newHeight = config.height;
 cfigZ=1; 
+
 vp.style.zoom = cfigZ;
  newWidth = config.width;
  newHeight = config.height;
+ 
 vp.style.width = newWidth + 'px';
 vp.style.height = newHeight + 'px';
 }
@@ -1033,8 +1075,8 @@ return 1;
 }
 
 function calculateVisibleTiles() {
-  const numVisibleTilesX = Math.ceil(viewportWidth / sizescale)+1;
-  const numVisibleTilesY = Math.ceil(viewportHeight / sizescale)+1;
+  const numVisibleTilesX = Math.ceil(viewportWidth / sizescale)+6;
+  const numVisibleTilesY = Math.ceil(viewportHeight / sizescale)+6;
   return { numVisibleTilesX, numVisibleTilesY };
 }
 // Utwórz obserwator
@@ -1065,6 +1107,9 @@ function up1() {
       
       vp.style.width = newWidth + "px";
       vp.style.height = newHeight + "px";
+      document.querySelector('#content2').style.width = vp.style.width 
+      document.querySelector('#content2').style.height = vp.style.height 
+      document.querySelector('#content2').style.zoom = vp.style.zoom 
     }
     if (config.testmode === 1) {
       document.getElementById('viewport').style.left = "50%"
@@ -1096,10 +1141,10 @@ function updateViewport() {
   const scrollTop = viewport.scrollTop;
   const { numVisibleTilesX, numVisibleTilesY } = calculateVisibleTiles();
 
-  const startTileX = Math.floor(scrollLeft / tileSize);
-  const startTileY = Math.floor(scrollTop / tileSize);
-  const endTileX = startTileX + numVisibleTilesX;
-  const endTileY = startTileY + numVisibleTilesY;
+  const startTileX = Math.floor(scrollLeft / tileSize)-3;
+  const startTileY = Math.floor(scrollTop / tileSize)-3;
+  const endTileX = startTileX + numVisibleTilesX+1;
+  const endTileY = startTileY + numVisibleTilesY+1
 
 const fragment = document.createDocumentFragment();
 
@@ -1142,6 +1187,9 @@ let blockzindex=0
                     tile.style.backgroundImage = `url("${TILES[i][2]}")`;
                   }else  if (TILES[i][1] == 4) {
                     tile.className = `tile1  alltiles hurtblock`;
+                    tile.style.backgroundImage = `url("${TILES[i][2]}")`;
+                  }else if (TILES[i][1] == -1) {
+                    tile.className = `tile1 projetitle  alltiles hurtblock`;
                     tile.style.backgroundImage = `url("${TILES[i][2]}")`;
                   } else if (TILES[i][1] == 2) {
                     tile.className = `tile alltiles2`;
@@ -1339,7 +1387,7 @@ function movesprite(dataSpriteX, dataSpriteY) {
       if (stop == 0) {
         
         var tiles = document.querySelectorAll(`.${spritetomove}`);
-        console.log(spritetomove)
+       // console.log(spritetomove)
         
         tiles.forEach((tile) => {
           let left = parseFloat(tile.style.left) || 0;
@@ -1402,6 +1450,30 @@ function convertspritetoblock(spriteKey) {
 /*document.querySelectorAll('.entities').forEach((tile) => {
   observer.observe(tile);
 });*/
+
+function findClosestProjetitle(tile, collisionobject) {
+    let closestProjetitle = null;
+    let closestDistance = Infinity;
+    const projetitles = document.querySelectorAll('.projetitle');
+    const tileX = parseInt(tile.style.left) / tileSize;
+    const tileY = parseInt(tile.style.top) / tileSize;
+
+    projetitles.forEach(projetitle => {
+        const projetitleX = parseInt(projetitle.style.left) / tileSize;
+        const projetitleY = parseInt(projetitle.style.top) / tileSize;
+        const distance = Math.sqrt(Math.pow(tileX - projetitleX, 2) + Math.pow(tileY - projetitleY, 2));
+
+        if (distance < closestDistance) {
+            closestDistance = distance;
+            closestProjetitle = projetitle;
+        }
+    });
+
+    return closestProjetitle;
+}
+
+
+
 // var load1=0
 function moveTilesRandomly() {
   if(stop==0){
@@ -1410,13 +1482,52 @@ function moveTilesRandomly() {
         
         
         
-        var [speed, movementType, distance, randomMovement, collision, initialHp, area, deletebool,arena,hurt,vi,score1,collisionobject=".player",detectanabled,collisionwithotherblocks] = tileConfig[tileId];
+        var [speed, movementType, distance, randomMovement, collision, initialHp, area, deletebool,arena,hurt,vi,score1,collisionobject="player",detectanabled,collisionwithotherblocks,deletewhencustommoveended,anableshootingattackforentities,collectable,spawnpoint,cantbedamaged,teleportBy,movetilesdeffacted] = tileConfig[tileId];
+        
+
 //console.log(JSON.stringify(tileConfig[tileId]))
         var tiles = document.querySelectorAll(`.${tileId}`);
+        let gototarget;
+
+    
+
+tiles.forEach((tile) => {
+  var closestIndex = 0;
+  var closestDistance; // Zmienna closestDistance musi być zdefiniowana
+    var targetToX=playerX;
+    var targetToY=playerY;
+    var shootingTargettargetToX=-100;
+    var shootingTargettargetToY=-100;
+    const viewport = document.getElementById('viewport');
+    
+    
+    if (document.getElementsByClassName(collisionobject).length > 0) {
+        gototarget = document.getElementsByClassName(collisionobject)[closestIndex];
+        targetToX = parseInt(gototarget.style.left) / tileSize;
+        targetToY = parseInt(gototarget.style.top) / tileSize;
         
-//console.log(JSON.stringify(tileConfig[tileId]))
-        tiles.forEach((tile) => {
-          const viewport = document.getElementById('viewport');
+    }
+if(anableshootingattackforentities==1){
+        //  alert("shooting anabled")
+          let gototarget = findClosestProjetitle(tile, collisionobject);
+          
+          if(gototarget){
+        //  alert("")
+          shootingTargettargetToX = parseInt(gototarget.style.left) / tileSize;
+          shootingTargettargetToY = parseInt(gototarget.style.top) / tileSize;
+        }}
+//console.log(closestIndex + ' ' + JSON.stringify(gototarget));
+
+
+         // alert(collisionobject)
+          if (gototarget) {
+          
+            
+            //alert(targetToX)
+          //  console.log(collisionobject)
+          } else {
+          
+          }
           const tileRect = tile.getBoundingClientRect();
           const viewportRect = viewport.getBoundingClientRect();
           let left = parseFloat(tile.style.left) || 0;
@@ -1429,18 +1540,68 @@ function moveTilesRandomly() {
                     tile.classList.remove('tile');
                     tile.classList.add('tile1');
                 }
-                let distanceToPlayer = Math.sqrt((playerX - left / tileSize) ** 2 + (playerY - top / tileSize) ** 2);
-                if (attack === 1 && distanceToPlayer <= 1) {
+                let distanceToProjectile=20
+                if(anableshootingattackforentities==1){
+                   distanceToProjectile = Math.sqrt((shootingTargettargetToX - left / tileSize) ** 2 + (shootingTargettargetToY - top / tileSize) ** 2);
+                }
+                let distanceToPlayer = Math.sqrt((targetToX - left / tileSize) ** 2 + (targetToY - top / tileSize) ** 2);
+                if(distanceToPlayer <= 1 ){
+                if(spawnpoint==1){
+                  config.spawnX=left / tileSize
+                  config.spawnY=top / tileSize
+                }
+                if (teleportBy !==undefined&& teleportBy!==null&& teleportBy!==""&& teleportBy!==0) {
+                  playerX=(left / tileSize)+teleportBy[0]
+                  playerX=(top / tileSize)+teleportBy[1]
+                  requestAnimationFrame(updateViewport)
+                }
+                }
+                
+                
+if(collectable!==1&&collectable!==undefined){
+    }else{
+      if (collecting === 1 && distanceToPlayer <= 2) {
+      
+        deletedtiles.push(tile);
+        tile.remove();
+      }
+    }
+                
+                if(collectable!==1){
+                if (attack === 1 && distanceToPlayer <= 1 || distanceToProjectile <= 1) {
                   //alert("")
+                  if(cantbedamaged!==1||cantbedamaged==undefined){
                   // Player attacks entity, decrement HP
                   tile.dataset.hp -= 1;
-                  console.log(tile.dataset.hp);
-
+                 // console.log(tile.dataset.hp);
+                 let gototarget = findClosestProjetitle(tile, collisionobject);
+                 if(gototarget){
+                 gototarget.remove()
+                 }
+if(config.folder!==undefined){
+ // alert(config.folder.sounds.player[2])
+  if(config.folder.sounds.player[2]){
+  let newaudio;
+  const base64Wav = config.folder.sounds.player[2];
+  
+  // Utwórz nowy odtwarzacz audio
+  newaudio = new Audio();
+  newaudio.src = base64Wav;
+  newaudio.setAttribute('preload', 'auto');
+  
+  // Dodaj odtwarzacz do dokumentu
+  document.body.appendChild(newaudio);
+  
+  // Odtwórz plik audio WAV
+  newaudio.play();
+  }}
                   if (tile.dataset.hp < 1) {
 
                     deletedtiles.push(tile);
 
-
+if(movetilesdeffacted!==undefined){
+  movemap(movetilesdeffacted[1],movetilesdeffacted[2],movetilesdeffacted[0]);
+}
                     if (score1 == 1) {
                       score += 1
                     } else {
@@ -1450,6 +1611,8 @@ function moveTilesRandomly() {
                     // Entity is defeated, remove the tile
                     tile.remove();
                   }
+                }}}else{
+                  
                 }
                 if (!(tile.dataset.bugfix1)) {
                   tile.dataset.bugfix1 = 0
@@ -1609,12 +1772,12 @@ function hasCollision(class1, class2) {
 
 
 
-
+/*
 if(hasCollision('detect',collisionobject)){
   alert("")
 }
 
-
+*/
 
 
 
@@ -1667,7 +1830,7 @@ if(one==0){
   tile.dataset.firstY=top/tileSize
   
 }
-console.log(tile.dataset.firstY)
+//console.log(tile.dataset.firstY)
     let currentPositionIndex = tile.dataset.gotopozindex ? parseInt(tile.dataset.gotopozindex) : 0;
     let [x, y] = arena[currentPositionIndex];
 
@@ -1676,14 +1839,27 @@ console.log(tile.dataset.firstY)
     let targetY = firstY + y;
     tile.dataset.targetX=targetX
     tile.dataset.targetY=targetY
-console.log("t",targetX)
+//console.log("d:"+currentPositionIndex)
+if (currentPositionIndex >= arena.lenght ) {
+              if (deletewhencustommoveended == 1) {
+                deletedtiles.push(tile);
+               // alert(tile)
+                tile.remove()
+              }
+}
     if (left / tileSize === targetX && top / tileSize === targetY) {
         // Obiekt już jest na docelowej pozycji, przejdź do kolejnego indexu
-        currentPositionIndex = (currentPositionIndex + 1) % arena.length;
+        currentPositionIndex = (currentPositionIndex + 1) ;
 
         // Sprawdź, czy indeks przekroczył długość areny, jeśli tak, ustaw na 0
         if (currentPositionIndex >= arena.length) {
             currentPositionIndex = 0;
+            
+            if(deletewhencustommoveended==1){
+              deletedtiles.push(tile);
+              alert(tile)
+              tile.remove()
+            }
         }
 
         [x, y] = arena[currentPositionIndex];
@@ -1729,7 +1905,7 @@ console.log("t",targetX)
 
                 // Change direction randomly after a certain time
                 if (Math.random() < 0.1) { // Adjust the probability as needed
-                    tile.dataset.direction = Math.atan2(playerY - top / tileSize, playerX - left / tileSize) * (180 / Math.PI);
+                    tile.dataset.direction = Math.atan2(targetToY - top / tileSize, targetToX - left / tileSize) * (180 / Math.PI);
                 }
             } else {
                 // Tile is outside the specified area, move towards the edge of the area
@@ -1789,22 +1965,102 @@ function isWithinArea(x, y, area) {
 }
 
 
-var attack=0;
-function attack2(){
-  attack=1
-  setTimeout(function(){
-    attack=0
-    //alert("")
-  },100)
+var attack = 0;
+var projectiles = []; // Tablica do przechowywania pocisków
+var onceshootmode = 0;
+var cooldownActive = false;
+var cooldownDuration = 300; // Czas cooldownu w milisekundach
+
+function attack2() {
+  if (!cooldownActive) {
+    attack = 1;
+    cooldownActive = true;
+    setTimeout(function () {
+      cooldownActive = false;
+    }, cooldownDuration);
+
+    if (config.folder !== undefined) {
+      if (config.folder.sounds.player[1]) {
+        let newaudio;
+        const base64Wav = config.folder.sounds.player[1];
+
+        newaudio = new Audio();
+        newaudio.src = base64Wav;
+        newaudio.setAttribute('preload', 'auto');
+
+        document.body.appendChild(newaudio);
+
+        newaudio.play();
+      }
+    }
+
+    if (config.playershoots == 1 && config.playershoots !== undefined) {
+      let el = document.createElement('div');
+      el.style.width = '30px';
+      el.style.height = '30px';
+      el.style.background = `url('${config.folder.texture.projectile[0]}')`;
+      el.style.position = "absolute";
+      el.className = 'projetitle';
+      el.style.left = playerX * tileSize + "px";
+      el.style.top = playerY * tileSize + "px";
+      document.querySelector('#Econtent').appendChild(el);
+
+      let shootdir = 0;
+      let shootingspeed = 4;
+      let projectile = {
+        element: el,
+        direction: (ostclick == "left") ? -shootingspeed : (ostclick == "right") ? shootingspeed : 0,
+        lifespan: 50 // Czas życia pocisku
+      };
+      projectiles.push(projectile);
+
+      if (onceshootmode == 0) {
+        animateProjectiles();
+        onceshootmode = 1;
+      }
+    }
+  }
 }
 
+
+function animateProjectiles() {
+  attack = 1;
+  for (let i = 0; i < projectiles.length; i++) {
+    let projectile = projectiles[i];
+    projectile.lifespan--;
+    projectile.element.style.left = (parseInt(projectile.element.style.left) + parseInt(projectile.direction)) + "px";
+    
+    if (projectile.lifespan <= 0) {
+      projectile.element.remove();
+      projectiles.splice(i, 1);
+      i--; // Zmniejszenie indeksu, aby nie pominąć pocisku po usunięciu
+    }
+  }
+
+  if (projectiles.length > 0) {
+    requestAnimationFrame(animateProjectiles);
+  } else {
+   // attack = 0;
+    onceshootmode=0
+  }
+}
+
+var collecting=0;
+function collect(){
+  collecting=1
+  //alert("collect")
+  setTimeout(function(){
+    collecting=0
+    //alert("")
+  },1000)
+}
 // Call this function to move .tile1 elements randomly
 //window.setInterval(moveTilesRandomly,2)
 
 
 // ... (your existing code)
 
-document.getElementById('addButton').addEventListener('click', openFileInput);
+document.getElementById('addButton').addEventListener('touchstart', openFileInput);
 
 function openFileInput() {
   const fileInput = document.getElementById('imageInput');
@@ -1876,7 +2132,7 @@ function moveObjectsDown() {
 
 
 
-document.getElementById('addButton2').addEventListener('click', openFileInput2);
+document.getElementById('addButton2').addEventListener('touchstart', openFileInput2);
 
 function openFileInput2() {
   const fileInput = document.getElementById('imageInput2');
@@ -1910,7 +2166,7 @@ function handleFileSelect2(event) {
 }
 
 
-document.getElementById('addButton5').addEventListener('click', openFileInput5);
+document.getElementById('addButton5').addEventListener('touchstart', openFileInput5);
 
 function openFileInput5() {
   const fileInput = document.getElementById('imageInput5');
@@ -1944,7 +2200,48 @@ function handleFileSelect5(event) {
 }
 
 
-document.getElementById('addButton3').addEventListener('click', openFileInput3);
+
+
+document.getElementById('addButton6').addEventListener('touchstart', openFileInput6);
+
+function openFileInput6() {
+  const fileInput = document.getElementById('imageInput6');
+  fileInput.click();
+}
+
+// Handle file selection
+document.getElementById('imageInput6').addEventListener('change', handleFileSelect6);
+
+function handleFileSelect6(event) {
+  const fileInput = event.target;
+  const files = fileInput.files;
+  
+  if (files.length > 0) {
+    const newBlockIndex = TILES.length; // Get the next iteration
+    const collisionValue = -1;
+    const image = event.target.files[0];
+  
+    // Create file reader object
+    const reader = new FileReader()
+  
+    // Convert image to data URL
+    reader.readAsDataURL(image)
+  
+    reader.addEventListener('load', () => {
+      TILES.push([newBlockIndex, collisionValue, reader.result,thistilesize,translateY]);
+      //alert(TILES[newBlockIndex])
+      TILES.push([TILES.length,1,"/ NAN.png"])
+    })
+    updateViewport();
+  }
+}
+
+
+
+
+
+
+document.getElementById('addButton3').addEventListener('touchstart', openFileInput3);
 
 function openFileInput3() {
   const fileInput = document.getElementById('imageInput3');
@@ -1973,6 +2270,10 @@ function handleFileSelect3(event) {
       
       document.querySelector('.player').style.background=`url(${reader.result})`
 playerskin=reader.result
+if(config.folder.texture.player){
+config.folder.texture.player[0]=reader.result
+//alert(JSON.stringify(config.folder))
+}
     updateViewport();
   
       
@@ -1985,7 +2286,7 @@ playerskin=reader.result
 
 
 
-document.getElementById('addButton4').addEventListener('click', openFileInput4);
+document.getElementById('addButton4').addEventListener('touchstart', openFileInput4);
 
 function openFileInput4() {
   const fileInput = document.getElementById('imageInput4');
@@ -2095,17 +2396,22 @@ var gravity=config.gravity;
     var x=0
     var y=0
     var speed=config.speed
+    var ostclick;
   function movright(){
     movePlayer(-0.08*speed,0)
+    ostclick="left"
   }
   function movleft() {
     movePlayer(0.08*speed,0)
+    ostclick="right"
   }
   function movup() {
 movePlayer(0,-0.08*speed)
+ostclick="up"
   }
   function movdown() {
     movePlayer(0,0.06*speed)
+    ostclick="down"
   }
     function updateJoystick(event) {
       let x, y;
@@ -2176,34 +2482,114 @@ movePlayer(0,-0.08*speed)
       stick.style.transform = 'translate(0px, 0px)';
     });
 </script>
-<script>
-const limitIteracji = 50;
-var classicspeed=config.norspeed
-let test2=0
-var newcollisions = [".hurtblock"];
-function checkit() {
+<div id="hpBarContainer">
   
-  for (let tileClass of newcollisions) {
-    const tiles = document.querySelectorAll(tileClass);
-//console.log(JSON.stringify(tiles))
-    for (let tile of tiles) {
-      const rect1 = player.getBoundingClientRect();
-      const rect2 = tile.getBoundingClientRect();
-      const wallThickness = 2;
-
-      if (rect1.bottom > rect2.top - 5 &&
-        rect1.top < rect2.bottom + 5 &&
-        rect1.right > rect2.left - 5 &&
-        rect1.left < rect2.right + 5) {
-        
-          
-playerY=config.spawnY
-playerX=config.spawnX
-        
-      }
-    }
-  
+</div>
+<style>
+  #hpBarContainer{
+   position: fixed;
+   z-index: 99;
+   pointer-events: none;
+   
   }
+</style>
+<script>
+// Zmienne konfiguracyjne paska życia
+var HpbarConfig;
+
+// Funkcja do aktualizacji paska życia
+function updateHpBar(currentHp) {
+  
+   
+  
+    const hpBarContainer = document.getElementById('hpBarContainer');
+    hpBarContainer.innerHTML = ''; // Wyczyść poprzednią zawartość
+    if(config.v>0.5){
+      HpbarConfig=config.HpBarConfiguration
+hpBarContainer.style.left=HpbarConfig.left+"%"
+currentHp = HpbarConfig.numberHP;
+
+hpBarContainer.style.right=HpbarConfig.right+"%"
+hpBarContainer.style.top=HpbarConfig.top+"%"
+hpBarContainer.style.bottom=HpbarConfig.bottom+"%"
+
+
+    for (let i = 0; i < HpbarConfig.maxHp; i++) {
+        const heart = document.createElement('img');
+        if (i < currentHp) {
+            heart.src = HpbarConfig.texture;
+        } else {
+            heart.src = HpbarConfig.textureempty;; // Serce puste, jeśli HP zostało zużyte
+        }
+        hpBarContainer.appendChild(heart);
+    }}
+}
+
+// Przykładowe użycie
+var currentHp = 0; // Aktualne życie
+
+
+// Kod, który zabija gracza
+const limitIteracji = 50;
+var classicspeed = config.norspeed;
+let test2 = 0;
+var newcollisions = [".hurtblock"];
+let to205 = true;
+
+function checkit() {
+    for (let tileClass of newcollisions) {
+        const tiles = document.querySelectorAll(tileClass);
+
+        for (let tile of tiles) {
+            const rect1 = player.getBoundingClientRect();
+            const rect2 = tile.getBoundingClientRect();
+            const wallThickness = 2;
+
+            if (rect1.bottom > rect2.top - 5 &&
+                rect1.top < rect2.bottom + 5 &&
+                rect1.right > rect2.left - 5 &&
+                rect1.left < rect2.right + 5) {
+
+                // Sprawdź czy minęło wystarczająco czasu od ostatniego otrzymania obrażeń
+                if (to205) {
+                  
+                  if(config.HpBarConfiguration!==undefined){
+                    // Zaktualizuj życie gracza po kolizji
+                    
+                    config.HpBarConfiguration.numberHP-=1
+                    currentHp=config.HpBarConfiguration.numberHP
+                    updateHpBar(currentHp);
+                    
+                    if (currentHp < 1) {
+                      
+                        playerY = config.spawnY;
+                        playerX = config.spawnX;
+                        config.HpBarConfiguration.numberHP=config.HpBarConfiguration.maxHp
+                        updateViewport();
+                    }
+if(HpbarConfig.Work==true){
+                }else{
+                      playerY = config.spawnY;
+                      playerX = config.spawnX;
+                    }
+updateHpBar(config.HpBarConfiguration.numberHp);
+                    // Wywołaj funkcję aktualizującą widok
+                    
+
+                    // Ustaw opóźnienie przed kolejnym otrzymaniem obrażeń
+                    to205 = false;
+                    
+                    setTimeout(function () {
+                        to205 = true;
+                    }, HpbarConfig.hurtDelay||500);
+                }else{
+                  playerY = config.spawnY;
+                  playerX = config.spawnX;
+                  updateViewport();
+                }}
+            }
+        }
+    }
 }
 
 
@@ -2258,9 +2644,25 @@ function jump(){
     power=0.20
   },5000)
 }
-function jump2(){
+function jump2(event){
+  event.preventDefault()
   if(canJUMP==1){
   jumping()
+  if(config.folder.sounds.player[0]){
+  let newaudio;
+  const base64Wav = config.folder.sounds.player[0];
+  
+  // Utwórz nowy odtwarzacz audio
+  newaudio = new Audio();
+  newaudio.src = base64Wav;
+  newaudio.setAttribute('preload', 'auto');
+  
+  // Dodaj odtwarzacz do dokumentu
+  document.body.appendChild(newaudio);
+  
+  // Odtwórz plik audio WAV
+  newaudio.play();
+  }
   }
 }
 let gjfj=0
@@ -2280,7 +2682,16 @@ setTimeout(function(){
 })
 var thix=0
 var thiy=0
+var blockspassed=0
+var updatevpifblockspassed=50
 function movePlayer(dx, dy) {
+  blockspassed++;
+  if (isScrolling && blockspassed > updatevpifblockspassed) {
+    blockspassed = 0
+    requestAnimationFrame(updateViewport)
+    isScrolling = false;
+  
+  }
   playerX += dx;
   thiy=dy;
   thix=dx;
@@ -2310,8 +2721,11 @@ function move(){
   
 }
 function checkIfElementExited(player, viewport) {
-
-  viewport.scrollTo((playerX * tileSize2) - viewportWidth / 2, (playerY * tileSize2) - viewportHeight / viewportHeight* viewportHeight/2)
+  let dzoom=1
+if(parseInt(viewport.style.zoom)){
+  dzoom=parseInt(viewport.style.zoom)
+}
+  viewport.scrollTo((playerX * tileSize2) - viewportWidth / 2, (playerY * tileSize2) - viewportHeight / viewportHeight* viewportHeight/2*dzoom)
   
 }
 // Przykład użycia
@@ -2359,6 +2773,8 @@ rect1.top < rect2.bottom + 5 &&
 rect1.right > rect2.left - 5 &&
 rect1.left < rect2.right + 5) {
 */
+var collidingjump=0
+var collidingjump2=0
       function collision() {
         if( config.debugmode==0 && isgamepaused==0 ) {
         for(let i=0; i<2;i++){
@@ -2432,21 +2848,34 @@ rect1.left < rect2.right + 5) {
 if (rect1.bottom +6 > rect2.top - wallThickness && rect1.top < rect2.top -15&& rect1.right +2> rect2.left + wallThickness && rect1.left -2< rect2.right - wallThickness) {
 
 canJUMP=1
-
+gravityvelocity=1
+if(collidingjump2==0){
+  collidingjump=1
+  collidingjump2=1
+  setTimeout(function(){
+    
+    collidingjump=0
+    
+    collidingjump2=0
+  },200)
+}
 }else{
   
   
 }
-
+if (rect1.bottom +3 > rect2.top - wallThickness && rect1.top+20 < rect2.top -5&& rect1.right +2> rect2.left + wallThickness && rect1.left -2< rect2.right - wallThickness) {
+  gravityvelocity=1
+}
           
           if (rect1.bottom +3 > rect2.top - wallThickness && rect1.top+6 < rect2.top -5&& rect1.right +2> rect2.left + wallThickness && rect1.left -2< rect2.right - wallThickness) {
 if(gravity==0){
             playerY -= power*speed}else{
-              playerY -= power-0.10
+              playerY -= (power* gravityvelocity)-0.10
+              
             }
 //VelocityY = -0.2;
            // console.log("ok")
-
+gravityvelocity=1
 
             player.style.left = playerX * tileSize + 'px';
             player.style.top = playerY * tileSize + 'px';
@@ -2498,47 +2927,25 @@ function h(){
   
 }
 var by3=0
-
-      function anim() {
-        by3++;
-        if (isScrolling && by3 > 17) {
-          by3 = 0
-          updateViewport();
-          isScrolling = false;
-        
-        }
-        var tile2ps = document.getElementsByClassName("tile1");
-        
-        for (var i = 0; i < tile2ps.length; i++) {
-          tile2ps[i].Timeout = function() {
-            this.timetorm += 1;
-            if (this.timetorm > 90) {
-              this.remove();
-            }
-          };
-          
-          tile2ps[i].move = function() {
-            var posX = parseFloat(this.style.left);
-            var posY = parseFloat(this.style.top);
-          
-            posX += 2 * tileSize;
-            posY += 2 * tileSize;
-          
-            this.style.left = posX + 'px';
-            this.style.top = posY + 'px';
-          }; 
-          
-        }
-        constructn()
-      }
-      let toto=0;
-      let defaultFps = 30;
+let toto = 0;
+let defaultFps = 30;
 let targetFPS = 30;
 let iindex = 0;
 let frameTime = 1000 / targetFPS;
-
+let gravityvelocity = 1
+var tlo2 = 0
+      function anim() {
+        
+      }
+      var yyy=0
 function loop() {
     checkit();
+    if(yyy<20){
+      yyy++
+    }else{
+      yyy=0
+      updateHpBar(currentHp)
+    }
     if (toto > 1) {
         toto = 0;
     }
@@ -2556,14 +2963,60 @@ function loop() {
     if (downButtonDown == 1) {
         movdown();
     }
+    if (leftButtonDown == 0 && upButtonDown == 0 && rightButtonDown == 0 && downButtonDown == 0 && isjumping == false) {
+      if (playerskin) {
+        document.querySelector('.player').style.background = `url(${playerskin})`
+      }
+    }
+    if(ostclick=="right"){
+      if(config.v>0&&config.v){
+      if(config.folder){
+      if (config.folder.texture.player[4]) {
+        document.querySelector('.player').style.background = `url(${config.folder.texture.player[4]})`
+      }}}
+    }
+    if(ostclick=="left"){
+      if(config.v>0&&config.v){
+      if(config.folder){
+      if (config.folder.texture.player[5]) {
+        document.querySelector('.player').style.background = `url(${config.folder.texture.player[5]})`
+      }}}
+    }
+    if(isjumping==true){
+      if(config.v>0&&config.v){
+      if(config.folder){
+      if (config.folder.texture.player[3]) {
+        document.querySelector('.player').style.background = `url(${config.folder.texture.player[3]})`
+      }}}
+    }
+    
     if (leftButtonDown == 1) {
         movright();
+        if(config.v>0&&config.v){
+        if(config.folder){
+        if(config.folder.texture.player[1]){
+        document.querySelector('.player').style.background=`url(${config.folder.texture.player[1]})`
+        }
+        }}
     }
+    
+    
     if (upButtonDown == 1) {
         movup();
+        if(config.v>0&&config.v){
+        if(config.folder){
+        if (config.folder.texture.player[3]) {
+          document.querySelector('.player').style.background=`url(${config.folder.texture.player[3]})`
+        }}}
     }
     if (rightButtonDown == 1) {
-        movleft();
+        movleft()
+        if(config.v>0&&config.v){
+        if(config.folder){
+        if (config.folder.texture.player[2]) {
+          
+          document.querySelector('.player').style.background=`url(${config.folder.texture.player[2]})`
+         }}}
     }
     if (movePlayer(0, 0)) {
     } else {
@@ -2575,20 +3028,40 @@ function loop() {
     joystickRect = joystick.getBoundingClientRect();
     collision();
     if (gravity == 1) {
-        playerY += config.gravitypower||0.10;
+      if(tlo2<3){
+        tlo2+=1
+      }else{
+        if(config.maxgravityvelocity){
+      if(gravityvelocity<config.maxgravityvelocity){
+if(gravity==1&&collidingjump==0){
+  
+gravityvelocity+=config.gravityvelocityspeed
+}
+tlo2=0
+}
+}}if(gravity==1&&collidingjump==0){
+        movePlayer(0,config.gravitypower*gravityvelocity||0.10)}
     }
 
 
-    anim(); // Wywołaj anim
+    by3++;
+    if (isScrolling && by3 > 60) {
+      by3 = 0
+      requestAnimationFrame(updateViewport)
+      isScrolling = false;
+    
+    }
+    constructn()
 
     // Wywołaj pętlę gry ponownie przy użyciu requestAnimationFrame
     setTimeout(() => {
         requestAnimationFrame(loop);
     }, frameTime);
 }
-
+var isjumping=false;
 function jumping() {
     canJUMP = 0;
+    isjumping=true
     gravity = 0;
     olderspeed = speed;
     gjfj += 1;
@@ -2601,6 +3074,7 @@ function jumping() {
         gjfj = 0;
         speed = olderspeed;
         gravity = 1;
+        isjumping=false
     }
 }
 
@@ -2620,6 +3094,7 @@ function buildBlock(event) {
 
   // Funkcja do zbudowania bloków w obszarze o określonym rozmiarze
   function buildBlocksAroundPosition(startX, startY) {
+    
     if(config.testmode==0){
   for (let offsetX = -brushSize + 2; offsetX <= brushSize; offsetX++) {
     for (let offsetY = -brushSize + 2; offsetY <= brushSize; offsetY++) {
@@ -2870,7 +3345,7 @@ function testa() {
       if (jumpElement) {
         jumpElement.addEventListener('touchstart', function (event) {
           event.preventDefault(); // Prevent default behavior
-          jump2();
+          jump2(event);
         });
       }
 
@@ -2917,9 +3392,9 @@ document.addEventListener('keydown', function(event) {
 attack2();
             }
             break;
-        case 'z':
+        case 'w':
             if (document.getElementById('Jump')) {
-jump2();
+jump2(event);
             }
             break;
     }
@@ -2952,7 +3427,7 @@ document.addEventListener('keyup', function(event) {
                 // Dodaj tutaj odpowiednią funkcję dla puszczenia klawisza X
             }
             break;
-        case 'z':
+        case 'w':
             if (document.getElementById('Jump')) {
                 // Dodaj tutaj odpowiednią funkcję dla puszczenia klawisza Z
             }
@@ -2969,6 +3444,23 @@ window.setInterval(testy, 3000);
 
 </script>
 
+<div style="overflow:hidden;overflow:scroll;position: absolute; top:50vh; left:50vw; transform: translate(-50%,-50%); width: 90%; height:80%; background: black; padding: 10px; z-index: 9999;"class="entitymenu">
+<div onclick="togglemenu()">
+  close menu
+</div>
+<style>
+  #contentofjsoneditor{
+    zoom:0.8;
+  }
+</style>
+<div id="contentofjsoneditor">
+<div class="json-editor">
+    <button onclick="addEntity()">add</button>
+    <button onclick="saveJson()">save</button>
+  </div>
+  <div id="entities-container"></div>
+  </div>
+</div>
 
 
 
@@ -3059,7 +3551,7 @@ function toggleLayers() {
   <style>
 .menu-container {position: absolute;bottom: 15%;width:0%;height:0%;right: 15%;text-align: center;display: block;}.menu-content {background-color: #F0F0F0;padding: 5px;position: fixed;z-index:2;border: 1px solid #ccc;display: none;top: 50%;left: 50%;transform: translate(-50%,-50%);
   width:60%;height:60%;overflow: hidden; overflow: scroll;
-}.menu-toggle {cursor: none;border-radius: 100%;background-color: #4CAF50;color: white;padding: 20px 20px;border: none; position: fixed; bottom: 50%; left:0px; z-index: 99999;}.menu-toggle:hover {background-color: #45a049;}.menu-container:hover .menu-content {display: block;} .mn div{ cursor: none;background-color: #4caf50;color: white;padding: 5px 20px;border: none;width:calc(100% - 0px);}
+}.menu-toggle {cursor: none;border-radius: 100%;background-color: #4CAF50;color: white;padding: 20px 20px;border: none; position: fixed; bottom: 50%; left:0px; z-index: 99999;}.menu-toggle:hover {background-color: #45a049;}.menu-container:hover .menu-content {display: block;} .mn div{ cursor: none;background-color: #4CAF50;color: white;padding: 5px 20px;border: none;width:calc(100% - 0px);}
 
 .menu2-content {background-color: #0E0E0E;padding: 5px;position: fixed;border: 1px solid #1C1C1C;top: 50%;left: 50%;transform: translate(-50%,-50%);
   width:95%;height:95%;overflow: hidden; 
@@ -3078,6 +3570,7 @@ function toggleLayers() {
   background: #8F3434;
   border-radius: 20%;
 }
+
   </style>
 </head>
 <body>
@@ -3088,11 +3581,7 @@ function toggleLayers() {
 <style>
   
 </style>
-<div style="position: absolute; top:50vh; left:50vw; transform: translate(-50%,-50%); width: 90%; height:80%; background: black; padding: 10px; z-index: 9999;"class="entitymenu">
-<div onclick="togglemenu()">
-  close menu
-</div>
-</div>
+
   
   <div class="menu-container notaproject">
     <div class="menu-content">
@@ -3109,6 +3598,16 @@ Visuals
 </div>
 <div onclick="handleFileContent(JSON.stringify(example2))">
   load example platformer game
+</div>
+<div onclick="
+loadtestgame()
+">
+  load Game test (robot wants explore)( copy of robot wants icecream )
+</div>
+<script>
+</script>
+<div onclick="handleFileContent(JSON.stringify(robotexplorer))">
+  load bigGame Robot Explorer ( experimental 1.1)
 </div>
 <div onclick="handleFileContent(JSON.stringify(example3))">
   load example Apple Man game
@@ -3128,11 +3627,44 @@ TopDownGameButtons
 <div onclick="rmmake()" style="background: red">
   remove everything make
 </div>
+<style>
+
+
+
+</style>
   <input type="range" id="mySlider" min="-30" max="30" value="0">
 bg size:  <t id="sliderValue" style="color:black;">0</t>
+<div onclick="stickybg(1);">
+  sticky background 
+</div>
+<div onclick="stickybg(0);">
+  floating background 
+</div>
   <script>
-  
-  
+
+  function stickybg(num) {
+    if (!('stickybg1' in config)) {
+        // Jeśli klucz nie istnieje, dodaj go z domyślną wartością
+        config['stickybg1'] = num;
+    } else {
+        config.stickybg1 = num; // Ustawia wartość 'stickybg1' na nową wartość
+    }
+    
+    if (config.stickybg1 == 0) {
+        let content = document.getElementById('content');
+        let content2 = document.getElementById('content2');
+        content.style.backgroundImage = getComputedStyle(content2).backgroundImage;
+        setTimeout(function(){
+            content2.style.backgroundImage = ''; // Usuwa tło po 3 sekundach
+        }, 1000);
+    } else {
+        let content = document.getElementById('content');
+        let content2 = document.getElementById('content2');
+        content2.style.backgroundImage = getComputedStyle(content).backgroundImage;
+        content.style.backgroundImage = '';
+    }
+}
+
 function loadfile() {
   // Utwórz element input typu file
   const input = document.createElement('input');
@@ -3167,11 +3699,36 @@ function handleFileContent(textContent) {
   try {
    
     config = JSON.parse(textContent);
+    if(!(config.folder)){
+      
+    }
+    if (!('stickybg1' in config)) {
+      // Jeśli klucz nie istnieje, dodaj go z domyślną wartością
+      config['stickybg1'] = 0;
+    } else {
+      
+    }
+    
+    if (config.stickybg1 == 0) {
+      let content = document.getElementById('content');
+      let content2 = document.getElementById('content2');
+      if(content2.style.backgroundImage){
+      content.style.backgroundImage = getComputedStyle(content2).backgroundImage;
+      setTimeout(function() {
+        content2.style.backgroundImage = ''; // Usuwa tło po 3 sekundach
+      }, 1000);}
+    } else {
+      let content = document.getElementById('content');
+      let content2 = document.getElementById('content2');
+      content2.style.backgroundImage = getComputedStyle(content).backgroundImage;
+      content.style.backgroundImage = '';
+    }
+    
 const playerskin69=config.playerskin1
 //alert(playerskin69)
 document.querySelector('.player').style.background=`url(${playerskin69})`
 playerskin=playerskin69
-    updateViewport();
+    updateViewport() 
   setTimeout(function() {
     if (config.DarknessEffect == 1) {
       let vp = document.getElementById("viewport")
@@ -3196,9 +3753,9 @@ playerskin=playerskin69
     stop=1
     code = config.code;
     classicspeed = config.norspeed;
-    playerY = config.spawnY;
-    playerX = config.spawnX;
-   setPlayer(config.spawnX,config.spawnY)
+    playerY = config.py;
+    playerX = config.px;
+   setPlayer(config.px*tileSize,config.py*tileSize)
     speed = config.speed;
     playerskin = config.playerskin1;
     TILES = config.blocks;
@@ -3255,13 +3812,16 @@ playerskin=playerskin69
        jmptimes = 0
       stop=0
       RESET()
+      displayEntities();
     },3000)
 //alert(content.style.backgroundSize)
  tileSize = config.tilesize; // Rozmiar pojedynczego kafelk
  cfigZ = config.zoomoff;
  vp = document.getElementById("viewport");
 vp.style.zoom = cfigZ*config.zoomadd;
-
+document.querySelector('#content2').style.width = vp.style.width
+document.querySelector('#content2').style.height = vp.style.height
+document.querySelector('#content2').style.zoom = vp.style.zoom
     //alert((config));
   } catch (error) {
     console.error("Błąd podczas parsowania pliku JSON:", error);
@@ -3308,8 +3868,167 @@ slider2.addEventListener('touchend', () => {stop=1; slider2.value = 0; currentVa
 
   </script>
   <div>"make9":[2,"null",4,3,0,0,[0,0,999999,999999],false,[[0,3],[0,-3]],0,0,0,".player",1]
-  "class/tag":[speed,movement('','move','avoid','follow'),distance-to-player(blocks),randommove(1/0), collisionblockforplayer like collisionblocks,Enemy HP,[x,y,x2,y2],false,if 'move'=[[0,3],[0,-3]],hurtblocklikespike, scrip doesn't work if enemy is not visible,give score,custom sprites collision for attack def='player',anable custom sprite collision, hascollisionwithblocks(1/0/null)]</div>
+  "class/tag":[speed,movement('','move','avoid','follow'),distance-to-player(blocks),randommove(1/0), collisionblockforplayer like collisionblocks,Enemy HP,[x,y,x2,y2],false,if 'move'=[[0,3],[0,-3]],hurtblocklikespike, scrip doesn't work if enemy is not visible,give score,custom sprites collision for attack def='player',anable custom sprite collision, hascollisionwithblocks(1/0/null)]
+  
+    var [speed, movementType, distance, randomMovement, collision, initialHp, area, deletebool,arena,hurt,vi,score1,collisionobject="player",detectanabled,collisionwithotherblocks,deletewhencustommoveended,anableshootingattackforentities,collectable] = tileConfig[tileId];
+        
+  
+
+</div>
 <textarea name="" id="entitiesconfig" cols="30" rows="10" value="" onchange="updateSpriteConfigNpc()"></textarea>
+
+<style>
+    .json-editor {
+        margin-bottom: 10px;
+    }
+    .json-editor button {
+        margin-right: 10px;
+    }
+    .entity {
+        margin-bottom: 10px;
+        cursor: pointer;
+    }
+    .option {
+        margin-bottom: 5px;
+    }
+</style>
+
+
+
+<script>
+   /* let config = {
+        "entities": {
+            "alltiles3": [8, "follow", 10, 3, 0, 199, [0, 0, 999999, 999999], true, [[10, 0], [-10, 0]], null, 1, 1, null, 1],
+            "alltiles5": [1, "null", 4, 3, 0, 0, [0, 0, 999999, 999999], true, [[10, 0], [-10, 0]], 0, 1, 1],
+            "alltiles2": [2, "move", 4, 3, 0, 1, [0, 0, 999999, 999999], true, [[5, 0], [-5, 0]]],
+            "alltiles6": [2, "move", 4, 3, 0, 100, [0, 0, 999999, 999999], true, [[0, 3], [0, -3]], 1, 0]
+        }
+    };
+    
+    entities":{"alltiles13":[0,"null",10,3,0,99999,[0,0,999999,999999],true,[[10,0],[-10,0]],null,1,1,null,null,1, , , ,1],"alltiles3":[8,"follow",10,3,0,199,[0,0,999999,999999],true,[[10,0],[-10,0]],null,1,1,null,null,1],"alltiles5":[1,"null",4,3,0,0,[0,0,999999,999999],true,[[10,0],[-10,0]],0,1,1],"alltiles2":[3,"move",4,3,0,1,[0,0,999999,999999],true,[[0,3],[0,-3]],1,0,null,null,1,null,null,1],"alltiles10":[5,"follow",5,0,0,1,[0,0,999999,999999],true,[[0,3],[0,-3]],1,0,null,"player",1,null,null,1],"alltiles6":[2,"move",4,3,0,100,[0,0,999999,999999],true,[[0,3],[0,-3]],1,0,null,null,1]}
+*/
+var testexample={"examples":{"alltiles0":[0,"move/follow/avoid",0,3,0,1,[0,0,999999,999999],true," vector only for move [[0,0],[0,0]]",0,1]}}
+    function displayEntities() {
+        const container = document.getElementById('entities-container');
+        container.innerHTML = '';
+        for (const entity in config.entities) {
+            if (config.entities.hasOwnProperty(entity)) {
+                const entityDiv = document.createElement('div');
+                entityDiv.classList.add('entity');
+                entityDiv.textContent = entity;
+                
+                const deleteButton = document.createElement('button');
+                deleteButton.textContent = 'Delete';
+                deleteButton.onclick = function() {
+                    delete config.entities[entity];
+                    displayEntities();
+                };
+                
+                entityDiv.appendChild(deleteButton);
+                
+                entityDiv.addEventListener('click', () => editEntity(entity));
+                container.appendChild(entityDiv);
+            }
+        }
+    }
+
+    function addEntity() {
+        const entityName = prompt("Enter entity name:");
+        if (entityName) {
+          let selectedExample="alltiles0"
+            config.entities[entityName] = Array(getOptionNames().length).fill(null);
+            config.entities[entityName] = testexample.examples[selectedExample];
+            displayEntities();
+        }
+    }
+
+    function editEntity(entityName) {
+        const options = config.entities[entityName];
+        const optionNames = getOptionNames();
+        let optionHTML = '';
+        for (let i = 0; i < optionNames.length; i++) {
+            const optionValue = options[i] !== null ? options[i] : ''; // Check if value is null, if yes, show empty string
+            const optionName = optionNames[i];
+            optionHTML += `<div class="option">
+                                <label>${optionName}</label>
+                                <input type="text" value="${optionValue}" data-index="${i}" data-entity="${entityName}" oninput="updateOption(this)">
+                           </div>`;
+        }
+        optionHTML += `<button onclick="saveEntity('${entityName}')">save</button>`;
+        document.getElementById('entities-container').innerHTML = optionHTML;
+    }
+
+    function updateOption(input) {
+    const entityName = input.getAttribute('data-entity');
+    const index = parseFloat(input.getAttribute('data-index'));
+    let newValue = input.value;
+
+    // Sprawdzenie czy wartość jest poprawnym obiektem JSON
+    try {
+        const parsedValue = JSON.parse(newValue);
+        if (parsedValue !== null && typeof parsedValue === 'object') {
+            // Jeśli wartość jest obiektem JSON, zachowaj ją jako obiekt
+            newValue = parsedValue;
+        } else {
+            // Jeśli nie jest obiektem JSON, zachowaj ją jako string
+            newValue = input.value;
+            if (!isNaN(newValue)) {
+              newValue = parseFloat(newValue); // lub parseInt(newValue) dla liczby całkowitej
+            }
+        }
+    } catch (error) {
+        // W przypadku błędu parsowania zachowaj wartość jako string
+        
+        newValue = input.value;
+        if (!isNaN(newValue)) {
+          newValue = parseFloat(newValue); // lub parseInt(newValue) dla liczby całkowitej
+        }
+    }
+
+    config.entities[entityName][index] = newValue;
+    document.querySelector("#entitiesconfig").innerText = JSON.stringify(config.entities);
+}
+
+
+    function saveEntity(entityName) {
+        displayEntities();
+    }
+
+    function saveJson() {
+        alert(JSON.stringify(config));
+    }
+
+    function getOptionNames() {
+        // You can define your option names here or fetch them from somewhere
+        return [
+            "Speed(num)",
+            "Movement Type(avoid,move,follow)",
+            "Distance(num)",
+            "Random Movement(1/0/3 for Move)",
+            "Collision(1/0)",
+            "Initial HP(Num)",
+            "Area For Entity([startX,startY,endX,endY])",
+            "Delete Bool(Boolean)",
+            "Arena move by ([[x,y],[x,y]])",
+            "Hurt(1/0)",
+            "Script doesn't work if sprite is out of viewport(1/0)",
+            "Score1(1/0)",
+            "Collision Object(1/0)",
+            "Detect Enabled",
+            "Collision with Other Blocks(1/0)",
+            "Delete When Custom Move Ended(1/0)",
+            "Enable Shooting Attack for Entities(1/0)",
+            "Collectable(1/0)",
+            "SpawnPointBlock(1/0)",
+            "CantBeDamaged(1/0)",
+            "Teleport by([y,x])",
+            "Move Tiles when it is defaced by([(i...),y,x])"
+        ];
+    }
+
+    
+</script>
+
 <div onclick="togglemenu()">
  make entity Tiles (menu)
 </div>
@@ -3337,6 +4056,158 @@ vp.style.height = newHeight + 'px';
 <div onclick="gravity=1; ">
   gravity
 </div>
+
+
+
+
+
+
+
+
+
+
+
+<script>
+  // Funkcja do zmiany zawartości zmiennej na podstawie wybranego pliku i indeksu
+  function fileSelection(file, variable, index) {
+    // Tutaj dokonaj rzeczywistej zmiany zawartości zmiennej na podstawie pliku i indeksu
+    console.log("Wybrany plik:", file);
+    console.log("Zmienna przed zmianą:", variable);
+    console.log("Indeks zmiennej:", index);
+    // Przykładowe przypisanie wybranego pliku do odpowiedniego indeksu zmiennej
+    if(index!==-1){
+    variable[index] = file;
+    }else{
+     
+    }
+  //  alert(config.folder.texture.projectile)
+    console.log("Zmienna po zmianie:", variable);
+  }
+
+
+  function changeVariable(file,variable, index) {
+//    alert(JSON.stringify(config.folder.texture.player))
+    fileSelection(file, variable, index);
+    
+  }
+  
+  // Obsługa wybierania pliku
+  function handleFileButtonClickA(inputId, index) {
+    document.getElementById(inputId).click();
+  }
+  
+  // Obsługa wyboru pliku
+  function handleFileInputChangeA(event,variable, index) {
+    const file = event.target.files[0];
+        // Create file reader object
+        const reader = new FileReader()
+    
+        // Convert image to data URL
+        reader.readAsDataURL(file)
+    config.folder.texture.player[0]=playerskin
+        reader.addEventListener('load', () => {
+    
+    changeVariable(reader.result,variable, index);
+        });
+  }
+</script>
+
+<!-- Przyciski do wywoływania funkcji z różnymi plikami -->
+<div>Experimental : It only works on newer update 1.<stroke class="verisondata"></stroke></div>
+
+<script>
+function updtd(){
+if(config.v){
+  document.querySelector('.verisondata').innerText=config.v
+}else{
+  document.querySelector('.verisondata').innerHTML=0
+}
+}
+window.setInterval(updtd,6000)
+</script>
+
+<div>on version 1.1 Experimental</div>
+<input type="file" id="fileInput10" onchange="handleFileInputChangeA(event,config.folder.texture.player,  1)" />
+<button onclick="handleFileButtonClickA('fileInput1', 1)">player Left</button>
+<input type="file" id="fileInput20" onchange="handleFileInputChangeA(event,config.folder.texture.player,  2)" />
+<button onclick="handleFileButtonClickA('fileInput2', 2)">player Right</button>
+<input type="file" id="fileInput60" onchange="handleFileInputChangeA(event,config.folder.texture.player,  4)" />
+<button onclick="handleFileButtonClickA('fileInput2', 4)">player stay Right</button>
+<input type="file" id="fileInput50" onchange="handleFileInputChangeA(event,config.folder.texture.player,  5)" />
+<button onclick="handleFileButtonClickA('fileInput2', 5)">player stay Left</button>
+<input type="file" id="fileInput30" onchange="handleFileInputChangeA(event,config.folder.texture.player,  3)" />
+<button onclick="handleFileButtonClickA('fileInput3', 3)">player Jump</button>
+<input type="file" id="fileInput70" onchange="handleFileInputChangeA(event,config.folder.sounds.player,  0)" />
+<button onclick="handleFileButtonClickA('fileInput70', 3)">player Jump Sound</button>
+<input type="file" id="fileInput70" onchange="handleFileInputChangeA(event,config.folder.sounds.player,  1)" />
+<button onclick="handleFileButtonClickA('fileInput70', 3)">player attackt Sound</button>
+<input type="file" id="fileInput70" onchange="handleFileInputChangeA(event,config.folder.sounds.player,  2)" />
+<button onclick="handleFileButtonClickA('fileInput70', 3)">player hit Sound</button>
+<div onclick="config.playershoots=1 ">
+  playershoots ? true
+</div>
+<div onclick="config.playershoots=0 ">
+  playershoots ? false
+</div>
+<input type="file" id="fileInput40" onchange="handleFileInputChangeA(event,config.folder.texture.projectile,0)" />
+<button onclick="handleFileButtonClickA('fileInput4', 2)">player projectile</button>
+<!-- Input do edycji zmiennej -->
+<div>hp barleft </div>
+<input type="text" id="leftInput" oninput="editInputVariable(this.value, 'left')">
+<div>hp barright</div>
+<input type="text" id="rightInput" oninput="editInputVariable(this.value, 'right')">
+<div>hp bartop</div>
+<input type="text" id="topInput" oninput="editInputVariable(this.value, 'top')">
+<div>hp barbottom</div>
+<input type="text" id="bottomInput" oninput="editInputVariable(this.value, 'bottom')">
+<div>hp number</div>
+<input type="text" id="bottomInput" oninput="editInputVariable(this.value, 'numberHP')">
+<div>hp max</div>
+<input type="text" id="bottomInput" oninput="editInputVariable(this.value, 'maxHp')">
+<div>hurt duration hurtDelay</div>
+<input type="text" id="bottomInput" oninput="editInputVariable(this.value, 'hurtDelay')">
+<div>hp texture</div>
+<input type="file" id="fileInput70" onchange="handleFileInputChangeA(event,config.HpBarConfiguration,  'texture')" />
+<div>hp emptytexture</div>
+<input type="file" id="fileInput70" onchange="handleFileInputChangeA(event,config.HpBarConfiguration,  'textureempty')" />
+<button onclick="handleFileButtonClickA('fileInput1', 1)">player speed</button>
+<input type="text" id="leftInput" oninput="editInputVariable2(this.value, 'speed'); updspeed()">
+<button onclick="handleFileButtonClickA('fileInput1', 1)">player nor speed</button>
+<input type="text" id="leftInput" oninput="editInputVariable2(this.value, 'norspeed'); updspeed()">
+<button onclick="handleFileButtonClickA('fileInput1', 1)">player backspeed</button>
+<input type="text" id="leftInput" oninput="editInputVariable2(this.value, 'backspeed'); updspeed()">
+<script>
+function updspeed(){
+  
+  speed=config.speed
+  normspeed=config.speed
+}
+
+// Funkcja do aktualizacji zmiennej
+function editInputVariable(value, propertyName) {
+    // Aktualizuj odpowiednią właściwość obiektu config.HpBarConfiguration
+    if (config.HpBarConfiguration.hasOwnProperty(propertyName)) {
+        config.HpBarConfiguration[propertyName] = value;
+      //  alert("Zaktualizowana wartość:", propertyName, "=", value);
+    } else {
+        console.error("Nieprawidłowa nazwa właściwości:", propertyName);
+    }
+}
+
+function editInputVariable2(value, propertyName) {
+    // Aktualizuj właściwość obiektu config na podstawie nazwy właściwości
+    if (config.hasOwnProperty(propertyName)) {
+        config[propertyName] = value;
+    } else {
+        console.error("Nieprawidłowa nazwa właściwości:", propertyName);
+    }
+}
+</script>
+
+
+
+
+
 <script>
 let fgh=0
 function togglemenu(){
@@ -3666,9 +4537,9 @@ function toggleVS() {
 how entity code work
 
 "make9":[2,"null",4,3,0,0,[0,0,999999,999999],false,[[0,3],[0,-3]],0,0,0,".player",1]
-"class/tag":[speed,movement('','move','avoid','follow'),distance-to-player(blocks),randommove(1/0), collisionblockforplayer like collisionblocks,Enemy HP,[x,y,x2,y2],false,if 'move'=[[0,3],[0,-3]],hurtblocklikespike, scrip doesn't work if enemy is not visible,give score,custom sprites collision for attack def='player',anable custom sprite collision]
+"class/tag":[speed,movement('','move','avoid','follow'),distance-to-player(blocks),randommove(1/0), collisionblockforplayer like collisionblocks,Enemy HP,[x,y,x2,y2],false,if 'move'=[[0,3],[0,-3]],hurtblocklikespike, scrip doesn't work if enemy is not visible,give score,custom sprites collision for attack def='player',anable custom sprite collision,collisionwithotherblocks,deletewhencustommoveended]
 
-speed, movementType, distance, randomMovement, collision, initialHp, area, deletebool,arena,hurt,vi,score1,collisionobject=".player",detectanabled
+speed, movementType, distance, randomMovement, collision, initialHp, area, deletebool,arena,hurt,vi,score1,collisionobject="player",detectanabled,collisionwithotherblocks,deletewhencustommoveended
 
  1. <span style="color: #00FF00;">**Zmienna (Line):**</span>
  - <span style="color: #00FF00;">**Składnia:**</span> `l nazwa_zmiennej wartość`
@@ -4390,6 +5261,34 @@ else if (trimmedLine.startsWith("chblock")) {
                     const [_, input,texture] = match;
                     TILES[input][2]=TILES[texture][2]
                   }
+                }else if (trimmedLine.startsWith("bgtexture")) {
+                  const match = trimmedLine.match(/texture\s+(\w+)/);
+                  if (match) {
+                    const [_, texture] = match;
+                    document.getElementById('content').style.backgroundImage= `url('${TILES[texture][2]}')`
+                    
+                    
+                    if (!('stickybg1' in config)) {
+                      // Jeśli klucz nie istnieje, dodaj go z domyślną wartością
+                      config['stickybg1'] = 0;
+                    } else {
+                    
+                    }
+                    
+                    if (config.stickybg1 == 0) {
+                      document.getElementById('content').style.backgroundImage= `url('${TILES[texture][2]}')`
+                    
+                      document.getElementById('content2').style.backgroundImage= ``
+                    
+                      
+                    } else {
+                      document.getElementById('content2').style.backgroundImage= `url('${TILES[texture][2]}')`
+                    
+                      document.getElementById('content').style.backgroundImage= ``
+                    
+                    }
+                    
+                  }
                 }
                 highlightLine(lineNumber);
               /*  if (!nospeed2lines) {
@@ -5057,7 +5956,7 @@ var jumpElement = document.getElementById('Jump');
 if (jumpElement) {
   jumpElement.addEventListener('touchstart', function(event) {
     event.preventDefault(); // Prevent default behavior
-    jump2();
+    jump2(event);
   });
 }
 
@@ -5143,7 +6042,7 @@ var jumpElement = document.getElementById('Jump');
 if (jumpElement) {
   jumpElement.addEventListener('touchstart', function(event) {
     event.preventDefault(); // Prevent default behavior
-    jump2();
+    jump2(event);
   });
 }
 
@@ -5200,7 +6099,7 @@ if (atackelement) {
         }
 
         function dodajObslugeUsuwanie(element) {
-            element.addEventListener('click',
+            element.addEventListener('touchstart',
             function(){usunelgui(element)}
             );
         }
@@ -5417,13 +6316,7 @@ emitParticles()
     }
 
     button {
-      background-color: #4CAF50;
-      color: white;
-      border: none;
-      padding: 10px 15px;
-      border-radius: 5px;
-      cursor: pointer;
-      font-size: 14px;
+      
     }
 
     button:hover {
@@ -5439,25 +6332,23 @@ emitParticles()
     var example=config
     const editorContainer = document.getElementById('editor');
 
+for (const key in example) {
+    const namr = document.createElement('div');
+    namr.style.color = "black";
+    namr.innerText = key;
+    editorContainer.appendChild(namr);
 
-    for (const key in example) {
-const namr = document.createElement('div');
-namr.style.color="black"
-namr.innerText=key
-      editorContainer.appendChild(namr)
-      if (typeof example[key] === 'number') {
+    if (typeof example[key] === 'number') {
         const inputContainer = document.createElement('div');
         inputContainer.className = 'button-container';
 
         const addButton = document.createElement('button');
         addButton.innerText = '+';
         addButton.addEventListener('touchmove', () => {
-          example[key]++;
-          inputElement.value = example[key];
+            updateConfig(key, '+');
         });
-        addButton.addEventListener('click', () => {
-          example[key]++;
-          inputElement.value = example[key];
+        addButton.addEventListener('touchstart', () => {
+            updateConfig(key, '+');
         });
         inputContainer.appendChild(addButton);
 
@@ -5465,32 +6356,43 @@ namr.innerText=key
         inputElement.type = 'number';
         inputElement.value = example[key];
         inputElement.addEventListener('change', (event) => {
-          example[key] = parseFloat(event.target.value);
+            updateConfig(key, parseFloat(event.target.value));
         });
         inputContainer.appendChild(inputElement);
 
         const minusButton = document.createElement('button');
         minusButton.innerText = '-';
         minusButton.addEventListener('touchmove', () => {
-          example[key]--;
-          inputElement.value = example[key];
+            updateConfig(key, '-');
         });
-        minusButton.addEventListener('click', () => {
-          example[key]--;
-          inputElement.value = example[key];
+        minusButton.addEventListener('touchstart', () => {
+            updateConfig(key, '-');
         });
         inputContainer.appendChild(minusButton);
 
         editorContainer.appendChild(inputContainer);
-      } else if (Array.isArray(example[key]) || typeof example[key] === 'string') {
+    } else if (Array.isArray(example[key]) || typeof example[key] === 'string') {
         const textareaElement = document.createElement('textarea');
         textareaElement.value = example[key];
         textareaElement.addEventListener('change', (event) => {
-          example[key] = event.target.value;
+            updateConfig(key, event.target.value);
         });
         editorContainer.appendChild(textareaElement);
-      }
     }
+}
+
+function updateConfig(key, value) {
+    if (typeof value === 'string' || Array.isArray(value)) {
+        config[key] = value;
+    } else if (value === '+') {
+        config[key]++;
+    } else if (value === '-') {
+        config[key]--;
+    } else if (!isNaN(value)) {
+        config[key] = value;
+    }
+}
+
   </script>
   
 
@@ -5632,8 +6534,9 @@ tileSize = config.tilesize; // Rozmiar pojedynczego kafelk
 cfigZ = config.zoomoff;
 vp = document.getElementById("viewport");
 vp.style.zoom = cfigZ * config.zoomadd;
-
-//alert((config));
+document.querySelector('#content2').style.width = vp.style.width
+document.querySelector('#content2').style.height = vp.style.height
+document.querySelector('#content2').style.zoom = vp.style.zoom
 }
 
 
@@ -5662,8 +6565,8 @@ if(isgamepaused==0){
  gravity = gravity2
   config.sidescroll = sidescroll2
   document.querySelector('gui').innerHTML = agnstgui
-  playerY=backplayerY
-  playerX=backplayerX
+/*  playerY=backplayerY
+  playerX=backplayerX*/
   updateViewport()
   ukonczoneGUI()
 
