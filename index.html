@@ -70,7 +70,7 @@ root:
 <script>
   function loadtestgame(){
 
-  var gccpath='./defaul (Robot).json'
+  var gccpath='./robot2.0.data'
 setTimeout(function (){
   fetch(gccpath)
     .then(response => response.text())
@@ -81,7 +81,7 @@ setTimeout(function (){
     );
 },1000)
  }
- // loadtestgame()
+  
 </script>
 
 <script>
@@ -1141,10 +1141,13 @@ function updateViewport() {
   const scrollTop = viewport.scrollTop;
   const { numVisibleTilesX, numVisibleTilesY } = calculateVisibleTiles();
 
-  const startTileX = Math.floor(scrollLeft / tileSize)-3;
-  const startTileY = Math.floor(scrollTop / tileSize)-3;
-  const endTileX = startTileX + numVisibleTilesX+1;
-  const endTileY = startTileY + numVisibleTilesY+1
+  const startTileX = Math.floor(scrollLeft / tileSize) - 3;
+  const startTileY = Math.floor(scrollTop / tileSize) - 3;
+  const endTileX = startTileX + numVisibleTilesX + 3;
+  const endTileY = startTileY + numVisibleTilesY + 1
+  
+
+
 
 const fragment = document.createDocumentFragment();
 
@@ -1482,7 +1485,7 @@ function moveTilesRandomly() {
         
         
         
-        var [speed, movementType, distance, randomMovement, collision, initialHp, area, deletebool,arena,hurt,vi,score1,collisionobject="player",detectanabled,collisionwithotherblocks,deletewhencustommoveended,anableshootingattackforentities,collectable,spawnpoint,cantbedamaged,teleportBy,movetilesdeffacted] = tileConfig[tileId];
+        var [speed, movementType, distance, randomMovement, collision, initialHp, area, deletebool,arena,hurt,vi,score1,collisionobject="player",detectanabled,collisionwithotherblocks,deletewhencustommoveended,anableshootingattackforentities,collectable,spawnpoint,cantbedamaged,teleportBy,movetilesdeffacted,spawn,despawn,oneDirectionFollow,changeLoopMusicMain,changeLoopMusic] = tileConfig[tileId];
         
 
 //console.log(JSON.stringify(tileConfig[tileId]))
@@ -1494,19 +1497,67 @@ function moveTilesRandomly() {
 tiles.forEach((tile) => {
   var closestIndex = 0;
   var closestDistance; // Zmienna closestDistance musi być zdefiniowana
+  
     var targetToX=playerX;
     var targetToY=playerY;
     var shootingTargettargetToX=-100;
     var shootingTargettargetToY=-100;
+    
     const viewport = document.getElementById('viewport');
-    
-    
+              let left = parseFloat(tile.style.left) || 0;
+              let top = parseFloat(tile.style.top) || 0;
+              
+              if (despawn!==undefined&&despawn!==null) {
+                if (!tile.dataset.despawn) {
+                  tile.dataset.despawn = despawn
+                }
+                tile.dataset.despawn--;
+                if (tile.dataset.despawn < 1) {
+                  deletedtiles.push(tile);
+                  tile.remove()
+                }
+              }
+               if(spawn!==undefined&&spawn!==null){
+    if (!tile.dataset.spawnduration) {
+      tile.dataset.spawnduration = spawn[0];
+    }
+    if (!tile.dataset.currentdurationtime) {
+      tile.dataset.currentdurationtime = spawn[0];
+    }}
     if (document.getElementsByClassName(collisionobject).length > 0) {
         gototarget = document.getElementsByClassName(collisionobject)[closestIndex];
         targetToX = parseInt(gototarget.style.left) / tileSize;
         targetToY = parseInt(gototarget.style.top) / tileSize;
         
     }
+ if(spawn!==undefined&&spawn!==null){
+   let duration = tile.dataset.spawnduration
+   let counting = tile.dataset.currentdurationtime 
+   let element = spawn[1]
+   tile.dataset.currentdurationtime --
+   if(tile.dataset.currentdurationtime  < 1){
+     tile.dataset.currentdurationtime = duration
+     let el= document.createElement('div')
+     let x=left
+     let y=top
+    let elm=parseInt(element)
+    
+     el.className = `alltiles${TILES[elm][1]} tile1 sprite${TILES[elm][1]}`;
+     
+     el.style.backgroundImage = `url('${TILES[elm][2]}')`;
+       
+       el.style.left = x+"px"
+       el.style.top = y+"px"
+       el.classList.add('SPRITE')
+       // tile.style.willChange = 'transform';
+       el.style.width = tileSize - parseInt(el.style.width / 2) + "px"
+       el.style.height = tileSize - parseInt(el.style.height / 2) + "px"
+       //alert(TILES[elm][1]+' '+TILES[elm][2])
+       document.querySelector('#Econtent').appendChild(el);
+     }
+   }
+ 
+    
 if(anableshootingattackforentities==1){
         //  alert("shooting anabled")
           let gototarget = findClosestProjetitle(tile, collisionobject);
@@ -1530,8 +1581,7 @@ if(anableshootingattackforentities==1){
           }
           const tileRect = tile.getBoundingClientRect();
           const viewportRect = viewport.getBoundingClientRect();
-          let left = parseFloat(tile.style.left) || 0;
-          let top = parseFloat(tile.style.top) || 0;
+
           if (!tile.dataset.hp) {
             tile.dataset.hp = initialHp;
           }
@@ -1551,10 +1601,65 @@ if(anableshootingattackforentities==1){
                   config.spawnY=top / tileSize
                 }
                 if (teleportBy !==undefined&& teleportBy!==null&& teleportBy!==""&& teleportBy!==0) {
-                  playerX=(left / tileSize)+teleportBy[0]
-                  playerX=(top / tileSize)+teleportBy[1]
+                  movePlayer(parseInt(teleportBy[1]),parseInt(teleportBy[0]))
+                  
                   requestAnimationFrame(updateViewport)
                 }
+                
+
+
+if(changeLoopMusic!==undefined&&changeLoopMusic!==null){
+if (audioInstance) {
+// Jeżeli istnieje istniejący odtwarzacz audio, zatrzymaj go
+audioInstance.pause();
+audioInstance.currentTime = 0;
+audioInstance = null;
+}
+
+if (changeLoopMusic !== '') {
+const base64Wav = changeLoopMusic;
+
+// Utwórz nowy odtwarzacz audio
+audioInstance = new Audio();
+audioInstance.src = base64Wav;
+audioInstance.setAttribute('preload', 'auto');
+
+// Dodaj odtwarzacz do dokumentu
+document.body.appendChild(audioInstance);
+
+// Odtwórz plik audio WAV
+audioInstance.play();
+audioInstance.loop = true;
+toonce = 0;
+}}else if(changeLoopMusicMain==1){
+  if (audioInstance) {
+  // Jeżeli istnieje istniejący odtwarzacz audio, zatrzymaj go
+  audioInstance.pause();
+  audioInstance.currentTime = 0;
+  audioInstance = null;
+}
+
+if (config.music !== '') {
+  const base64Wav = config.music;
+
+  // Utwórz nowy odtwarzacz audio
+  audioInstance = new Audio();
+  audioInstance.src = base64Wav;
+  audioInstance.setAttribute('preload', 'auto');
+
+  // Dodaj odtwarzacz do dokumentu
+  document.body.appendChild(audioInstance);
+
+  // Odtwórz plik audio WAV
+  audioInstance.play();
+  audioInstance.loop = true;
+  toonce = 0;
+}
+}
+
+
+
+
                 }
                 
                 
@@ -1570,7 +1675,7 @@ if(collectable!==1&&collectable!==undefined){
                 if(collectable!==1){
                 if (attack === 1 && distanceToPlayer <= 1 || distanceToProjectile <= 1) {
                   //alert("")
-                  if(cantbedamaged!==1||cantbedamaged==undefined){
+                  if(cantbedamaged!==1||cantbedamaged==undefined||cantbedamaged==null){
                   // Player attacks entity, decrement HP
                   tile.dataset.hp -= 1;
                  // console.log(tile.dataset.hp);
@@ -1599,7 +1704,7 @@ if(config.folder!==undefined){
 
                     deletedtiles.push(tile);
 
-if(movetilesdeffacted!==undefined){
+if(movetilesdeffacted!==undefined&&movetilesdeffacted!==null){
   movemap(movetilesdeffacted[1],movetilesdeffacted[2],movetilesdeffacted[0]);
 }
                     if (score1 == 1) {
@@ -1714,7 +1819,19 @@ if(gravity==0){
           // Check if the tile is within the viewport element
           
           if(vi==1){
-            
+            const offset = 700; // odległość w pikselach od krawędzi viewporta
+
+if (
+    tileRect.top + 2 * tileSize + offset >= viewportRect.top &&
+    tileRect.left + 2 * tileSize + offset >= viewportRect.left &&
+    tileRect.bottom - 2 * tileSize - offset <= viewportRect.bottom &&
+    tileRect.right - 2 * tileSize - offset <= viewportRect.right
+) {
+    // Tile jest w widoku
+} else {
+tile.remove()
+}
+
           if (
             tileRect.top+2*tileSize >= viewportRect.top &&
             tileRect.left +2*tileSize  >= viewportRect.left&&
@@ -1822,7 +1939,7 @@ if (randomMovement === 3 && movementType === 'move') {
     let firstY = tile.dataset.firstY ? parseFloat(tile.dataset.firstY) : 0;
 
 let one=0
-if (tile.dataset.firstY !== 0&&tile.dataset.firstY !== undefined) {
+if (tile.dataset.firstY !== 0&&tile.dataset.firstY !== undefined&&tile.dataset.firstY !== null) {
   one = 1
 }
 if(one==0){
@@ -1904,9 +2021,20 @@ if (currentPositionIndex >= arena.lenght ) {
                 tile.style.top = top + "px";
 
                 // Change direction randomly after a certain time
-                if (Math.random() < 0.1) { // Adjust the probability as needed
+                if(oneDirectionFollow==1){
+                if((tile.dataset.oneDirectionFollow2)){
+                  tile.dataset.oneDirectionFollow2=0
+                }else{
+                  tile.dataset.oneDirectionFollow2=1
+                }
+                }else{
+                  tile.dataset.oneDirectionFollow2=1
+                }
+                // Math.random() < 0.5
+                if (tile.dataset.oneDirectionFollow2==1) { // Adjust the probability as needed
                     tile.dataset.direction = Math.atan2(targetToY - top / tileSize, targetToX - left / tileSize) * (180 / Math.PI);
                 }
+                
             } else {
                 // Tile is outside the specified area, move towards the edge of the area
                // console.log(JSON.stringify(tileConfig[tileId]))
@@ -1934,7 +2062,10 @@ if (deletebool == true) {
   // Entity is defeated, remove the tile
   tile.remove();
 }
-            }}}
+            }}}else{
+              
+              
+            }
         });
     }}
 
@@ -2528,7 +2659,7 @@ hpBarContainer.style.bottom=HpbarConfig.bottom+"%"
 // Przykładowe użycie
 var currentHp = 0; // Aktualne życie
 
-
+let hurtdelayed=0
 // Kod, który zabija gracza
 const limitIteracji = 50;
 var classicspeed = config.norspeed;
@@ -2564,13 +2695,39 @@ function checkit() {
                       
                         playerY = config.spawnY;
                         playerX = config.spawnX;
+                        if (audioInstance) {
+                          // Jeżeli istnieje istniejący odtwarzacz audio, zatrzymaj go
+                          audioInstance.pause();
+                          audioInstance.currentTime = 0;
+                          audioInstance = null;
+                        }
+                        
+                        if (config.music !== '') {
+                          const base64Wav = config.music;
+                        
+                          // Utwórz nowy odtwarzacz audio
+                          audioInstance = new Audio();
+                          audioInstance.src = base64Wav;
+                          audioInstance.setAttribute('preload', 'auto');
+                        
+                          // Dodaj odtwarzacz do dokumentu
+                          document.body.appendChild(audioInstance);
+                        
+                          // Odtwórz plik audio WAV
+                          audioInstance.play();
+                          audioInstance.loop = true;
+                          toonce = 0;
+                        }
                         config.HpBarConfiguration.numberHP=config.HpBarConfiguration.maxHp
-                        updateViewport();
+                        setTimeout(updateViewport,50)
+                        setTimeout(updateViewport,20)
                     }
 if(HpbarConfig.Work==true){
                 }else{
                       playerY = config.spawnY;
                       playerX = config.spawnX;
+                      setTimeout(updateViewport, 50)
+                      setTimeout(updateViewport, 20)
                     }
 updateHpBar(config.HpBarConfiguration.numberHp);
                     // Wywołaj funkcję aktualizującą widok
@@ -2585,7 +2742,31 @@ updateHpBar(config.HpBarConfiguration.numberHp);
                 }else{
                   playerY = config.spawnY;
                   playerX = config.spawnX;
-                  updateViewport();
+                  if (audioInstance) {
+                    // Jeżeli istnieje istniejący odtwarzacz audio, zatrzymaj go
+                    audioInstance.pause();
+                    audioInstance.currentTime = 0;
+                    audioInstance = null;
+                  }
+                  
+                  if (config.music !== '') {
+                    const base64Wav = config.music;
+                  
+                    // Utwórz nowy odtwarzacz audio
+                    audioInstance = new Audio();
+                    audioInstance.src = base64Wav;
+                    audioInstance.setAttribute('preload', 'auto');
+                  
+                    // Dodaj odtwarzacz do dokumentu
+                    document.body.appendChild(audioInstance);
+                  
+                    // Odtwórz plik audio WAV
+                    audioInstance.play();
+                    audioInstance.loop = true;
+                    toonce = 0;
+                  }
+                  setTimeout(updateViewport, 50)
+                  setTimeout(updateViewport, 20)
                 }}
             }
         }
@@ -2683,8 +2864,27 @@ setTimeout(function(){
 var thix=0
 var thiy=0
 var blockspassed=0
-var updatevpifblockspassed=50
+var updatevpifblockspassed=60
+let by4=0
 function movePlayer(dx, dy) {
+  
+  const maxHistoryLength = 50;
+
+
+
+if(by4<3){
+  by4++;
+}else{
+  by4=0
+  // Add the current position to the history array
+  lastplayerpos.push({ x: playerX, y: playerY });
+
+  // Ensure the history array does not exceed the maximum length
+  if (lastplayerpos.length > maxHistoryLength) {
+    lastplayerpos.shift(); // Remove the oldest element
+  }
+}
+  
   blockspassed++;
   if (isScrolling && blockspassed > updatevpifblockspassed) {
     blockspassed = 0
@@ -2725,7 +2925,7 @@ function checkIfElementExited(player, viewport) {
 if(parseInt(viewport.style.zoom)){
   dzoom=parseInt(viewport.style.zoom)
 }
-  viewport.scrollTo((playerX * tileSize2) - viewportWidth / 2, (playerY * tileSize2) - viewportHeight / viewportHeight* viewportHeight/2*dzoom)
+  viewport.scrollTo((playerX * tileSize2) - viewportWidth /viewportWidth* viewportWidth/2*(dzoom+0.1), (playerY * tileSize2) - viewportHeight / viewportHeight* viewportHeight/2*(dzoom+0.1))
   
 }
 // Przykład użycia
@@ -2775,6 +2975,10 @@ rect1.left < rect2.right + 5) {
 */
 var collidingjump=0
 var collidingjump2=0
+
+
+
+
       function collision() {
         if( config.debugmode==0 && isgamepaused==0 ) {
         for(let i=0; i<2;i++){
@@ -2784,11 +2988,11 @@ var collidingjump2=0
           const wallThickness = 2;
           
           if (rect1.bottom > rect2.top + 5 &&
-            rect1.top < rect2.bottom - 10 &&
-            rect1.right + 5 > rect2.left + 5 &&
+            rect1.top < rect2.bottom - 5 &&
+            rect1.right > rect2.left + 5 &&
             rect1.left < rect2.right - 5) {
               
-            //  cofnijczas(2)
+            cofnijczas(1)
            // console.log("oh")
         //    collision()
         //    VelocityY = -0.01;
@@ -2813,38 +3017,7 @@ var collidingjump2=0
         speed=config.backspeed
             setTimeout(normspeed,1000)
           }
-          if (rect1.left +3< rect2.right + wallThickness && rect1.right > rect2.right && rect1.bottom > rect2.top  && rect1.top < rect2.bottom ) {
-
-            playerX += power*speed;
-
-            player.style.left = playerX * tileSize + 'px';
-            player.style.top = playerY * tileSize + 'px';
-
-            collide = 1
-            speed=config.backspeed
-            setTimeout(normspeed,1000)
-          }
-          if (
-              rect1.right > rect2.left - 3 &&
-              rect1.left < rect2.left &&
-              rect1.bottom > rect2.top &&
-              rect1.top < rect2.bottom
-            ) {
-
-
-
-            // blokuje poruszanie x
-            // lewa scianka 
-            playerX -= power * speed * 1.2;
-
-
-            player.style.left = playerX * tileSize + 'px';
-            player.style.top = playerY * tileSize + 'px';
-
-            collide = 1
-            speed = config.backspeed
-            setTimeout(normspeed, 1000)
-          }
+          
 if (rect1.bottom +6 > rect2.top - wallThickness && rect1.top < rect2.top -15&& rect1.right +2> rect2.left + wallThickness && rect1.left -2< rect2.right - wallThickness) {
 
 canJUMP=1
@@ -2862,6 +3035,38 @@ if(collidingjump2==0){
 }else{
   
   
+}
+if (rect1.left + 3 < rect2.right + wallThickness && rect1.right > rect2.right && rect1.bottom > rect2.top && rect1.top < rect2.bottom) {
+
+  playerX += power * speed;
+  canJUMP = 0
+  player.style.left = playerX * tileSize + 'px';
+  player.style.top = playerY * tileSize + 'px';
+
+  collide = 1
+  speed = config.backspeed
+  setTimeout(normspeed, 1000)
+}
+if (
+  rect1.right > rect2.left - 3 &&
+  rect1.left < rect2.left &&
+  rect1.bottom > rect2.top &&
+  rect1.top < rect2.bottom
+) {
+
+  canJUMP = 0
+
+  // blokuje poruszanie x
+  // lewa scianka 
+  playerX -= power * speed * 1.2;
+
+
+  player.style.left = playerX * tileSize + 'px';
+  player.style.top = playerY * tileSize + 'px';
+
+  collide = 1
+  speed = config.backspeed
+  setTimeout(normspeed, 1000)
 }
 if (rect1.bottom +3 > rect2.top - wallThickness && rect1.top+20 < rect2.top -5&& rect1.right +2> rect2.left + wallThickness && rect1.left -2< rect2.right - wallThickness) {
   gravityvelocity=1
@@ -3031,14 +3236,18 @@ function loop() {
       if(tlo2<3){
         tlo2+=1
       }else{
-        if(config.maxgravityvelocity){
+        console.log(config.maxgravityvelocity+' '+gravityvelocity+' : coljuml'+collidingjump)
+        if(config.maxgravityvelocity!==undefined){
       if(gravityvelocity<config.maxgravityvelocity){
 if(gravity==1&&collidingjump==0){
   
 gravityvelocity+=config.gravityvelocityspeed
+console.log(config.maxgravityvelocity)
 }
 tlo2=0
 }
+}else{
+  
 }}if(gravity==1&&collidingjump==0){
         movePlayer(0,config.gravitypower*gravityvelocity||0.10)}
     }
@@ -3158,7 +3367,7 @@ function upd10() {
 
   // Rest of your existing code
 }
-window.setInterval(upd10,1000)
+//window.setInterval(upd10,1000)
 // Add the cofnijczas function to rewind the player position
 function cofnijczas(ilerazycofnac) {
   for (let i = 0; i < ilerazycofnac; i++) {
@@ -3699,6 +3908,9 @@ function handleFileContent(textContent) {
   try {
    
     config = JSON.parse(textContent);
+    let tdt=JSON.parse(textContent)
+    playerY = tdt.spawnY;
+    playerX = tdt.spawnX;
     if(!(config.folder)){
       
     }
@@ -3753,8 +3965,8 @@ playerskin=playerskin69
     stop=1
     code = config.code;
     classicspeed = config.norspeed;
-    playerY = config.py;
-    playerX = config.px;
+    playerY = config.spawnY;
+    playerX = config.spawnX;
    setPlayer(config.px*tileSize,config.py*tileSize)
     speed = config.speed;
     playerskin = config.playerskin1;
@@ -3822,6 +4034,8 @@ vp.style.zoom = cfigZ*config.zoomadd;
 document.querySelector('#content2').style.width = vp.style.width
 document.querySelector('#content2').style.height = vp.style.height
 document.querySelector('#content2').style.zoom = vp.style.zoom
+
+setTimeout(edit,500)
     //alert((config));
   } catch (error) {
     console.error("Błąd podczas parsowania pliku JSON:", error);
@@ -3949,11 +4163,17 @@ var testexample={"examples":{"alltiles0":[0,"move/follow/avoid",0,3,0,1,[0,0,999
         for (let i = 0; i < optionNames.length; i++) {
             const optionValue = options[i] !== null ? options[i] : ''; // Check if value is null, if yes, show empty string
             const optionName = optionNames[i];
+            if(optionName!=="changeLoopMusic"){
             optionHTML += `<div class="option">
                                 <label>${optionName}</label>
                                 <input type="text" value="${optionValue}" data-index="${i}" data-entity="${entityName}" oninput="updateOption(this)">
                            </div>`;
-        }
+        }else{
+          optionHTML += `<div class="option">
+                                          <label>${optionName} <td style="color:red;" >'Music'</td> </label>
+                                          <input type="file" value="${optionValue}" data-index="${i}" data-entity="${entityName}" onchange="updateFileOption(this)">
+                                     </div>`;
+        }}
         optionHTML += `<button onclick="saveEntity('${entityName}')">save</button>`;
         document.getElementById('entities-container').innerHTML = optionHTML;
     }
@@ -3990,6 +4210,55 @@ var testexample={"examples":{"alltiles0":[0,"move/follow/avoid",0,3,0,1,[0,0,999
 }
 
 
+
+
+
+function updateFileOption(input) {
+  const entityName = input.getAttribute('data-entity');
+  const index = parseFloat(input.getAttribute('data-index'));
+  let newValue = input.value;
+
+const file = input.files[0];
+
+if (file) {
+  // Odczytaj zawartość pliku jako base64
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    const base64Wav = e.target.result;
+    config.entities[entityName][index] = base64Wav;
+   // alert(JSON.stringify(config.entities[entityName][index]))
+    document.querySelector("#entitiesconfig").innerText = JSON.stringify(config.entities);
+  }
+  reader.readAsDataURL(file);
+}
+}
+
+/*
+function updateFileOption(input) {
+  const entityName = input.getAttribute('data-entity');
+  const index = parseFloat(input.getAttribute('data-index'));
+  let newValue = input.value;
+
+const file = input.files[0];
+
+if (file) {
+  // Odczytaj zawartość pliku jako base64
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    const base64Wav = e.target.result;
+    config.entities[entityName][index] = base64Wav;
+    alert(JSON.stringify(config.entities[entityName][index] = newValue;))
+    document.querySelector("#entitiesconfig").innerText = JSON.stringify(config.entities);
+  }
+  reader.readAsDataURL(file);
+}
+}
+*/
+
+
+
+
+
     function saveEntity(entityName) {
         displayEntities();
     }
@@ -4022,7 +4291,12 @@ var testexample={"examples":{"alltiles0":[0,"move/follow/avoid",0,3,0,1,[0,0,999
             "SpawnPointBlock(1/0)",
             "CantBeDamaged(1/0)",
             "Teleport by([y,x])",
-            "Move Tiles when it is defaced by([(i...),y,x])"
+            "Move Tiles when it is defaced by([(i...),y,x])",
+            "spawn [duration,(i...)]",
+            "despawn ticks",
+            "goes 1 tick one direction good for projectiles :) (1)on else off",
+"changeLoopMusicTodefaul",
+            "changeLoopMusic"
         ];
     }
 
@@ -6328,73 +6602,81 @@ emitParticles()
 
   <div id="editor" class="d notaproject"></div>
 
-  <script>
-    var example=config
+<script>
+    var example = config;
     const editorContainer = document.getElementById('editor');
 
-for (const key in example) {
-    const namr = document.createElement('div');
-    namr.style.color = "black";
-    namr.innerText = key;
-    editorContainer.appendChild(namr);
+    function edit() {
+        editorContainer.innerHTML = '';
+        for (const key in example) {
+            const name = document.createElement('div');
+            name.style.color = "black";
+            name.innerText = key;
+            editorContainer.appendChild(name);
 
-    if (typeof example[key] === 'number') {
-        const inputContainer = document.createElement('div');
-        inputContainer.className = 'button-container';
+            if (typeof example[key] === 'number') {
+                const inputContainer = document.createElement('div');
+                inputContainer.className = 'button-container';
 
-        const addButton = document.createElement('button');
-        addButton.innerText = '+';
-        addButton.addEventListener('touchmove', () => {
-            updateConfig(key, '+');
-        });
-        addButton.addEventListener('touchstart', () => {
-            updateConfig(key, '+');
-        });
-        inputContainer.appendChild(addButton);
+                const addButton = document.createElement('button');
+                addButton.innerText = '+';
+                addButton.addEventListener('click', () => {
+                    updateConfig(key, '+');
+                });
+                inputContainer.appendChild(addButton);
 
-        const inputElement = document.createElement('input');
-        inputElement.type = 'number';
-        inputElement.value = example[key];
-        inputElement.addEventListener('change', (event) => {
-            updateConfig(key, parseFloat(event.target.value));
-        });
-        inputContainer.appendChild(inputElement);
+                const inputElement = document.createElement('input');
+                inputElement.type = 'number';
+                inputElement.value = example[key];
+                inputElement.addEventListener('change', (event) => {
+                    updateConfig(key, parseFloat(event.target.value));
+                });
+                inputContainer.appendChild(inputElement);
 
-        const minusButton = document.createElement('button');
-        minusButton.innerText = '-';
-        minusButton.addEventListener('touchmove', () => {
-            updateConfig(key, '-');
-        });
-        minusButton.addEventListener('touchstart', () => {
-            updateConfig(key, '-');
-        });
-        inputContainer.appendChild(minusButton);
+                const minusButton = document.createElement('button');
+                minusButton.innerText = '-';
+                minusButton.addEventListener('click', () => {
+                    updateConfig(key, '-');
+                });
+                inputContainer.appendChild(minusButton);
 
-        editorContainer.appendChild(inputContainer);
-    } else if (Array.isArray(example[key]) || typeof example[key] === 'string') {
-        const textareaElement = document.createElement('textarea');
-        textareaElement.value = example[key];
-        textareaElement.addEventListener('change', (event) => {
-            updateConfig(key, event.target.value);
-        });
-        editorContainer.appendChild(textareaElement);
+                editorContainer.appendChild(inputContainer);
+            } else if (typeof example[key] === 'boolean') {
+                const checkboxElement = document.createElement('input');
+                checkboxElement.type = 'checkbox';
+                checkboxElement.checked = example[key];
+                checkboxElement.addEventListener('change', (event) => {
+                    updateConfig(key, event.target.checked);
+                });
+                editorContainer.appendChild(checkboxElement);
+            } else if (Array.isArray(example[key]) || typeof example[key] === 'string') {
+                const textareaElement = document.createElement('textarea');
+                textareaElement.value = example[key];
+                textareaElement.addEventListener('change', (event) => {
+                    updateConfig(key, event.target.value);
+                });
+                editorContainer.appendChild(textareaElement);
+            }
+        }
     }
-}
 
-function updateConfig(key, value) {
-    if (typeof value === 'string' || Array.isArray(value)) {
-        config[key] = value;
-    } else if (value === '+') {
-        config[key]++;
-    } else if (value === '-') {
-        config[key]--;
-    } else if (!isNaN(value)) {
-        config[key] = value;
+    function updateConfig(key, value) {
+        if (typeof value === 'string' || Array.isArray(value)) {
+            config[key] = value;
+        } else if (value === '+') {
+            config[key]++;
+        } else if (value === '-') {
+            config[key]--;
+        } else if (!isNaN(value)) {
+            config[key] = value;
+        } else if (typeof value === 'boolean') {
+            config[key] = value;
+        }
     }
-}
 
-  </script>
-  
+    setTimeout(edit, 5000);
+</script>
+
 
 
 
