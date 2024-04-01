@@ -1,5 +1,7 @@
 
-
+<script>
+  let finishproject=1
+</script>
 <!-- 
 konfiguracje gracza:
 
@@ -1175,10 +1177,11 @@ let blockzindex=0
        blockzindex++
        const tile = document.createElement('div');
           if (tileType) {
+                          s = tileType[2];
             if (tileType[2] === 1) {
               tile.className = 'tile alltiles';
               treh = 0;
-              s = 0;
+
             } else {
               tile.className = `tile${parseFloat(tileType[2])} alltiles`;
 
@@ -1248,6 +1251,8 @@ const similarDeletedTile = deletedtiles.find((deletedTile) => {
           if (cty == 0) {
             tile.dataset.x = x;
             tile.dataset.y = y;
+            tile.dataset.startx = x;
+            tile.dataset.starty = y;
             tile.dataset.s = s;
             
             if(showlines==1){
@@ -1271,6 +1276,12 @@ const similarDeletedTile = deletedtiles.find((deletedTile) => {
       }
     
   }
+}
+if (!('deletedtiles' in config)) {
+  // Jeśli klucz nie istnieje, dodaj go z domyślną wartością
+  config['deletedtiles'] = [];
+} else {
+  
 }
 
 var elementGenerateAll="10"
@@ -1476,7 +1487,28 @@ function findClosestProjetitle(tile, collisionobject) {
 }
 
 
+/*
+// Zapisywanie zmiennych w localStorage
+const config = { px: playerX, py: playerY };
+localStorage.setItem('config', JSON.stringify(config));
 
+// Wywoływanie funkcji handleFileContent z zapisanym config
+handleFileContent(config);
+
+// Odczytanie zmiennych z localStorage, jeśli istnieją
+const savedConfig = JSON.parse(localStorage.getItem('config'));
+if (savedConfig) {
+    const playerX = savedConfig.px;
+    const playerY = savedConfig.py;
+}
+
+// Przycisk do czyszczenia wszystkich danych z localStorage
+const clearLocalStorageButton = document.getElementById('clearLocalStorageButton');
+clearLocalStorageButton.addEventListener('click', () => {
+    localStorage.clear();
+});
+
+*/
 // var load1=0
 function moveTilesRandomly() {
   if(stop==0){
@@ -1514,6 +1546,7 @@ tiles.forEach((tile) => {
                 tile.dataset.despawn--;
                 if (tile.dataset.despawn < 1) {
                   deletedtiles.push(tile);
+                  
                   tile.remove()
                 }
               }
@@ -1608,54 +1641,68 @@ if(anableshootingattackforentities==1){
                 
 
 
-if(changeLoopMusic!==undefined&&changeLoopMusic!==null){
-if (audioInstance) {
-// Jeżeli istnieje istniejący odtwarzacz audio, zatrzymaj go
-audioInstance.pause();
-audioInstance.currentTime = 0;
-audioInstance = null;
+if (changeLoopMusic !== undefined && changeLoopMusic !== null) {
+    if (audioInstance !== undefined) {
+        // Jeżeli istnieje istniejący odtwarzacz audio, zatrzymaj go
+        audioInstance.pause();
+        audioInstance.currentTime = 0;
+        audioInstance = null;
+    }
+
+    if (changeLoopMusic !== '') {
+        const base64Wav = changeLoopMusic;
+
+        // Utwórz nowy odtwarzacz audio
+        audioInstance = new Audio();
+        audioInstance.src = base64Wav;
+        audioInstance.setAttribute('preload', 'auto');
+
+        // Dodaj odtwarzacz do dokumentu
+        document.body.appendChild(audioInstance);
+
+        // Obsługa zdarzenia canplay
+        audioInstance.addEventListener('canplay', function() {
+            // Odtwórz plik audio WAV
+            audioInstance.play().catch(function(error) {
+                console.log("Błąd odtwarzania dźwięku:", error);
+            });
+        });
+
+        audioInstance.loop = true;
+        toonce = 0;
+    }
+} else if (changeLoopMusicMain == 1) {
+    if (audioInstance !== undefined) {
+        // Jeżeli istnieje istniejący odtwarzacz audio, zatrzymaj go
+        audioInstance.pause();
+        audioInstance.currentTime = 0;
+        audioInstance = null;
+    }
+
+    if (config.music !== '') {
+        const base64Wav = config.music;
+
+        // Utwórz nowy odtwarzacz audio
+        audioInstance = new Audio();
+        audioInstance.src = base64Wav;
+        audioInstance.setAttribute('preload', 'auto');
+
+        // Dodaj odtwarzacz do dokumentu
+        document.body.appendChild(audioInstance);
+
+        // Obsługa zdarzenia canplay
+        audioInstance.addEventListener('canplay', function() {
+            // Odtwórz plik audio WAV
+            audioInstance.play().catch(function(error) {
+                console.log("Błąd odtwarzania dźwięku:", error);
+            });
+        });
+
+        audioInstance.loop = true;
+        toonce = 0;
+    }
 }
 
-if (changeLoopMusic !== '') {
-const base64Wav = changeLoopMusic;
-
-// Utwórz nowy odtwarzacz audio
-audioInstance = new Audio();
-audioInstance.src = base64Wav;
-audioInstance.setAttribute('preload', 'auto');
-
-// Dodaj odtwarzacz do dokumentu
-document.body.appendChild(audioInstance);
-
-// Odtwórz plik audio WAV
-audioInstance.play();
-audioInstance.loop = true;
-toonce = 0;
-}}else if(changeLoopMusicMain==1){
-  if (audioInstance) {
-  // Jeżeli istnieje istniejący odtwarzacz audio, zatrzymaj go
-  audioInstance.pause();
-  audioInstance.currentTime = 0;
-  audioInstance = null;
-}
-
-if (config.music !== '') {
-  const base64Wav = config.music;
-
-  // Utwórz nowy odtwarzacz audio
-  audioInstance = new Audio();
-  audioInstance.src = base64Wav;
-  audioInstance.setAttribute('preload', 'auto');
-
-  // Dodaj odtwarzacz do dokumentu
-  document.body.appendChild(audioInstance);
-
-  // Odtwórz plik audio WAV
-  audioInstance.play();
-  audioInstance.loop = true;
-  toonce = 0;
-}
-}
 
 
 
@@ -1668,6 +1715,7 @@ if(collectable!==1&&collectable!==undefined){
       if (collecting === 1 && distanceToPlayer <= 2) {
       
         deletedtiles.push(tile);
+        
         tile.remove();
       }
     }
@@ -1703,6 +1751,29 @@ if(config.folder!==undefined){
                   if (tile.dataset.hp < 1) {
 
                     deletedtiles.push(tile);
+
+
+// Pobierz wartości dataset x, y i s dla bieżącego bloku
+const currentX = parseInt(tile.dataset.x)
+const currentY = parseInt(tile.dataset.y)
+const currentS = parseInt(tile.dataset.s)
+//alert(currentX+' '+currentY+' '+currentS)
+// Znajdź indeks bloku w tileMap[dimension] na podstawie dataset x, y i s
+const existingBlockIndex = tileMap[dimension].findIndex(block => 
+    parseInt(block[0]) === currentX && parseInt(block[1]) === currentY && parseInt(block[2]) === currentS
+);
+
+// Sprawdź, czy istnieje blok o danych współrzędnych
+if (existingBlockIndex !== -1) {
+    // Jeśli blok istnieje, usuń go z tileMap[dimension]
+   // alert(existingBlockIndex)
+    tileMap[dimension].splice(existingBlockIndex, 1);
+    if(finishproject==1){
+    config.savedTileMap[dimension].splice(existingBlockIndex, 1);
+    }
+}
+
+
 
 if(movetilesdeffacted!==undefined&&movetilesdeffacted!==null){
   movemap(movetilesdeffacted[1],movetilesdeffacted[2],movetilesdeffacted[0]);
@@ -3909,6 +3980,13 @@ function handleFileContent(textContent) {
    
     config = JSON.parse(textContent);
     let tdt=JSON.parse(textContent)
+    if (!('deletedtiles' in config)) {
+      // Jeśli klucz nie istnieje, dodaj go z domyślną wartością
+      config['deletedtiles'] = [];
+    } else {
+    //  deletedtiles=config.deletedtiles
+    //  alert(deletedtiles)
+    }
     playerY = tdt.spawnY;
     playerX = tdt.spawnX;
     if(!(config.folder)){
@@ -5553,13 +5631,13 @@ else if (trimmedLine.startsWith("chblock")) {
                       document.getElementById('content').style.backgroundImage= `url('${TILES[texture][2]}')`
                     
                       document.getElementById('content2').style.backgroundImage= ``
-                    
+                    config.bg=TILES[texture][2]
                       
                     } else {
                       document.getElementById('content2').style.backgroundImage= `url('${TILES[texture][2]}')`
                     
                       document.getElementById('content').style.backgroundImage= ``
-                    
+                    config.bg=TILES[texture][2]
                     }
                     
                   }
@@ -6720,6 +6798,7 @@ emitParticles()
 
 function restart(){
   config=config
+ deletedtiles=[]
   const playerskin69 = config.playerskin1
 //alert(playerskin69)
 document.querySelector('.player').style.background = `url(${playerskin69})`
