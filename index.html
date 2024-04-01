@@ -1721,8 +1721,8 @@ if(collectable!==1&&collectable!==undefined){
     }
                 
                 if(collectable!==1){
-                  if(attack === 1 && distanceToPlayer <= 1 || distanceToProjectile <= 1 && anableshootingattackforentities !==1){
-                    
+                  if(attack === 1 && distanceToPlayer <= 1 && anableshootingattackforentities !==1 ){
+if(cantbedamaged!==1||cantbedamaged==undefined||cantbedamaged==null){
                   // Player attacks entity, decrement HP
                   tile.dataset.hp -= 1;
 
@@ -1782,7 +1782,7 @@ if(movetilesdeffacted!==undefined&&movetilesdeffacted!==null){
                     // Entity is defeated, remove the tile
                     tile.remove();
                   }
-                
+                                      }
                   } else  if (attack === 1 &&  distanceToProjectile <= 1) {
                   //alert("")
                   if(cantbedamaged!==1||cantbedamaged==undefined||cantbedamaged==null){
