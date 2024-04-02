@@ -1510,6 +1510,8 @@ clearLocalStorageButton.addEventListener('click', () => {
 
 */
 // var load1=0
+var onece5 = 1
+var newtilemap=config.savedTileMap
 function moveTilesRandomly() {
   if(stop==0){
     for (let tileId in tileConfig) {
@@ -1713,7 +1715,35 @@ if (changeLoopMusic !== undefined && changeLoopMusic !== null) {
 if(collectable!==1&&collectable!==undefined){
     }else{
       if (collecting === 1 && distanceToPlayer <= 2) {
-      
+      // Pobierz wartości dataset x, y i s dla bieżącego bloku
+const currentX = parseInt(tile.dataset.x)
+const currentY = parseInt(tile.dataset.y)
+const currentS = parseInt(tile.dataset.s)
+//alert(currentX+" "+currentY+" "+currentS)
+//alert(currentX+' '+currentY+' '+currentS)
+// Znajdź indeks bloku w tileMap[dimension] na podstawie dataset x, y i s
+const existingBlockIndex = tileMap[dimension].findIndex(block => 
+    parseInt(block[0]) === currentX && parseInt(block[1]) === currentY && parseInt(block[2]) === currentS
+);
+
+setTimeout(function() {
+  if (onece5 == 1) {
+    if (finishproject == 1) {
+      onece5 = 0
+
+      if (existingBlockIndex !== -1) {
+        tileMap[dimension].splice(existingBlockIndex, 1);
+        config.savedTileMap=tileMap
+      }
+      setTimeout(function() {
+        onece5 = 1
+      }, 1000)
+
+    }
+  }
+}, 1000)
+
+
         deletedtiles.push(tile);
         
         tile.remove();
@@ -1745,28 +1775,36 @@ if(config.folder!==undefined){
   }}
                   if (tile.dataset.hp < 1) {
 
-                    deletedtiles.push(tile);
+                    
 
 
 // Pobierz wartości dataset x, y i s dla bieżącego bloku
 const currentX = parseInt(tile.dataset.x)
 const currentY = parseInt(tile.dataset.y)
 const currentS = parseInt(tile.dataset.s)
+//alert(currentX+" "+currentY+" "+currentS)
 //alert(currentX+' '+currentY+' '+currentS)
 // Znajdź indeks bloku w tileMap[dimension] na podstawie dataset x, y i s
 const existingBlockIndex = tileMap[dimension].findIndex(block => 
     parseInt(block[0]) === currentX && parseInt(block[1]) === currentY && parseInt(block[2]) === currentS
 );
 
-// Sprawdź, czy istnieje blok o danych współrzędnych
-if (existingBlockIndex !== -1) {
-    // Jeśli blok istnieje, usuń go z tileMap[dimension]
-   // alert(existingBlockIndex)
-    tileMap[dimension].splice(existingBlockIndex, 1);
-    if(finishproject==1){
-    config.savedTileMap[dimension].splice(existingBlockIndex, 1);
+setTimeout(function() {
+  if (onece5 == 1) {
+    if (finishproject == 1) {
+      onece5 = 0
+
+      if (existingBlockIndex !== -1) {
+        tileMap[dimension].splice(existingBlockIndex, 1);
+        config.savedTileMap=tileMap
+      }
+      setTimeout(function() {
+        onece5 = 1
+      }, 1000)
+
     }
-}
+  }
+}, 1000)
 
 
 
@@ -1781,6 +1819,7 @@ if(movetilesdeffacted!==undefined&&movetilesdeffacted!==null){
                     // Remove 
                     // Entity is defeated, remove the tile
                     tile.remove();
+                    deletedtiles.push(tile);
                   }
                                       }
                   } else  if (attack === 1 &&  distanceToProjectile <= 1) {
@@ -1812,29 +1851,50 @@ if(config.folder!==undefined){
   }}
                   if (tile.dataset.hp < 1) {
 
-                    deletedtiles.push(tile);
-
+                    
 
 // Pobierz wartości dataset x, y i s dla bieżącego bloku
 const currentX = parseInt(tile.dataset.x)
 const currentY = parseInt(tile.dataset.y)
 const currentS = parseInt(tile.dataset.s)
+//alert(currentX+" "+currentY+" "+currentS)
 //alert(currentX+' '+currentY+' '+currentS)
 // Znajdź indeks bloku w tileMap[dimension] na podstawie dataset x, y i s
 const existingBlockIndex = tileMap[dimension].findIndex(block => 
     parseInt(block[0]) === currentX && parseInt(block[1]) === currentY && parseInt(block[2]) === currentS
 );
 
+
+
+setTimeout(function() {
+  if (onece5 == 1) {
+    if (finishproject == 1) {
+      onece5 = 0
+
+      if (existingBlockIndex !== -1) {
+        tileMap[dimension].splice(existingBlockIndex, 1);
+        config.savedTileMap=tileMap
+      }
+      setTimeout(function() {
+        onece5 = 1
+      }, 1000)
+
+    }
+  }
+}, 1000)
+
+/*
 // Sprawdź, czy istnieje blok o danych współrzędnych
 if (existingBlockIndex !== -1) {
     // Jeśli blok istnieje, usuń go z tileMap[dimension]
    // alert(existingBlockIndex)
-    tileMap[dimension].splice(existingBlockIndex, 1);
+    alert(existingBlockIndex)
     if(finishproject==1){
-    config.savedTileMap[dimension].splice(existingBlockIndex, 1);
+      tileMap[dimension].splice(existingBlockIndex, 1);
+    
     }
 }
-
+*/
 
 
 if(movetilesdeffacted!==undefined&&movetilesdeffacted!==null){
@@ -1848,6 +1908,8 @@ if(movetilesdeffacted!==undefined&&movetilesdeffacted!==null){
                     // Remove 
                     // Entity is defeated, remove the tile
                     tile.remove();
+                    deletedtiles.push(tile);
+
                   }
                 }}
                   
@@ -3455,10 +3517,12 @@ function buildBlock(event) {
         } else {
           // Jeśli blok nie istnieje, dodaj nowy blok
           tileMap[dimension].push([currentX, currentY, item]); // Zakładając, że 1 reprezentuje blok, dostosuj, jeśli trzeba
+          newtilemap[dimension].push([currentX, currentY, item]); // Zakładając, że 1 reprezentuje blok, dostosuj, jeśli trzeba
         }
       } else {
         // Warstwy są włączone, dodaj blok bez usuwania
         tileMap[dimension].push([currentX, currentY, item]);
+        newtilemap[dimension].push([currentX, currentY, item]); // Zakładając, że 1 reprezentuje blok, dostosuj, jeśli trzeba
       }
     }
   }
@@ -4085,6 +4149,7 @@ document.querySelector('.player').style.background=`url(${playerskin69})`
 playerskin=playerskin69
     updateViewport() 
   setTimeout(function() {
+    newtilemap=config.savedTileMap
     if (config.DarknessEffect == 1) {
       let vp = document.getElementById("viewport")
       let el = document.createElement('div')
