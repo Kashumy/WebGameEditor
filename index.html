@@ -72,7 +72,7 @@ root:
 <script>
   function loadtestgame(){
 
-  var gccpath='./RWM.data'
+  var gccpath='./RWM2.js'
 setTimeout(function (){
   fetch(gccpath)
     .then(response => response.text())
@@ -448,6 +448,7 @@ config.blocks.push([TILES.length,1,"/ NAN.png"])
 config.code = code;
 config.debugmode=0
 config.testmode=0
+
 let code2=JSON.stringify(config)
       // Tworzymy obiekt Blob, który reprezentuje dane do zapisania
       let blob = new Blob([code2], { type: "text/plain" });
@@ -774,12 +775,15 @@ function changeTexture(index) {
 </style>
 <div id="container123212" class="notaproject  a hide2">
   <div  class="box0" onclick="add123212()"   >+</div>
-  <div id="value123212" class="box1"                      >entity alltiles</div>
+  <input type="number" id="value123212" oninput="DZ(this.value)" class="box1"                      >entity alltiles</input>
   <div class="box0" onclick="sub123212()"   >-</div>
 </div>
 <script>
 var isentity=2;
-  function add123212(){ if(isentity > -1 ){ isentity +=1; updt212()}}function sub123212(){if(isentity > 0 ){ isentity -=1 ; updt212()}}function updt212(){document.getElementById('value123212').innerText=isentity; updateViewport()}
+  function add123212(){ if(isentity > -1 ){ isentity +=1; updt212()}}function sub123212(){if(isentity > 0 ){ isentity -=1 ; updt212()}}function updt212(){document.getElementById('value123212').value=isentity; updateViewport()}
+  function DZ(data){
+    isentity=parseInt(data)
+  }
 </script>
 <div id="container12321" class="notaproject  a hide2">
   <div  class="box0" onclick="add12321()"   >+</div>
@@ -1006,6 +1010,8 @@ height: 10%
 const viewport = document.getElementById('viewport');
 const content = document.getElementById('content');
 var showlines=0
+Int8Array 
+let shiftFix=0
 content.style.backgroundSize=(config.bgsize)+"px"
 //alert(content.style.backgroundSize)
 var tileSize = config.tilesize; // Rozmiar pojedynczego kafelka
@@ -1519,7 +1525,7 @@ function moveTilesRandomly() {
         
         
         
-        var [speed, movementType, distance, randomMovement, collision, initialHp, area, deletebool,arena,hurt,vi,score1,collisionobject="player",detectanabled,collisionwithotherblocks,deletewhencustommoveended,anableshootingattackforentities,collectable,spawnpoint,cantbedamaged,teleportBy,movetilesdeffacted,spawn,despawn,oneDirectionFollow,changeLoopMusicMain,changeLoopMusic] = tileConfig[tileId];
+        var [speed, movementType, distance, randomMovement, collision, initialHp, area, deletebool,arena,hurt,vi,score1,collisionobject="player",detectanabled,collisionwithotherblocks,deletewhencustommoveended,anableshootingattackforentities,collectable,spawnpoint,cantbedamaged,teleportBy,movetilesdeffacted,spawn,despawn,oneDirectionFollow,changeLoopMusicMain,changeLoopMusic, abilities, noAttackfunction] = tileConfig[tileId];
         
 
 //console.log(JSON.stringify(tileConfig[tileId]))
@@ -1631,6 +1637,42 @@ if(anableshootingattackforentities==1){
                 }
                 let distanceToPlayer = Math.sqrt((targetToX - left / tileSize) ** 2 + (targetToY - top / tileSize) ** 2);
                 if(distanceToPlayer <= 1 ){
+                  if(shiftFix==0){
+                    
+                  if(abilities!==undefined&&abilities!==null){
+                    shiftFix=1
+                    if(abilities[0]==''){
+                      
+                    }else if (abilities[0] == 'maxhp') {
+                    if (abilities[2] == '+') {
+                      config.HpBarConfiguration.maxHp =parseInt(config.HpBarConfiguration.maxHp)+ parseInt(abilities[1])
+                     // alert(config.HpBarConfiguration.maxHp)
+                    } else if (abilities[2] == '-') {
+                      config.HpBarConfiguration.maxHp =parseInt(config.HpBarConfiguration.maxHp)- parseInt(abilities[1])
+                    } else {
+                      config.HpBarConfiguration.maxHp = abilities[1]
+                    }
+                    }else if (abilities[0] == 'airjump') {
+                      config.airjump = abilities[1]
+                    } else if (abilities[0] == 'hp') {
+                      if(abilities[2]=='+'){
+                        config.HpBarConfiguration.numberHp=parseInt(config.HpBarConfiguration.numberHp) + parseFloat(abilities[1])
+                        alert(config.HpBarConfiguration.numberHp)
+                      }else if (abilities[2] == '-') {
+                      config.HpBarConfiguration.numberHp=parseInt(config.HpBarConfiguration.numberHp) - parseInt(abilities[1])
+                      }else{
+                    config.HpBarConfiguration.numberHp=parseInt(abilities[1])
+                      }
+                      alert(config.HpBarConfiguration.numberHp)
+                    } else if (abilities[0] == 'shootingdelay') {
+                    
+                    } else if (abilities[0] == 'shoot') {
+                    config.playershoots=abilities[1]
+                    }}
+                    setTimeout(function(){
+                      shiftFix=0
+                    },3000)
+                  }
                 if(spawnpoint==1){
                   config.spawnX=left / tileSize
                   config.spawnY=(top / tileSize)-1
@@ -1704,9 +1746,6 @@ if (changeLoopMusic !== undefined && changeLoopMusic !== null) {
         toonce = 0;
     }
 }
-
-
-
 
 
                 }
@@ -2264,6 +2303,83 @@ if (deletebool == true) {
               
               
             }
+            
+            
+
+
+if(noAttackfunction==1&&distanceToPlayer <= 1 ){
+  if(cantbedamaged!==1||cantbedamaged==undefined||cantbedamaged==null){
+                  // Player attacks entity, decrement HP
+                  tile.dataset.hp -= 1;
+
+if(config.folder!==undefined){
+ // alert(config.folder.sounds.player[2])
+  if(config.folder.sounds.player[2]){
+  let newaudio;
+  const base64Wav = config.folder.sounds.player[2];
+  
+  // Utwórz nowy odtwarzacz audio
+  newaudio = new Audio();
+  newaudio.src = base64Wav;
+  newaudio.setAttribute('preload', 'auto');
+  
+  // Dodaj odtwarzacz do dokumentu
+  document.body.appendChild(newaudio);
+  
+  // Odtwórz plik audio WAV
+  newaudio.play();
+  }}
+                  if (tile.dataset.hp < 1) {
+
+                    
+
+
+// Pobierz wartości dataset x, y i s dla bieżącego bloku
+const currentX = parseInt(tile.dataset.x)
+const currentY = parseInt(tile.dataset.y)
+const currentS = parseInt(tile.dataset.s)
+//alert(currentX+" "+currentY+" "+currentS)
+//alert(currentX+' '+currentY+' '+currentS)
+// Znajdź indeks bloku w tileMap[dimension] na podstawie dataset x, y i s
+const existingBlockIndex = tileMap[dimension].findIndex(block => 
+    parseInt(block[0]) === currentX && parseInt(block[1]) === currentY && parseInt(block[2]) === currentS
+);
+
+setTimeout(function() {
+  if (onece5 == 1) {
+    if (finishproject == 1) {
+      onece5 = 0
+
+      if (existingBlockIndex !== -1) {
+        tileMap[dimension].splice(existingBlockIndex, 1);
+        config.savedTileMap=tileMap
+      }
+      setTimeout(function() {
+        onece5 = 1
+      }, 1000)
+
+    }
+  }
+}, 1000)
+
+
+
+if(movetilesdeffacted!==undefined&&movetilesdeffacted!==null){
+  movemap(movetilesdeffacted[1],movetilesdeffacted[2],movetilesdeffacted[0]);
+}
+                    if (score1 == 1) {
+                      score += 1
+                    } else {
+                      killed += 1;
+                    }
+                    // Remove 
+                    // Entity is defeated, remove the tile
+                    tile.remove();
+                    deletedtiles.push(tile);
+                  }
+                                      }
+}
+
         });
     }}
 
@@ -2301,6 +2417,10 @@ var cooldownActive = false;
 var cooldownDuration = 300; // Czas cooldownu w milisekundach
 
 function attack2() {
+  
+  
+  
+  
   if (!cooldownActive) {
     attack = 1;
     cooldownActive = true;
@@ -3041,6 +3161,8 @@ function jump2(event){
   
   // Odtwórz plik audio WAV
   newaudio.play();
+  airJump++
+ // alert(config.airjump)
   }
   }
 }
@@ -3466,8 +3588,13 @@ tlo2=0
     }, frameTime);
 }
 var isjumping=false;
+let airJump=0
 function jumping() {
+  if(config.airjump<=airJump){
     canJUMP = 0;
+    airJump=0
+  }else{
+  }
     isjumping=true
     gravity = 0;
     olderspeed = speed;
@@ -4113,7 +4240,14 @@ function handleFileContent(textContent) {
     //  deletedtiles=config.deletedtiles
     //  alert(deletedtiles)
     }
-    playerY = tdt.spawnY;
+    if (!('airjump' in config)) {
+      // Jeśli klucz nie istnieje, dodaj go z domyślną wartością
+      config['airjump'] = 0;
+    } else {
+      //  deletedtiles=config.deletedtiles
+      //  alert(deletedtiles)
+    }
+    playerY = tdt.spawnY-0.5;
     playerX = tdt.spawnX;
     if(!(config.folder)){
       
@@ -4219,6 +4353,7 @@ playerskin=playerskin69
     moveTilesRandomly()
     setTimeout(function(){
       curline=0
+      edit()
       currentLine=0
       generateAllTiles()
        candocmd = 1
@@ -4230,6 +4365,26 @@ playerskin=playerskin69
       stop=0
       RESET()
       displayEntities();
+      
+      
+//alert(config.bg)
+                    if (config.stickybg1 == 0) {
+                      document.getElementById('content').style.backgroundImage = `url('${config.bg}')`
+
+                      document.getElementById('content2').style.backgroundImage = ``
+                      
+
+                    } else {
+                      document.getElementById('content2').style.backgroundImage = `url('${config.bg}')`
+
+                      document.getElementById('content').style.backgroundImage = ``
+                      
+                    }
+                    
+                    
+                    
+
+
     },3000)
 //alert(content.style.backgroundSize)
  tileSize = config.tilesize; // Rozmiar pojedynczego kafelk
@@ -4240,7 +4395,7 @@ document.querySelector('#content2').style.width = vp.style.width
 document.querySelector('#content2').style.height = vp.style.height
 document.querySelector('#content2').style.zoom = vp.style.zoom
 
-setTimeout(edit,500)
+setTimeout(edit,5000)
     //alert((config));
   } catch (error) {
     console.error("Błąd podczas parsowania pliku JSON:", error);
@@ -4501,7 +4656,9 @@ if (file) {
             "despawn ticks",
             "goes 1 tick one direction good for projectiles :) (1)on else off",
 "changeLoopMusicTodefaul",
-            "changeLoopMusic"
+            "changeLoopMusic",
+            "ability ['config[optionName]',Value,'operator '+' '-' '=''] options: hp maxhp shoot airjump",
+            "noAttackfunction(1/0)"
         ];
     }
 
@@ -5758,12 +5915,14 @@ else if (trimmedLine.startsWith("chblock")) {
                       document.getElementById('content').style.backgroundImage= `url('${TILES[texture][2]}')`
                     
                       document.getElementById('content2').style.backgroundImage= ``
+                      bgimg=TILES[texture][2]
                     config.bg=TILES[texture][2]
                       
                     } else {
                       document.getElementById('content2').style.backgroundImage= `url('${TILES[texture][2]}')`
                     
                       document.getElementById('content').style.backgroundImage= ``
+                      bgimg=TILES[texture][2]
                     config.bg=TILES[texture][2]
                     }
                     
@@ -6861,6 +7020,12 @@ emitParticles()
                     updateConfig(key, event.target.value);
                 });
                 editorContainer.appendChild(textareaElement);
+            }else{
+const textareaElement = document.createElement('textarea');
+textareaElement.disabled='true'
+textareaElement.value = JSON.stringify(example[key])
+
+editorContainer.appendChild(textareaElement);
             }
         }
     }
@@ -7196,5 +7361,17 @@ if(isgamepaused==0){
 if(config.chrom==true){
   document.querySelector('#content').style.animation="glitch-effect 2s infinite"
   document.querySelector(':root').style.filter='url("#ca")'
+}
+
+
+
+
+
+if (!('airjump' in config)) {
+  // Jeśli klucz nie istnieje, dodaj go z domyślną wartością
+  config['airjump'] = 0;
+} else {
+  //  deletedtiles=config.deletedtiles
+  //  alert(deletedtiles)
 }
 </script>
