@@ -4344,6 +4344,7 @@ playerskin=playerskin69
     
     const contentElement = document.getElementById("content");
     document.querySelector('gui').innerHTML=config.guiHTML
+    bgimg=config.bg
    ukonczoneGUI()
     contentElement.style.backgroundImage = `url('${config.bg}')`;
     document.getElementById('Scontent').innerHTML=''
@@ -4812,6 +4813,9 @@ window.setInterval(updtd,6000)
 <input type="text" id="leftInput" oninput="editInputVariable2(this.value, 'norspeed'); updspeed()">
 <button onclick="handleFileButtonClickA('fileInput1', 1)">player backspeed</button>
 <input type="text" id="leftInput" oninput="editInputVariable2(this.value, 'backspeed'); updspeed()">
+
+	Wiecej informacji o Silniku na stronie 
+	<a href="https://github.com/Kashumy/WebGameEditor/">https://github.com/Kashumy/WebGameEditor</a>
 <script>
 function updspeed(){
   
