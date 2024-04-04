@@ -72,7 +72,7 @@ root:
 <script>
   function loadtestgame(){
 
-  var gccpath='./RWM2.js'
+  var gccpath='./RobotGame.js'
 setTimeout(function (){
   fetch(gccpath)
     .then(response => response.text())
@@ -761,21 +761,142 @@ function changeTexture(index) {
 </script>
 
 
+
+
+
+
+
+
+
+
+
+
+
+<style>
+  *{
+    margin:0;
+  }
+
+  .containerZ {
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    color:#FFFFFF;
+    background-color: #1F1F1F;
+    z-index: 99999999999999;
+    
+  }
+
+  .tile-info {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 40%;
+    height:100px;
+    border: 1px solid #ccc;
+    padding: 10px;
+  }
+
+  .tile-info img {
+    max-width: 150px;
+    max-height: 50px;
+    width:100%;
+    height: 100%;
+    display: block;
+    margin: 0 auto 10px; /* Centrowanie ikony */
+  }
+
+  .stats {
+    text-align: center;
+    overflow: hidden;
+    overflow: scroll;
+    height: 200px
+  }
+
+  .tile-details {
+    position: absolute;
+    top: 0px; /* Wysokość ikony + odstęp */
+    left: 0px; /* Szerokość statystyk + odstęp */
+    width: calc(100% - 40% - 50px); /* Pozostałe miejsce na stronie */
+    height: calc(100% - 25px);
+    border: 1px solid #ccc;
+    overflow: hidden;
+overflow: scroll;
+    padding: 10px;
+  }
+
+  .options {
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin-top: 120px; /* Wysokość ikony + statystyki + odstęp */
+    width: 40%;
+    height: calc(100vh - 145px) ;
+    border: 1px solid #ccc;
+    overflow: hidden;
+overflow: scroll;
+    padding: 10px;
+  }#ICON{
+    image-rendering: pixelated
+  }
+</style>
+</head>
+<body>
+<div class="containerZ hide2">
+  <div style="width:8px; height: 8px; background: red; color:white; padding :10px; position: absolute; right:0; top:0; z-index: 99" onclick="toggleVS()">
+    x
+  </div>
+  <div class="tile-info">
+    <img src="/watermark.gif" id="ICON" alt="Ikona kafelka">
+
+  </div>
+  <div class="tile-details">
+    <h2>Make Sprite</h2>
+  <input type="file" class="a hide2" accept="image/png/gif" id="imageInput" style="display: none;">
+  <button class="a hide2" id="addButton">add block <br></button>
+  
+  
+  
+    <input type="file" class="a hide2"  accept="image/png/gif" id="imageInput2" style="display: none;">
+  <button class="a hide2" id="addButton2">add deco <br></button>
+  
+        <input type="file" class="a hide2" accept="image/png/gif" id="imageInput5" style="display: none;">
+        <button class="a hide2" id="addButton5">add entity<br></button>
+        <input type="file" class="a hide2" accept="image/png/gif" id="imageInput6" style="display: none;">
+        <button class="a hide2"  id="addButton6">add projetitle (experiment doesn't work)<br></button>
+      <input type="file" class="a hide2"  id="imageInput3" style="display: none;">
+      <button class="a hide2"  id="addButton3">Change Player<br></button>
+  
+  
+      <input class="a hide2" type="file"  accept="image/png" id="imageInput4" style="display: none;">
+      <button class="a hide2" id="addButton4">change BG<br></button>
+      
+  </div>
+  <div class="options">
+    <div class="stats">
+      
+      
 <style>
   #container123212{
-    position: absolute; top:100px;left:10px;zoom:0.7
+    zoom:0.5;
+    float: left;
   }
   #container12321{
-    position: absolute; top:200px;left:10px;zoom:0.7
+    zoom:0.5;
+    float: left;
   }
   #container123211{
-    position: absolute; top:300px;left:10px;zoom:0.7
+    zoom:0.5;
+    float: left;
   }
   
 </style>
+
+
+ENTITY IDENTYFICATOR
 <div id="container123212" class="notaproject  a hide2">
   <div  class="box0" onclick="add123212()"   >+</div>
-  <input type="number" id="value123212" oninput="DZ(this.value)" class="box1"                      >entity alltiles</input>
+  <input type="number" id="value123212" oninput="DZ(this.value)" class="box1"></input>
   <div class="box0" onclick="sub123212()"   >-</div>
 </div>
 <script>
@@ -785,6 +906,8 @@ var isentity=2;
     isentity=parseInt(data)
   }
 </script>
+<br> <br> <br>
+block size
 <div id="container12321" class="notaproject  a hide2">
   <div  class="box0" onclick="add12321()"   >+</div>
   <div id="value12321" class="box1"                      >scale 1</div>
@@ -803,6 +926,21 @@ var thistilesize=1;
 var translateY=0;
   function add123211(){ if(true ){ translateY +=0.5; updt211()}}function sub123211(){if(true){ translateY -=0.5 ; updt211()}}function updt211(){document.getElementById('value123211').innerText=translateY; updateViewport()}
 </script>
+
+
+
+        </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
 
   <input type="file" class="a hide2" style="position: absolute ;top:calc(5% + 30px);left:20%;" accept="image/png/gif" id="imageInput" style="display: none;">
   <button class="a hide2" style="position: absolute ;top:calc(5% + 30px);left:20%;" id="addButton">Dodaj block <br></button>
@@ -1152,7 +1290,7 @@ function updateViewport() {
   const startTileX = Math.floor(scrollLeft / tileSize) - 3;
   const startTileY = Math.floor(scrollTop / tileSize) - 3;
   const endTileX = startTileX + numVisibleTilesX + 3;
-  const endTileY = startTileY + numVisibleTilesY + 1
+  const endTileY = startTileY + numVisibleTilesY + 3
   
 
 
@@ -1252,8 +1390,8 @@ const similarDeletedTile = deletedtiles.find((deletedTile) => {
           tile.classList.add('SPRITE')
           // tile.style.willChange = 'transform';
           
-          tile.style.width=tileSize-parseInt(tile.style.width/2)+"px"
-          tile.style.height=tileSize-parseInt(tile.style.height/2)+"px"
+          tile.style.width=tileSize-parseInt(tile.style.width/2)+0.01+"px"
+          tile.style.height=tileSize-parseInt(tile.style.height/2)+0.01+"px"
           if (cty == 0) {
             tile.dataset.x = x;
             tile.dataset.y = y;
@@ -1525,7 +1663,7 @@ function moveTilesRandomly() {
         
         
         
-        var [speed, movementType, distance, randomMovement, collision, initialHp, area, deletebool,arena,hurt,vi,score1,collisionobject="player",detectanabled,collisionwithotherblocks,deletewhencustommoveended,anableshootingattackforentities,collectable,spawnpoint,cantbedamaged,teleportBy,movetilesdeffacted,spawn,despawn,oneDirectionFollow,changeLoopMusicMain,changeLoopMusic, abilities, noAttackfunction] = tileConfig[tileId];
+        var [speed, movementType, distance, randomMovement, collision, initialHp, area, deletebool,arena,hurt,vi,score1,collisionobject="player",detectanabled,collisionwithotherblocks,deletewhencustommoveended,anableshootingattackforentities,collectable,spawnpoint,cantbedamaged,teleportBy,movetilesdeffacted,spawn,despawn,oneDirectionFollow,changeLoopMusicMain,changeLoopMusic, abilities, noAttackfunction, Respawn] = tileConfig[tileId];
         
 
 //console.log(JSON.stringify(tileConfig[tileId]))
@@ -3453,8 +3591,8 @@ function h(){
 }
 var by3=0
 let toto = 0;
-let defaultFps = 30;
-let targetFPS = 30;
+let defaultFps =23;
+let targetFPS = 23;
 let iindex = 0;
 let frameTime = 1000 / targetFPS;
 let gravityvelocity = 1
@@ -3906,6 +4044,9 @@ document.addEventListener('keydown', function(event) {
         case 'w':
             if (document.getElementById('Up')) {
                 upButtonDown = 1;
+}
+            if (document.getElementById('Jump')) {
+              jump2(event);
             }
             break;
         case 'a':
@@ -3928,7 +4069,7 @@ document.addEventListener('keydown', function(event) {
 attack2();
             }
             break;
-        case 'w':
+        case 'q':
             if (document.getElementById('Jump')) {
 jump2(event);
             }
@@ -4126,8 +4267,11 @@ function toggleLayers() {
 <hr>
 <div onclick="visibility('.menu2-content')" style="background: yellow">Code
 </div>
-<div onclick="toggleVS()" style="background: yellow">
+<div onclick="toggleVS()" style="background: deepskyblue">
 Visuals
+</div>
+<div onclick="togglemenu()" style="background: deepskyblue">
+  make entity Tiles (menu)
 </div>
 <div onclick="loadfile()" style="background: blue">
   LoadProjectFile
@@ -4233,6 +4377,8 @@ function handleFileContent(textContent) {
    
     config = JSON.parse(textContent);
     let tdt=JSON.parse(textContent)
+    canJUMP=0
+    gravity=config.gravity
     if (!('deletedtiles' in config)) {
       // Jeśli klucz nie istnieje, dodaj go z domyślną wartością
       config['deletedtiles'] = [];
@@ -4666,9 +4812,7 @@ if (file) {
     
 </script>
 
-<div onclick="togglemenu()">
- make entity Tiles (menu)
-</div>
+
 <div onclick="emptyproj()">
  makeEmptyProject (clearing Map,gravity,Blocks etc)
 </div>
@@ -4813,9 +4957,6 @@ window.setInterval(updtd,6000)
 <input type="text" id="leftInput" oninput="editInputVariable2(this.value, 'norspeed'); updspeed()">
 <button onclick="handleFileButtonClickA('fileInput1', 1)">player backspeed</button>
 <input type="text" id="leftInput" oninput="editInputVariable2(this.value, 'backspeed'); updspeed()">
-
-	Wiecej informacji o Silniku na stronie 
-	<a href="https://github.com/Kashumy/WebGameEditor/">https://github.com/Kashumy/WebGameEditor</a>
 <script>
 function updspeed(){
   
@@ -4995,7 +5136,7 @@ function visibility(element){
   document.querySelector(element).classList.toggle('hide')
 }
 function toggleVS() {
- var p =  document.querySelectorAll('.a')
+ var p =  document.querySelectorAll('.a,.containerZ')
  for(i=0; i<p.length; i++){
    p[i].classList.toggle('hide2')
  }
@@ -7185,6 +7326,22 @@ setTimeout(function() {
   jmptimes = 0
   stop = 0
   RESET()
+  
+                      if (config.stickybg1 == 0) {
+                      document.getElementById('content').style.backgroundImage = `url('${config.bg}')`
+
+                      document.getElementById('content2').style.backgroundImage = ``
+                      
+
+                    } else {
+                      document.getElementById('content2').style.backgroundImage = `url('${config.bg}')`
+
+                      document.getElementById('content').style.backgroundImage = ``
+                      
+                    }
+                    
+                    
+                    
 }, 3000)
 //alert(content.style.backgroundSize)
 tileSize = config.tilesize; // Rozmiar pojedynczego kafelk
