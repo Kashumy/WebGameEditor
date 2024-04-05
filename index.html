@@ -1,4 +1,10 @@
 
+
+<!-- bug fix -->
+
+
+
+
 <script>
   let finishproject=1
 </script>
@@ -1893,15 +1899,20 @@ if(collectable!==1&&collectable!==undefined){
     }else{
       if (collecting === 1 && distanceToPlayer <= 2) {
       // Pobierz wartości dataset x, y i s dla bieżącego bloku
+      
+      
+
 const currentX = parseInt(tile.dataset.x)
 const currentY = parseInt(tile.dataset.y)
 const currentS = parseInt(tile.dataset.s)
-//alert(currentX+" "+currentY+" "+currentS)
+alert(currentX+" "+currentY+" "+currentS)
 //alert(currentX+' '+currentY+' '+currentS)
 // Znajdź indeks bloku w tileMap[dimension] na podstawie dataset x, y i s
 const existingBlockIndex = tileMap[dimension].findIndex(block => 
     parseInt(block[0]) === currentX && parseInt(block[1]) === currentY && parseInt(block[2]) === currentS
 );
+
+
 
 setTimeout(function() {
   if (onece5 == 1) {
@@ -1921,9 +1932,19 @@ setTimeout(function() {
 }, 1000)
 
 
+
+
+
+      
+      setTimeout(function() {
         deletedtiles.push(tile);
+
+tile.remove();
+      }, 2000)
+
+
+
         
-        tile.remove();
       }
     }
                 
@@ -7555,3 +7576,5 @@ if (!('airjump' in config)) {
   //  alert(deletedtiles)
 }
 </script>
+
+
