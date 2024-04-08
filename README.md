@@ -3,10 +3,14 @@ https://kashumy.github.io/WebGameEditor/
  [Issues](https://github.com/Kashumy/WebGameEditor/issues)
 
   full release date 1.06🗓️/08
-- [ ] More FPS
-- [ ] No Bugs With Collisions
-- [ ] more Sprite Configurations
-- [ ] Better But more laggy experience
+- [ x] More FPS
+- [x ] No Bugs With Collisions
+- [ x] more Sprite Configurations
+- [ x] Better But more laggy experience
 - [ ] DogLogGL 
 
+currently making 
+- canvas game runner for this engine
+and
+- making apk
 
