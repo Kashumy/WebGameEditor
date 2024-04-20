@@ -1,4 +1,8 @@
 
+
+
+
+
 <script>
   let finishproject=1
   
@@ -4587,7 +4591,8 @@ function loadfile() {
   // Utwórz element input typu file
   const input = document.createElement('input');
   input.type = 'file';
-
+  let specialname2=".dl"
+input.accept=`${specialname2}`
   // Dodaj obsługę zdarzenia po wybraniu pliku
   input.addEventListener('change', function() {
     const file = input.files[0];
@@ -4609,15 +4614,17 @@ function loadfile() {
   // Wywołaj kliknięcie na element input
   input.click();
 }
-
+let tdt=0;
 function handleFileContent(textContent) {
   // Tutaj przetwarzaj zawartość pliku tekstowego
   // Możesz pozostawić resztę Twojego kodu, ale już bez konieczności przekształcania na base64
+  alert((textContent))
+config = JSON.parse(textContent);
 
   try {
    
     config = JSON.parse(textContent);
-    let tdt=JSON.parse(textContent)
+     tdt=JSON.parse(textContent)
     canJUMP=0
     gravity=config.gravity
     if (!('deletedtiles' in config)) {
@@ -4634,6 +4641,13 @@ function handleFileContent(textContent) {
       //  deletedtiles=config.deletedtiles
       //  alert(deletedtiles)
     }
+        if (!('folder' in config)) {
+  config['folder'] = {"texture":{"player":[],"projectile":[0,0]},"textures":{},"sounds":{"player":[],"ambients":[]},"script":{},"config":{}}
+} 
+if (!('playershoots' in config)) {
+  config['playershoots'] = 0
+}
+
     playerY = tdt.spawnY-0.5;
     playerX = tdt.spawnX;
     if(!(config.folder)){
@@ -4645,11 +4659,7 @@ function handleFileContent(textContent) {
     } else {
       
     }
-    if (!('projectile' in config.folder.texture)) {
-  // Jeśli klucz nie istnieje, dodaj go z domyślną wartością
-  config.folder.texture['projectile'] = [0,0];
-  
-}
+    
     if (config.stickybg1 == 0) {
       let content = document.getElementById('content');
       let content2 = document.getElementById('content2');
@@ -4780,9 +4790,10 @@ playerskin=playerskin69
     },3000)
 //alert(content.style.backgroundSize)
  tileSize = config.tilesize; // Rozmiar pojedynczego kafelk
- cfigZ = config.zoomoff;
+/* cfigZ = config.zoomoff;
  vp = document.getElementById("viewport");
-vp.style.zoom = cfigZ*config.zoomadd;
+vp.style.zoom = cfigZ*config.zoomadd;*/
+
 document.querySelector('#content2').style.width = vp.style.width
 document.querySelector('#content2').style.height = vp.style.height
 document.querySelector('#content2').style.zoom = vp.style.zoom
