@@ -85,7 +85,7 @@ root:
 <script>
   function loadtestgame(){
 
-  var gccpath='./robotwants2.dl'
+  var gccpath='./robotwants-bugfix1.dl'
 setTimeout(function (){
   fetch(gccpath)
     .then(response => response.text())
@@ -1094,8 +1094,8 @@ position: fixed;
   background-color: #00000080;
 }
 #viewport {
-  
-  overflow: auto;
+  touch-action: none;
+  overflow: hidden auto;
  transform: translate(-50%, -50%);
   top:50%;
   left:50%;
@@ -1174,7 +1174,8 @@ height: 10%
 const viewport = document.getElementById('viewport');
 const content = document.getElementById('content');
 var showlines=0
-Int8Array 
+Int32Array
+ImageBitmap
 let shiftFix=0
 content.style.backgroundSize=(config.bgsize)+"px"
 //alert(content.style.backgroundSize)
@@ -1711,6 +1712,30 @@ tiles.forEach((tile) => {
               let left = parseFloat(tile.style.left) || 0;
               let top = parseFloat(tile.style.top) || 0;
               
+              
+// Inicjalizacja najbliższego elementu i jego odległości
+var closestElement = null;
+var closestDistance = Infinity;
+
+// Przejście przez wszystkie elementy klasy collisionobject
+Array.from(document.getElementsByClassName(collisionobject)).forEach(element => {
+    // Obliczenie odległości od aktualnego elementu do gracza
+    var elementX = parseFloat(element.style.left) || 0;
+    var elementY = parseFloat(element.style.top) || 0;
+    var distance = Math.sqrt(Math.pow(elementX - left, 2) + Math.pow(elementY - top, 2));
+    
+    // Aktualizacja najbliższego elementu, jeśli odległość jest mniejsza
+    if (distance < closestDistance) {
+        closestElement = element;
+        closestDistance = distance;
+    }
+});
+
+// Ustawienie najbliższego indeksu na znaleziony element
+ closestIndex = Array.from(document.getElementsByClassName(collisionobject)).indexOf(closestElement);
+console.log(closestIndex)
+
+
               if (despawn!==undefined&&despawn!==null) {
                 if (!tile.dataset.despawn) {
                   tile.dataset.despawn = despawn
@@ -1962,11 +1987,11 @@ setTimeout(function() {
 
         setTimeout(function() {
           onece5 = 1;
-        }, 10);
+        }, 100);
       }
     }
   }
-}, 30);
+}, 300);
 
 
 
@@ -1978,7 +2003,7 @@ setTimeout(function() {
         deletedtiles.push(tile);
 
 tile.remove();
-      }, 20)
+      }, 100)
 
 
 
@@ -2626,13 +2651,13 @@ function attack2() {
   
   if (!('projetitlecfig' in config)) {
         // Jeśli klucz nie istnieje, dodaj go z domyślną wartością
-        config['projetitlecfig'] = {"timelife":30,"nomove":0,"speed":2,"cooldownDuration":500, "scale":1};
+        config['projetitlecfig'] = {"timelife":38,"nomove":0,"speed":1.7,"cooldownDuration":350, "scale":1};
     } else {
         cooldownDuration=config.projetitlecfig.cooldownDuration||0
     }
     
   
-  
+  // Odliczanie Cooldown'u                        >: ]
   if (!cooldownActive) {
     attack = 1;
     cooldownActive = true;
@@ -3810,6 +3835,12 @@ document.addEventListener('keyup', function(event) {
     }
     if (downButtonDown == 1) {
         movdown();
+        if(config.v>0&&config.v){
+if(config.folder){
+if(config.folder.texture.player[6]){
+document.querySelector('.player').style.background=`url(${config.folder.texture.player[6]})`
+}
+}}
     }
     if (leftButtonDown == 0 && upButtonDown == 0 && rightButtonDown == 0 && downButtonDown == 0 && isjumping == false) {
       if (playerskin) {
@@ -3821,6 +3852,13 @@ document.addEventListener('keyup', function(event) {
       if(config.folder){
       if (config.folder.texture.player[4]) {
         document.querySelector('.player').style.background = `url(${config.folder.texture.player[4]})`
+      }}}
+    }
+    if(ostclick=="down"){
+      if(config.v>0&&config.v){
+      if(config.folder){
+      if (config.folder.texture.player[7]) {
+        document.querySelector('.player').style.background = `url(${config.folder.texture.player[7]})`
       }}}
     }
     if(ostclick=="left"){
@@ -3892,7 +3930,15 @@ tlo2=0
 }else{
   
 }}if(gravity==1&&collidingjump==0){
-        movePlayer(0,config.gravitypower*gravityvelocity||0.10)}
+        movePlayer(0,config.gravitypower*gravityvelocity||0.10);
+          if(config.v>0&&config.v&& config.gravity==1){
+if(config.folder){
+if(config.folder.texture.player[6]){
+document.querySelector('.player').style.background=`url(${config.folder.texture.player[6]})`
+}
+}}
+  
+}
     }
 
 
@@ -4602,6 +4648,7 @@ function handleFileContent(textContent) {
     if (!('projectile' in config.folder.texture)) {
   // Jeśli klucz nie istnieje, dodaj go z domyślną wartością
   config.folder.texture['projectile'] = [0,0];
+  
 }
     if (config.stickybg1 == 0) {
       let content = document.getElementById('content');
@@ -5123,6 +5170,10 @@ window.setInterval(updtd,6000)
 <button onclick="handleFileButtonClickA('fileInput2', 5)">player stay Left</button>
 <input type="file" id="fileInput30" onchange="handleFileInputChangeA(event,config.folder.texture.player,  3)" />
 <button onclick="handleFileButtonClickA('fileInput3', 3)">player Jump</button>
+<input type="file" id="fileInput30" onchange="handleFileInputChangeA(event,config.folder.texture.player,  6)" />
+<button onclick="handleFileButtonClickA('fileInput2', 5)">player falldown or Player Top Down Down</button>
+<input type="file" id="fileInput30" onchange="handleFileInputChangeA(event,config.folder.texture.player,  7)" />
+<button onclick="handleFileButtonClickA('fileInput2', 7)">player last click Down</button>
 <input type="file" id="fileInput70" onchange="handleFileInputChangeA(event,config.folder.sounds.player,  0)" />
 <button onclick="handleFileButtonClickA('fileInput70', 3)">player Jump Sound</button>
 <input type="file" id="fileInput70" onchange="handleFileInputChangeA(event,config.folder.sounds.player,  1)" />
@@ -6376,13 +6427,14 @@ if(isgamepaused==0){
       if(candothath==0){
         candothath=1
         setTimeout(() => {
-          requestAnimationFrame(processNextLine);
+          processNextLine()
         }, frameTime);
     setTimeout(() => {
       
       candothath=0
       setTimeout(() => {
-        requestAnimationFrame(processNextLine);
+        processNextLine()
+        
       }, frameTime);
    
     }, config.Hz);
@@ -6407,7 +6459,7 @@ if(isgamepaused==0){
     function processWithTimeout(count, delay) {
     if (count > 0) {
         setTimeout(function() {
-            processNextLine();
+            requestAnimationFrame(processNextLine);
             processWithTimeout(count - 1, delay);
         }, delay);
     }
@@ -7762,3 +7814,9 @@ if (!('airjump' in config)) {
   //  alert(deletedtiles)
 }
 </script>
+<style>
+  * {
+    outline: none;
+}
+
+</style>
