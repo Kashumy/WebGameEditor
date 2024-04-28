@@ -1,5 +1,6 @@
 
 
+
 <script>
   let finishproject=1
   
@@ -703,11 +704,11 @@ Licence MiT
 
 <div class="f notaproject" style="position: fixed; width: 210px; height: calc(100vh - 5px) ; background: url('./box (3).png'); image-rendering: pixelated; background-size: 100% 100%; z-index: 0;overflow: hidden;right:0;
 white-space: pre-wrap; overflow : scroll;"><div onclick="toggleVS()" style="align-items: center; justify-content: center; width:30px;height:30px; background: url('./box (3).png'); background-size: 100%; color:lime;
-padding:0px; margin:-5px; display: inline-block; font-size:20px; position: absolute; left: 10px; top:16px"><d style="margin:-15px; position: absolute; top:0; left:0">+</d></div>
+padding:0px; margin:-5px; display: inline-block; font-size:20px; position: absolute; left: 10px; top:16px"><d style="margin:-5px; position: absolute; top:0; left:0">+</d></div>
   <div onclick="toggleMENS(); playUpdateSound2()" style="align-items: center; justify-content: center;  width:30px;height:30px; background: url('./box (3).png'); background-size: 100%; color:lime; 
-  padding:0px; margin:-5px; display: inline-block; font-size:20px;  position: absolute; left: 42px; top:16px"><d style="margin:-15px; position: absolute; top:0; left:0 ;">⚙️</d></div>
+  padding:0px; margin:-5px; display: inline-block; font-size:20px;  position: absolute; left: 42px; top:16px"><d style="margin:-5px; position: absolute; top:0; left:0 ;">⚙️</d></div>
   <div onclick="togglemode1(); playUpdateSound()" style="align-items: center; justify-content: center;  width:30px;height:30px; background: url('./box (3).png'); background-size: 100%; color:lime; 
-  padding:0px; margin:-5px; display: inline-block; font-size:20px;  position: absolute; left: 74px; top:16px"><d style="margin:-15px; position: absolute; top:0; left:0 ;">...</d></div>
+  padding:0px; margin:-5px; display: inline-block; font-size:20px;  position: absolute; left: 74px; top:16px"><d style="margin:-5px; position: absolute; top:0; left:0 ;">...</d></div>
   <div id="Iblocks" style="margin-top:0px;padding: 0;"></div>
 </div>
 <!--<div style="position: fixed; width: 210px; height: 50px; background: yellow; z-index:0;overflow: hidden;right:0;bottom:0px;
@@ -1698,6 +1699,7 @@ clearLocalStorageButton.addEventListener('click', () => {
 var codes=[]
 var onece5 = 1
 var newtilemap=config.savedTileMap
+let Vables = {};
 function moveTilesRandomly() {
   if(stop==0){
     for (let tileId in tileConfig) {
@@ -1706,6 +1708,7 @@ function moveTilesRandomly() {
         
         
         var [speed, movementType, distance, randomMovement, collision, initialHp, area, deletebool,arena,hurt,vi,score1,collisionobject="player",detectanabled,collisionwithotherblocks,deletewhencustommoveended,anableshootingattackforentities,collectable,spawnpoint,cantbedamaged,teleportBy,movetilesdeffacted,spawn,despawn,oneDirectionFollow,changeLoopMusicMain,changeLoopMusic, abilities, noAttackfunction, Respawn , collisioneventprojectilespeed,collisioneventprojectilemove,collisioneventprojectileduration,collisioneventprojectilelifetime, collisioneventprojectiletexture, collisioneventprojectilesize,codescript,puzzleblock,patternendbacktostart,gravitypow,
+        changeVariablecollisionevent,
         
         gethurttexture,gethurtdelay
         ] = tileConfig[tileId];
@@ -1913,6 +1916,22 @@ if(anableshootingattackforentities==1){
                 let distanceToPlayer = Math.sqrt((targetToX - left / tileSize) ** 2 + (targetToY - top / tileSize) ** 2);
                 if(distanceToPlayer <= 1 ){
 // config.projetitlecfig= {"timelife":40,"nomove":0,"speed":1.5,"cooldownDuration":500};
+if(changeVariablecollisionevent!==undefined&& changeVariablecollisionevent!==null){
+  if(changeVariablecollisionevent[0]){
+    if(changeVariablecollisionevent[1]){
+let name =changeVariablecollisionevent[0]
+let value =parseInt(changeVariablecollisionevent[1])
+//alert(name+" "+value)
+
+   Vables[name] = eval(value);
+  // alert(JSON.stringify(Vables))
+if (!V.includes(name)) {
+  V.push(value);
+}
+    }
+  }
+}
+
                   if(collisioneventprojectilespeed!==null&&collisioneventprojectilespeed!==undefined){
                    config.projetitlecfig.speed= parseInt(collisioneventprojectilespeed)
                   }
@@ -2184,6 +2203,36 @@ if(movetilesdeffacted!==undefined&&movetilesdeffacted!==null){
                  if(gototarget){
                  gototarget.remove()
                  }
+                 
+                 
+
+// Pobierz obecne tło
+
+
+// Ustaw nowe tło
+if (!tile.dataset.once0C) {
+  tile.dataset.once0C = 0;
+}
+
+if (gethurttexture !== null && gethurttexture !== undefined && tile.dataset.once0C == 0) {
+  tile.dataset.once0C = 1;
+  var previousBackground = tile.style.backgroundImage;
+  
+  tile.style.backgroundImage = `url('${gethurttexture}')`;
+  tile.style.backgroundSize = "100%";
+
+  if (gethurtdelay !== undefined && gethurtdelay !== null) {
+    setTimeout(function () {
+      tile.style.backgroundImage = previousBackground;
+      tile.style.backgroundSize = "100%";
+      tile.dataset.once0C = 0;
+    }, parseInt(gethurtdelay));
+  }
+}
+
+// Teraz wartość poprzedniego tła jest przechowywana w zmiennej previousBackground
+
+
 if(config.folder!==undefined){
  // alert(config.folder.sounds.player[2])
   if(config.folder.sounds.player[2]){
@@ -2518,7 +2567,7 @@ if (currentPositionIndex >= arena.lenght ) {
                 tile.remove()
               }
               if(parseInt(patternendbacktostart)==1){
-                            alert("ok ok")
+                         //   alert("ok ok")
                             const currentXD = parseInt(tile.dataset.firstX)
                             const currentYD = parseInt(tile.dataset.firstY)
                             left = currentXD * tileSize
@@ -2537,7 +2586,7 @@ if (currentPositionIndex >= arena.lenght ) {
             
             if(deletewhencustommoveended==1){
               deletedtiles.push(tile);
-              alert(tile)
+              //alert(tile)
               tile.remove()
             } 
          if (parseInt(patternendbacktostart) == 1) {
@@ -5047,7 +5096,8 @@ slider2.addEventListener('touchend', () => {stop=1; slider2.value = 0; currentVa
     
     entities":{"alltiles13":[0,"null",10,3,0,99999,[0,0,999999,999999],true,[[10,0],[-10,0]],null,1,1,null,null,1, , , ,1],"alltiles3":[8,"follow",10,3,0,199,[0,0,999999,999999],true,[[10,0],[-10,0]],null,1,1,null,null,1],"alltiles5":[1,"null",4,3,0,0,[0,0,999999,999999],true,[[10,0],[-10,0]],0,1,1],"alltiles2":[3,"move",4,3,0,1,[0,0,999999,999999],true,[[0,3],[0,-3]],1,0,null,null,1,null,null,1],"alltiles10":[5,"follow",5,0,0,1,[0,0,999999,999999],true,[[0,3],[0,-3]],1,0,null,"player",1,null,null,1],"alltiles6":[2,"move",4,3,0,100,[0,0,999999,999999],true,[[0,3],[0,-3]],1,0,null,null,1]}
 */
-var testexample={"examples":{"alltiles0":[0,"move/follow/avoid",0,3,0,1,[0,0,999999,999999],true,"[[0,0],[0,0]]",0,1]}}
+var testexample={"examples":{"alltiles0":[2,"move , follow , avoid",0,3,0,1,[0,0,999999,999999],true,"[[0,0],[0,0]]",0,1,"player",,0]}}
+// speed, movementType, distance, randomMovement, collision, initialHp, area, deletebool,arena,hurt,vi,score1,collisionobject="player",detectanabled,collisionwithotherblocks,deletewhencustommoveended,anableshootingattackforentities,collectable,spawnpoint
     function displayEntities() {
         const container = document.getElementById('entities-container');
         container.innerHTML = '';
@@ -5090,7 +5140,7 @@ function addEntity() {
         let selectedExample = "alltiles0";
         config.entities[entityname2] = Array(getOptionNames().length).fill(null);
         config.entities[entityname2] = testexample.examples[selectedExample];
-        alert(entityname2+" "+config.entities[entityname2]+" "+testexample.examples[selectedExample])
+       // alert(entityname2+" "+config.entities[entityname2]+" "+testexample.examples[selectedExample])
         displayEntities();
     } else {
         alert("Please enter a valid number.");
@@ -5105,7 +5155,7 @@ function addEntity() {
         for (let i = 0; i < optionNames.length; i++) {
             const optionValue = options[i] !== null ? options[i] : ''; // Check if value is null, if yes, show empty string
             const optionName = optionNames[i];
-            if(optionName!=="changeLoopMusic"){
+            if(!optionName.startsWith('T:')){
             optionHTML += `<div class="option">
                                 <label>${optionName}</label>
                                 <input type="text" value="${optionValue}" data-index="${i}" data-entity="${entityName}" oninput="updateOption(this)">
@@ -5154,7 +5204,27 @@ function addEntity() {
 
 
 
+/*
+const fileInput = event.target;
+const files = fileInput.files;
 
+if (files.length > 0) {
+const newBlockIndex = TILES.length; // Get the next iteration
+const collisionValue = 0;
+const image = event.target.files[0];
+
+// Create file reader object
+const reader = new FileReader()
+
+// Convert image to data URL
+reader.readAsDataURL(image)
+
+reader.addEventListener('load', () => {
+TILES.push([newBlockIndex, collisionValue, reader.result,thistilesize,translateY]);
+TILES.push([TILES.length,1,"/ NAN.png"])
+})
+updateViewport();
+}*/
 function updateFileOption(input) {
   const entityName = input.getAttribute('data-entity');
   const index = parseFloat(input.getAttribute('data-index'));
@@ -5167,7 +5237,9 @@ if (file) {
   const reader = new FileReader();
   reader.onload = function(e) {
     const base64Wav = e.target.result;
+    reader.readAsDataURL(file)
     config.entities[entityName][index] = base64Wav;
+    
    // alert(JSON.stringify(config.entities[entityName][index]))
     document.querySelector("#entitiesconfig").innerText = JSON.stringify(config.entities);
   }
@@ -5238,7 +5310,7 @@ if (file) {
             "despawn ticks",
             "goes 1 tick one direction good for projectiles :) (1)on else off",
 "changeLoopMusicTodefaul",
-            "changeLoopMusic",
+            "T: changeLoopMusic",
             "ability ['config[optionName]',Value,'operator '+' '-' '=''] options: hp maxhp shoot airjump",
             "noAttackfunction(1/0)",
             "Respawn(1/0)",
@@ -5251,7 +5323,10 @@ if (file) {
             "Code In Entities 0 _ 0 how ? ['1:\\n2:\\n3:',0]",
             "Puzzle Block (1/0) with i(object) // doesn't work for now ",
             "back to start position when pattern ended",
-            "gravity"
+            "gravity",
+            "changeVariablecollisionevent [variable,value]",
+            "T: hurttexture ",
+            " hurtdelaytexture (number ms)"
         ];
     }
 
@@ -6165,7 +6240,7 @@ function trzymamId(klasaElementu) {
 
 
 var localout=[]
-    let Vables = {};
+    
     
     let nospeed2lines = false;
 let candocmd=1
