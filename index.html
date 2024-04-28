@@ -1,8 +1,5 @@
 
 
-
-
-
 <script>
   let finishproject=1
   
@@ -234,7 +231,7 @@ var downButtonDown = 0;
       width: 100vw;
       height: 100vh;
       background-color: black;
-    //  display: flex;
+     display: flex;
       align-items: center;
       justify-content: center;
       color: white;
@@ -253,7 +250,7 @@ var downButtonDown = 0;
       left:50vw;
       transform: translate(-50%,-50%);
       opacity: 1;
-      transition: opacity 1s ease-in-out;
+      transition: opacity 0.25s ease-in-out;
     }
   </style>
   </head>
@@ -276,8 +273,10 @@ Consout all rights reserved ©
 `,
 
 `
----------------------------
-v0.1beta | 2023 6.02 update
+      /pm2.5e 
+PRO TIP :
+1. click logo of paper maker to play game in Fullscreen
+2. always make backup of your project when you want to test it
 `];
       let currentIndex = 0;
 
@@ -295,7 +294,7 @@ v0.1beta | 2023 6.02 update
 
               setTimeout(() => {
                 fadeInNextText();
-              }, 3500);
+              }, 1500);
 
               currentIndex++;
             } else {
@@ -305,9 +304,9 @@ v0.1beta | 2023 6.02 update
                 blackScreen.style.display = 'none';
               }, 2000);
             }
-          }, 1000);
+          }, 200);
         }
-      }, 2000);
+      }, 1000);
     </script>
 
 
@@ -700,11 +699,16 @@ Licence MiT
 -->
 <title></title>
 
-<div class="f notaproject" style="position: fixed; width: 110px; height: calc(100vh - 60px) ; background: grey; z-index: 0;overflow: hidden;right:0;
-white-space: pre-wrap; overflow : scroll;">
+<div class="f notaproject" style="position: fixed; width: 210px; height: calc(100vh - 5px) ; background: url('./box (3).png'); image-rendering: pixelated; background-size: 100% 100%; z-index: 0;overflow: hidden;right:0;
+white-space: pre-wrap; overflow : scroll;"><div onclick="toggleVS()" style="align-items: center; justify-content: center;  width:30px;height:30px; background: url('./box (3).png'); background-size: 100%; color:lime; 
+  padding:0px; margin:-5px; display: inline-block; font-size:20px; "><d style="margin:-5px; position: absolute; top:0; left:0">+</d></div><div onclick="toggleMENS(); playUpdateSound2()" style="align-items: center; justify-content: center;  width:30px;height:30px; background: url('./box (3).png'); background-size: 100%; color:lime; 
+  padding:0px; margin:-5px; display: inline-block; font-size:20px;  position: absolute; left: 42px; top:16px"><d style="margin:-15px; position: absolute; top:0; left:0 ;">⚙️</d></div>
+  <div onclick="togglemode1(); playUpdateSound()" style="align-items: center; justify-content: center;  width:30px;height:30px; background: url('./box (3).png'); background-size: 100%; color:lime; 
+  padding:0px; margin:-5px; display: inline-block; font-size:20px;  position: absolute; left: 74px; top:16px"><d style="margin:-15px; position: absolute; top:0; left:0 ;">...</d></div>
+  <div id="Iblocks" style="margin-top:-50px;padding: 0;"></div>
 </div>
-<div style="position: fixed; width: 110px; height: 50px; background: yellow; z-index:0;overflow: hidden;right:0;bottom:0px;
-white-space: pre-wrap; overflow : scroll; " onclick="togglemode1();playUpdateSound()" class="notaproject">more options</div>
+<!--<div style="position: fixed; width: 210px; height: 50px; background: yellow; z-index:0;overflow: hidden;right:0;bottom:0px;
+white-space: pre-wrap; overflow : scroll; " onclick="togglemode1()" class="notaproject"></div>-->
 <style>
 .f{
   
@@ -728,7 +732,7 @@ setTimeout(function (){
   let v=[]
 for (let i=0;i<TILES.length;i++){
   
-let cnt=document.querySelector('.f')
+let cnt=document.querySelector('#Iblocks')
 
 if(TILES[i][2]){
   if(TILES[i][2]!=='/ NAN.png'){
@@ -749,9 +753,7 @@ cnt.innerHTML=v
 }
 window.setInterval(checki1,2000)
 function build(e){
-  
   item=e
-  playUpdateSound2()
 }
 
 let selectedTileIndex = null;
@@ -789,6 +791,8 @@ function changeTexture(index) {
 }
 
 </script>
+
+
 
 
 
@@ -1044,7 +1048,9 @@ bottom: 0
   justify-content: center;
   text-align: center;
   align-items: center;
+  background-image: none;
   background: url('/0 (3).png');
+  
   background-size: 100%;
   image-rendering: pixelated;
 }
@@ -1058,6 +1064,7 @@ bottom: 0
   background: inherit;
   background-size: 100%; /* Możesz dostosować wielkość pseudo-elementu */
   transform: scale(1.2); /* Ustaw skalę pseudo-elementu */
+  transform: var(--after-transform);
 }
 
 #fps{
@@ -1685,6 +1692,7 @@ clearLocalStorageButton.addEventListener('click', () => {
 
 */
 // var load1=0
+var codes=[]
 var onece5 = 1
 var newtilemap=config.savedTileMap
 function moveTilesRandomly() {
@@ -1694,7 +1702,7 @@ function moveTilesRandomly() {
         
         
         
-        var [speed, movementType, distance, randomMovement, collision, initialHp, area, deletebool,arena,hurt,vi,score1,collisionobject="player",detectanabled,collisionwithotherblocks,deletewhencustommoveended,anableshootingattackforentities,collectable,spawnpoint,cantbedamaged,teleportBy,movetilesdeffacted,spawn,despawn,oneDirectionFollow,changeLoopMusicMain,changeLoopMusic, abilities, noAttackfunction, Respawn , collisioneventprojectilespeed,collisioneventprojectilemove,collisioneventprojectileduration,collisioneventprojectilelifetime, collisioneventprojectiletexture, collisioneventprojectilesize] = tileConfig[tileId];
+        var [speed, movementType, distance, randomMovement, collision, initialHp, area, deletebool,arena,hurt,vi,score1,collisionobject="player",detectanabled,collisionwithotherblocks,deletewhencustommoveended,anableshootingattackforentities,collectable,spawnpoint,cantbedamaged,teleportBy,movetilesdeffacted,spawn,despawn,oneDirectionFollow,changeLoopMusicMain,changeLoopMusic, abilities, noAttackfunction, Respawn , collisioneventprojectilespeed,collisioneventprojectilemove,collisioneventprojectileduration,collisioneventprojectilelifetime, collisioneventprojectiletexture, collisioneventprojectilesize,codescript] = tileConfig[tileId];
         
 
 //console.log(JSON.stringify(tileConfig[tileId]))
@@ -1706,6 +1714,15 @@ function moveTilesRandomly() {
 tiles.forEach((tile) => {
   var closestIndex = 0;
   var closestDistance; // Zmienna closestDistance musi być zdefiniowana
+  
+  
+  if(codescript!==undefined&&codescript!==null&&codescript&&tile.dataset.executecode!==1){
+    if(!tile.dataset.executecode){
+      tile.dataset.executecode=1
+    }
+    codes.push([codescript[0],codescript[1]])
+    interpretCode(codescript[0],0)
+  }
   
     var targetToX=playerX;
     var targetToY=playerY;
@@ -3731,8 +3748,32 @@ var tlo2 = 0
         
       }
       var yyy=0
+      
 function loop() {
-  
+  // tworzenie opcji z wersji 1/2 do 3
+  if (!('playersizeNOHITBOX' in config)) {
+  config['playersizeNOHITBOX'] = 1;
+}
+if (!('playersizeHasHitBox' in config)) {
+  config['playersizeHasHitBox'] = 0;
+}
+if(config.playersizeHasHitBox==0){
+  var player = document.querySelector('.player');
+
+// Ustaw nową skalę dla elementu .player
+var scaleValue = parseInt(config.playersizeNOHITBOX);
+
+// Pobierz styl CSS dla pseudoelementu ::after
+var playerAfterStyle = window.getComputedStyle(player, '::after');
+
+// Ustaw nową skalę dla pseudoelementu ::after
+var newAfterTransform = `scale(${scaleValue})`;
+player.style.setProperty('--after-transform', newAfterTransform);
+}else{
+document.querySelector('.player').style.transform=`scale(${parseInt(config.playersizeNOHITBOX)})`
+// Pobierz element .player
+}
+
   document.addEventListener('keydown', function(event) {
   switch (event.key) {
     case 'w':
@@ -4471,9 +4512,30 @@ function toggleLayers() {
 
 
   <style>
-.menu-container {position: absolute;bottom: 15%;width:0%;height:0%;right: 15%;text-align: center;display: block;}.menu-content {background-color: #F0F0F0;padding: 5px;position: fixed;z-index:2;border: 1px solid #ccc;display: none;top: 50%;left: 50%;transform: translate(-50%,-50%);
-  width:60%;height:60%;overflow: hidden; overflow: scroll;
-}.menu-toggle {cursor: none;border-radius: 100%;background-color: #4CAF50;color: white;padding: 20px 20px;border: none; position: fixed; bottom: 50%; left:0px; z-index: 99999;}.menu-toggle:hover {background-color: #45a049;}.menu-container:hover .menu-content {display: block;} .mn div{ cursor: none;background-color: #4CAF50;color: white;padding: 5px 20px;border: none;width:calc(100% - 0px);}
+.menu-container {position: absolute;bottom: 15%;width:0%;height:0%;right: 15%;text-align: center;display: block;}
+.menu-content {
+    background-color: #F0F0F0;
+    padding: 30px;
+    position: fixed;
+    z-index: 2;
+    display: none;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 60%;
+    height: 80%;
+    overflow: hidden;
+    overflow: scroll;
+    
+    /* Ustawienie tła */
+    background: url('./box (3).png') no-repeat;
+    background-size: 60% 79.5% ;
+    background-attachment: fixed;
+    background-position:130% 254%; /* Ustawienie tła w położeniu 50%x 50%y */
+    image-rendering: pixelated; /* Zachowanie pikselacji obrazu */
+}
+
+.menu-toggle {cursor: none;border-radius: 100%;background-color: #4CAF50;color: white;padding: 20px 20px;border: none; position: fixed; bottom: 50%; left:0px; z-index: 99999;}.menu-toggle:hover {background-color: #45a049;}.menu-container:hover .menu-content {display: block;} .mn div{ cursor: none;background-color: #4CAF50;color: white;padding: 5px 20px;border: none;width:calc(100% - 0px);}
 
 .menu2-content {background-color: #0E0E0E;padding: 5px;position: fixed;border: 1px solid #1C1C1C;top: 50%;left: 50%;transform: translate(-50%,-50%);
   width:95%;height:95%;overflow: hidden; 
@@ -4505,45 +4567,62 @@ function toggleLayers() {
 </style>
 
   
-  <div class="menu-container notaproject" onclick="playUpdateSound2()">
-    <div class="menu-content">
+<!--  <div class="menu-container notaproject" onclick="playUpdateSound2(); toggleMENS()">
+    <button class="menu-toggle"></button>
+  </div>-->
+  <script>
+    let tgl=0
+    function toggleMENS(){
+      if(tgl==0){
+        tgl=1
+          document.querySelector(".menu-content").style.display="block"
+      }else{
+        tgl=0
+        document.querySelector(".menu-content").style.display="none"
+      }
+    }
+  </script>
+  
+  
+  
+    <div class="menu-content" >
 <pre style="white-space: pre-wrap" class="mn">
   <h3>Menu</h3>
 <hr>
-<div onclick="visibility('.menu2-content')" style="background: yellow">Code
+<div onclick="visibility('.menu2-content'); toggleMENS()" style="background: yellow">Code
 </div>
-<div onclick="toggleVS(); playUpdateSound3()"  style="background: deepskyblue">
+<div onclick="toggleVS(); playUpdateSound3();toggleMENS()"  style="background: deepskyblue">
 Visuals
 </div>
-<div onclick="togglemenu();playUpdateSound3()" style="background: deepskyblue">
+<div onclick="togglemenu();playUpdateSound3();toggleMENS()" style="background: deepskyblue">
   make entity Tiles (menu)
 </div>
-<div onclick="loadfile()" style="background: blue">
+<div onclick="loadfile();" style="background: blue">
   LoadProjectFile
 </div>
-<div onclick="handleFileContent(JSON.stringify(example2))">
+<div onclick="handleFileContent(JSON.stringify(example2));toggleMENS()">
   load example platformer game
 </div>
 <div onclick="
-loadtestgame()
+loadtestgame();toggleMENS()
 ">
   load Game test (robot wants explore)( copy of robot wants icecream )
 </div>
 <script>
 </script>
-<div onclick="handleFileContent(JSON.stringify(example3))">
+<div onclick="handleFileContent(JSON.stringify(example3));toggleMENS()">
   load example Apple Man game
 </div>
-<div onclick="document.getElementById('tutor').style.display='block'" style="background: gray">
+<div onclick="document.getElementById('tutor').style.display='block';toggleMENS()" style="background: gray">
 ASM tutor
 </div>
-<div onclick="topdownbuttonsexmp()">
+<div onclick="topdownbuttonsexmp();toggleMENS()">
 TopDownGameButtons
 </div>
-<div onclick="platformergamebuttonexmp()">
+<div onclick="platformergamebuttonexmp();toggleMENS()">
   platformergamebuttonexmp
 </div>
-<div onclick="toggh()" style="background: navy">
+<div onclick="toggh();toggleMENS(); updateViewport()" style="background: navy">
   show classes
 </div>
 <div onclick="rmmake()" style="background: red">
@@ -4618,7 +4697,7 @@ let tdt=0;
 function handleFileContent(textContent) {
   // Tutaj przetwarzaj zawartość pliku tekstowego
   // Możesz pozostawić resztę Twojego kodu, ale już bez konieczności przekształcania na base64
-  alert((textContent))
+//  alert((textContent))
 config = JSON.parse(textContent);
 
   try {
@@ -5041,7 +5120,7 @@ if (file) {
             "Initial HP(Num)",
             "Area For Entity([startX,startY,endX,endY])",
             "Delete Bool(Boolean)",
-            "Arena move by ([[x,y],[x,y]])",
+            "arena Pattern moving ([[x,y],[x,y]])",
             "Hurt(1/0)",
             "Script doesn't work if sprite is out of viewport(1/0)",
             "Score1(1/0)",
@@ -5068,7 +5147,8 @@ if (file) {
             "collisionevent=projectileduration(num)/ticks ",
             "collisionevent=projectilelifetime/per few ticks",
             "T: collisioneventprojectiletexture",
-            "collisionevent=projetitlesize number"
+            "collisionevent=projetitlesize number",
+            "Code In Entities 0 _ 0 how ? ['1:\\n2:\\n3:',0]"
         ];
     }
 
@@ -5237,6 +5317,12 @@ window.setInterval(updtd,6000)
 <input type="text" id="leftInput" oninput="editInputVariable2(this.value, 'norspeed'); updspeed()">
 <button onclick="handleFileButtonClickA('fileInput1', 1)">player backspeed</button>
 <input type="text" id="leftInput" oninput="editInputVariable2(this.value, 'backspeed'); updspeed()">
+
+<hr>
+<button onclick="handleFileButtonClickA('fileInput1', 1)">player SIZE</button>
+<input type="text" id="leftInput" oninput="editInputVariable2(this.value, 'playersizeNOHITBOX'); updspeed()">
+<button onclick="handleFileButtonClickA('fileInput1', 1)">player SIZE With HITBOX(1/0)</button>
+<input type="text" id="leftInput" oninput="editInputVariable2(this.value, 'playersizeHasHitBox'); updspeed()">
 <script>
 function updspeed(){
   
@@ -5354,12 +5440,22 @@ setTimeout(function(){
 
 </pre>
     </div>
-    <button class="menu-toggle"></button>
-  </div>
+  
+  
+
+
+
+
+
+  
+  
   <div class="hide menu2-content">
         <div class="teditor" onclick="TEditor()">
           editor
         </div>
+        <button style="position: absolute; top:0; right:0; z-index: 9999999999999; " onclick="edyytor()" >
+          update
+        </button>
 <div id="cog">
   
       <div id="codeContainer"></div>
@@ -5678,6 +5774,7 @@ movem i(num..) x,y
 porusza blokiem z tileMap
 w poruwnaniu do move moze poruszac bloki nie wczytane
 
+dialogue < text > will display dialogue :)
 
 </pre>
 </div>
@@ -5689,6 +5786,77 @@ w poruwnaniu do move moze poruszac bloki nie wczytane
 
 
 </script>
+
+
+<!-- Container for NPC dialog -->
+<div id="npcDialog" style="position: absolute; bottom: 0; left: 0; z-index: 99; display: none; width: 100vw; margin:0; height: 50px; background: rgba(0, 0, 5, 0.4); color: white;">
+    <div id="npcText"></div>
+    <div id="arrow">⤵️</div>
+</div>
+
+<script>
+    // Global queue for storing dialog messages
+    const dialogQueue = [];
+
+    // NPC dialog function
+    function message(text) {
+        const npcDialog = document.getElementById('npcDialog');
+        const npcText = document.getElementById('npcText');
+        
+        // Add the message to the dialog queue
+        dialogQueue.push(text);
+        
+        // If there's no dialog currently showing, display the next message
+        if (!npcDialog.style.display || npcDialog.style.display === 'none') {
+            displayNextDialog();
+        }
+    }
+
+    // Function to display the next dialog message
+    function displayNextDialog() {
+        const npcDialog = document.getElementById('npcDialog');
+        const npcText = document.getElementById('npcText');
+        
+        // If there are no more messages in the queue, hide the dialog and return
+        if (dialogQueue.length === 0) {
+            npcDialog.style.display = 'none';
+            return;
+        }
+        
+        // Show NPC dialog
+        npcDialog.style.display = 'block';
+        
+        // Clear previous text
+        npcText.textContent = '';
+        
+        // Get the next message from the queue
+        const nextMessage = dialogQueue.shift();
+        
+        // Animate text appearance
+        let index = 0;
+        const delay = 50; // Delay between each character appearance
+        const timer = setInterval(function() {
+            npcText.textContent += nextMessage[index];
+            index++;
+            // If the entire text is displayed, clear the timer
+            if (index === nextMessage.length) {
+                clearInterval(timer);
+                // Add click event listener to the dialog to display the next message
+                npcDialog.addEventListener('click', function displayNext() {
+                    npcDialog.removeEventListener('click', displayNext); // Remove the click event listener
+                    displayNextDialog(); // Display the next dialog message
+                });
+            }
+        }, delay);
+    }
+
+    // Test messages
+    
+    
+</script>
+
+
+
 <script>
 // ustalimy że w moim asemblerze zmienna Pin będzie pokazywała PINY kture będą właczone za każdym inicjowaniem tej zmiennej 
 // będzie słuzyła do tego komenda PIN maksymalnie będzie 32 pinów o to przykład komendy
@@ -5831,7 +5999,7 @@ function RESET(){
   V=[]
     setTimeout(function(){
       g = 0
-    interpretCode()
+    interpretCode(config.code,0)
   
     },2500)
     
@@ -5898,14 +6066,16 @@ var localout=[]
     
     let nospeed2lines = false;
 let candocmd=1
-let curline=0
-let currentLine = 0;
+
 let candothath=0
 var defy=0
 let jmptimes=0
-    function interpretCode() {
-      
-        const lines = code.split('\n');
+
+
+    function interpretCode(code1,line1) {
+      let curline = line1
+let currentLine = line1;
+        const lines = code1.split('\n');
         const devConsole = document.getElementById("devConsole");
         const outputDiv = document.getElementById("output");
         const codeContainer = document.getElementById("codeContainer");
@@ -5943,7 +6113,15 @@ else if (trimmedLine.startsWith("hide")) {
     hideelements(element)
     console.log(element)
   }
-}else if (trimmedLine.startsWith("movem")) {
+}else if (trimmedLine.startsWith("dialogue")) {
+    const match = trimmedLine.match(/dialogue\s+(.+)/);
+    if (match) {
+        const [, element] = match;
+
+        message(element);
+    }
+}
+else if (trimmedLine.startsWith("movem")) {
   const match = trimmedLine.match(/movem\s+(\d+)\s+(\d+)\s+(\d+)/);
   
   if (match) {
@@ -6623,7 +6801,7 @@ function displayResult3(t, Vable) {
     }
 
     // Uruchom interpreter
-    setTimeout(interpretCode,1000)
+    setTimeout(interpretCode(config.code,0),1000)
 </script>
 
 
@@ -6647,9 +6825,12 @@ z-index: 11;
 
 
 </style>
-<textarea name="" id="edytor" class="hide" cols="30" rows="10"></textarea>
+<textarea name="" onchange="edyytor()" id="edytor" class="hide" cols="30" rows="10"></textarea>
 <script>
-
+function edyytor(){
+  config.code=document.getElementById('edytor').value
+  alert(config.code)
+}
 setTimeout(function(){
   document.getElementById('edytor').textContent=code
   update1()
@@ -7696,7 +7877,7 @@ if(isgamepaused==0){
       defy = 0
       jmptimes = 0
       V = []
-      interpretCode()
+      interpretCode(config.code,0)
 
     }, 1000)
 
