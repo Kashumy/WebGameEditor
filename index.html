@@ -160,7 +160,7 @@ for (var i = 0; i < y.length; i++) {
 <!-- Paste There Your Watermark ; ) -->
 <!-- author: none -->
 
- <img src="./watermark.gif" onclick="config.testmode = config.testmode === 1 ? 0 : 1;up1();playUpdateSound2()"style="position: fixed; top:0; left:10px; image-rendering: pixelated; width:100px;height:30px; transform: translate(0,25%); z-index: 99999999999" >
+ <img src="./watermark.gif" onclick="config.testmode = config.testmode === 1 ? 0 : 1;up1();playUpdateSound2()"style="position: fixed; top:0; left:10px;  width:100px;height:30px; transform: translate(0,25%); z-index: 99999999999" >
 
  <style>
  :root{
@@ -273,7 +273,9 @@ Consout all rights reserved ©
 `,
 
 `
-      /pm2.5e 
+<img src="./logo.gif" style="width:100px;height:30px; transform: translate(0,25%)" >
+
+version /pm2.5e-ngine 
 PRO TIP :
 1. click logo of paper maker to play game in Fullscreen
 2. always make backup of your project when you want to test it
@@ -700,12 +702,13 @@ Licence MiT
 <title></title>
 
 <div class="f notaproject" style="position: fixed; width: 210px; height: calc(100vh - 5px) ; background: url('./box (3).png'); image-rendering: pixelated; background-size: 100% 100%; z-index: 0;overflow: hidden;right:0;
-white-space: pre-wrap; overflow : scroll;"><div onclick="toggleVS()" style="align-items: center; justify-content: center;  width:30px;height:30px; background: url('./box (3).png'); background-size: 100%; color:lime; 
-  padding:0px; margin:-5px; display: inline-block; font-size:20px; "><d style="margin:-5px; position: absolute; top:0; left:0">+</d></div><div onclick="toggleMENS(); playUpdateSound2()" style="align-items: center; justify-content: center;  width:30px;height:30px; background: url('./box (3).png'); background-size: 100%; color:lime; 
+white-space: pre-wrap; overflow : scroll;"><div onclick="toggleVS()" style="align-items: center; justify-content: center; width:30px;height:30px; background: url('./box (3).png'); background-size: 100%; color:lime;
+padding:0px; margin:-5px; display: inline-block; font-size:20px; position: absolute; left: 10px; top:16px"><d style="margin:-15px; position: absolute; top:0; left:0">+</d></div>
+  <div onclick="toggleMENS(); playUpdateSound2()" style="align-items: center; justify-content: center;  width:30px;height:30px; background: url('./box (3).png'); background-size: 100%; color:lime; 
   padding:0px; margin:-5px; display: inline-block; font-size:20px;  position: absolute; left: 42px; top:16px"><d style="margin:-15px; position: absolute; top:0; left:0 ;">⚙️</d></div>
   <div onclick="togglemode1(); playUpdateSound()" style="align-items: center; justify-content: center;  width:30px;height:30px; background: url('./box (3).png'); background-size: 100%; color:lime; 
   padding:0px; margin:-5px; display: inline-block; font-size:20px;  position: absolute; left: 74px; top:16px"><d style="margin:-15px; position: absolute; top:0; left:0 ;">...</d></div>
-  <div id="Iblocks" style="margin-top:-50px;padding: 0;"></div>
+  <div id="Iblocks" style="margin-top:0px;padding: 0;"></div>
 </div>
 <!--<div style="position: fixed; width: 210px; height: 50px; background: yellow; z-index:0;overflow: hidden;right:0;bottom:0px;
 white-space: pre-wrap; overflow : scroll; " onclick="togglemode1()" class="notaproject"></div>-->
@@ -1702,7 +1705,10 @@ function moveTilesRandomly() {
         
         
         
-        var [speed, movementType, distance, randomMovement, collision, initialHp, area, deletebool,arena,hurt,vi,score1,collisionobject="player",detectanabled,collisionwithotherblocks,deletewhencustommoveended,anableshootingattackforentities,collectable,spawnpoint,cantbedamaged,teleportBy,movetilesdeffacted,spawn,despawn,oneDirectionFollow,changeLoopMusicMain,changeLoopMusic, abilities, noAttackfunction, Respawn , collisioneventprojectilespeed,collisioneventprojectilemove,collisioneventprojectileduration,collisioneventprojectilelifetime, collisioneventprojectiletexture, collisioneventprojectilesize,codescript] = tileConfig[tileId];
+        var [speed, movementType, distance, randomMovement, collision, initialHp, area, deletebool,arena,hurt,vi,score1,collisionobject="player",detectanabled,collisionwithotherblocks,deletewhencustommoveended,anableshootingattackforentities,collectable,spawnpoint,cantbedamaged,teleportBy,movetilesdeffacted,spawn,despawn,oneDirectionFollow,changeLoopMusicMain,changeLoopMusic, abilities, noAttackfunction, Respawn , collisioneventprojectilespeed,collisioneventprojectilemove,collisioneventprojectileduration,collisioneventprojectilelifetime, collisioneventprojectiletexture, collisioneventprojectilesize,codescript,puzzleblock,patternendbacktostart,gravitypow,
+        
+        gethurttexture,gethurtdelay
+        ] = tileConfig[tileId];
         
 
 //console.log(JSON.stringify(tileConfig[tileId]))
@@ -1733,6 +1739,23 @@ tiles.forEach((tile) => {
               let left = parseFloat(tile.style.left) || 0;
               let top = parseFloat(tile.style.top) || 0;
               
+const currentX = parseInt(tile.dataset.x)
+const currentY = parseInt(tile.dataset.y)
+
+
+  if (!tile.dataset.buildedX) {
+    tile.dataset.buildedX = left / tileSize 
+  }
+  if (!tile.dataset.buildedY) {
+  tile.dataset.buildedY = top / tileSize
+  }
+
+
+              if (gravitypow !== undefined && gravitypow !== null) {
+top+=parseInt(gravitypow);
+tile.style.left = left + 'px';
+tile.style.top = top + 'px';
+}
               
 // Inicjalizacja najbliższego elementu i jego odległości
 var closestElement = null;
@@ -1781,6 +1804,48 @@ console.log(closestIndex)
         targetToY = parseInt(gototarget.style.top) / tileSize;
         
     }
+    
+/*    
+if(puzzleblock==1){
+    
+    const blockWidth = 32; // Szerokość bloku (załóżmy, że 32 piksele)
+    const blockHeight = 32; // Wysokość bloku (załóżmy, że 32 piksele)
+    
+    // Oblicz środek bloku
+    const blockCenterX = left + blockWidth / 2;
+    const blockCenterY = top + blockHeight / 2;
+    
+    // Oblicz odległość między blokiem a targetToX i targetToY
+    let distanceX = (targetToX * tileSize) - blockCenterX;
+    let distanceY = (targetToY * tileSize) - blockCenterY;
+    
+    // Sprawdź, czy blok jest wystarczająco blisko celu
+    if (Math.abs(distanceX) < 1 && Math.abs(distanceY) < 1) {
+        // Oblicz, w którym kierunku powinien zostać przesunięty blok
+        if (Math.abs(distanceX) > Math.abs(distanceY)) {
+            // Przesuń wzdłuż osi X
+            if (distanceX > 0) {
+                left += 0.5; // Przesuń w prawo
+            } else {
+                left -= 0.5; // Przesuń w lewo
+            }
+        } else {
+            // Przesuń wzdłuż osi Y
+            if (distanceY > 0) {
+                top += 0.5; // Przesuń w dół
+            } else {
+                top -= 0.5; // Przesuń w górę
+            }
+        }
+        
+        // Ustaw nową pozycję bloku
+        tile.style.left = left + 'px';
+        tile.style.top = top + 'px';
+    }
+}
+*/
+    
+    
  if(spawn!==undefined&&spawn!==null){
    let duration = tile.dataset.spawnduration
    let counting = tile.dataset.currentdurationtime 
@@ -2452,6 +2517,15 @@ if (currentPositionIndex >= arena.lenght ) {
                // alert(tile)
                 tile.remove()
               }
+              if(parseInt(patternendbacktostart)==1){
+                            alert("ok ok")
+                            const currentXD = parseInt(tile.dataset.firstX)
+                            const currentYD = parseInt(tile.dataset.firstY)
+                            left = currentXD * tileSize
+                            right = currentYD * tileSize
+                            tile.style.left = left + 'px';
+                            tile.style.top = top + 'px';
+              }
 }
     if (left / tileSize === targetX && top / tileSize === targetY) {
         // Obiekt już jest na docelowej pozycji, przejdź do kolejnego indexu
@@ -2465,7 +2539,17 @@ if (currentPositionIndex >= arena.lenght ) {
               deletedtiles.push(tile);
               alert(tile)
               tile.remove()
-            }
+            } 
+         if (parseInt(patternendbacktostart) == 1) {
+          // alert("ok ok")
+           const currentXD = parseInt(tile.dataset.buildedX)
+           const currentYD = parseInt(tile.dataset.buildedY)
+           left = currentXD * tileSize
+           top = currentYD * tileSize
+           tile.style.left = left + 'px';
+           tile.style.top = top + 'px';
+         }
+              
         }
 
         [x, y] = arena[currentPositionIndex];
@@ -4138,9 +4222,9 @@ function cofnijczas(ilerazycofnac) {
         #fpsCounter {
             position: fixed;
             z-index: 9999;
-            top: 0;
-            left: 0;
-            padding: 10px;
+            bottom: 0;
+            right: 0;
+            padding: 5px;
             background-color: #000;
             color: #fff;
             font-family: Arial, sans-serif;
@@ -4488,7 +4572,7 @@ window.setInterval(testy, 3000);
 
 
 
-<div id="toggleButton" style="width:50px;height:60px;background: #6F6F6F; float: left; margin:4px; justify-content: center; align-items: center ; display: flex; position:absolute;font-size: 10px"onclick="toggleLayers()" class="notaproject">TL</div>
+<div id="toggleButton" style="width:50px;height:40px;background: #6F6F6F; float: left; margin:4px; justify-content: center; align-items: center ; display: flex; position:absolute;font-size: 5px; top:50px;"onclick="toggleLayers()" class="notaproject">build on blocks</div>
 <script>
   let layers = 0;
 
@@ -4529,9 +4613,9 @@ function toggleLayers() {
     
     /* Ustawienie tła */
     background: url('./box (3).png') no-repeat;
-    background-size: 60% 79.5% ;
+    background-size: 100% 100% ;
     background-attachment: fixed;
-    background-position:130% 254%; /* Ustawienie tła w położeniu 50%x 50%y */
+    background-position:0% 0%; /* Ustawienie tła w położeniu 50%x 50%y */
     image-rendering: pixelated; /* Zachowanie pikselacji obrazu */
 }
 
@@ -4963,7 +5047,7 @@ slider2.addEventListener('touchend', () => {stop=1; slider2.value = 0; currentVa
     
     entities":{"alltiles13":[0,"null",10,3,0,99999,[0,0,999999,999999],true,[[10,0],[-10,0]],null,1,1,null,null,1, , , ,1],"alltiles3":[8,"follow",10,3,0,199,[0,0,999999,999999],true,[[10,0],[-10,0]],null,1,1,null,null,1],"alltiles5":[1,"null",4,3,0,0,[0,0,999999,999999],true,[[10,0],[-10,0]],0,1,1],"alltiles2":[3,"move",4,3,0,1,[0,0,999999,999999],true,[[0,3],[0,-3]],1,0,null,null,1,null,null,1],"alltiles10":[5,"follow",5,0,0,1,[0,0,999999,999999],true,[[0,3],[0,-3]],1,0,null,"player",1,null,null,1],"alltiles6":[2,"move",4,3,0,100,[0,0,999999,999999],true,[[0,3],[0,-3]],1,0,null,null,1]}
 */
-var testexample={"examples":{"alltiles0":[0,"move/follow/avoid",0,3,0,1,[0,0,999999,999999],true," vector only for move [[0,0],[0,0]]",0,1]}}
+var testexample={"examples":{"alltiles0":[0,"move/follow/avoid",0,3,0,1,[0,0,999999,999999],true,"[[0,0],[0,0]]",0,1]}}
     function displayEntities() {
         const container = document.getElementById('entities-container');
         container.innerHTML = '';
@@ -4986,17 +5070,33 @@ var testexample={"examples":{"alltiles0":[0,"move/follow/avoid",0,3,0,1,[0,0,999
                 container.appendChild(entityDiv);
             }
         }
-    }
-
+    }/*
+function addEntity() {
+  const entityName = prompt("Enter entity identyficator in your sprite (S<number>):");
+  if (entityName) {
+    let selectedExample = "alltiles0"
+    config.entities[entityName] = Array(getOptionNames().length).fill(null);
+    config.entities[entityName] = testexample.examples[selectedExample];
+    displayEntities();
+  }
+}*/
     function addEntity() {
-        const entityName = prompt("Enter entity name:");
-        if (entityName) {
-          let selectedExample="alltiles0"
-            config.entities[entityName] = Array(getOptionNames().length).fill(null);
-            config.entities[entityName] = testexample.examples[selectedExample];
-            displayEntities();
-        }
+    const entityName = prompt("Enter entity identyficator in your sprite (S<number>):");
+    let  entityname2 = "alltiles"+parseInt(entityName)
+    let text = parseInt(entityName)
+    const entityId = parseInt(entityName);
+    if (!isNaN(text)) {
+    
+        let selectedExample = "alltiles0";
+        config.entities[entityname2] = Array(getOptionNames().length).fill(null);
+        config.entities[entityname2] = testexample.examples[selectedExample];
+        alert(entityname2+" "+config.entities[entityname2]+" "+testexample.examples[selectedExample])
+        displayEntities();
+    } else {
+        alert("Please enter a valid number.");
     }
+}
+
 
     function editEntity(entityName) {
         const options = config.entities[entityName];
@@ -5124,7 +5224,7 @@ if (file) {
             "Hurt(1/0)",
             "Script doesn't work if sprite is out of viewport(1/0)",
             "Score1(1/0)",
-            "Collision Object(1/0)",
+            "Collision Object ('player' you can change to an 'alltiles<Snumber> or something THIS is REALLY HARD To Explain ! )",
             "Detect Enabled",
             "Collision with Other Blocks(1/0)",
             "Delete When Custom Move Ended(1/0)",
@@ -5148,7 +5248,10 @@ if (file) {
             "collisionevent=projectilelifetime/per few ticks",
             "T: collisioneventprojectiletexture",
             "collisionevent=projetitlesize number",
-            "Code In Entities 0 _ 0 how ? ['1:\\n2:\\n3:',0]"
+            "Code In Entities 0 _ 0 how ? ['1:\\n2:\\n3:',0]",
+            "Puzzle Block (1/0) with i(object) // doesn't work for now ",
+            "back to start position when pattern ended",
+            "gravity"
         ];
     }
 
