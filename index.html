@@ -1,6 +1,4 @@
 
-
-
 <script>
   let finishproject=1
   
@@ -270,13 +268,15 @@ var downButtonDown = 0;
 `
   <img src="./logo.gif" style="width:100px;height:30px; transform: translate(0,25%)" > is free open source program 
   
-Consout all rights reserved ©
+Consout all rights reserved © 
+version 2.6
 `,
 
 `
 <img src="./logo.gif" style="width:100px;height:30px; transform: translate(0,25%)" >
 
-version /pm2.5e-ngine 
+added: new options in entities menu
+
 PRO TIP :
 1. click logo of paper maker to play game in Fullscreen
 2. always make backup of your project when you want to test it
@@ -1118,7 +1118,7 @@ position: fixed;
   
 }
 #content2 {
-
+image-rendering: pixelated;
   overflow: auto;
   transform: translate(-50%, -50%);
   top: 50%;
@@ -1133,8 +1133,8 @@ background-size: 100%;
   
 }
 #content2 {
-  
   image-rendering: pixelated;
+  
 
 }
 .tile {
@@ -1142,7 +1142,7 @@ background-size: 100%;
   
   
   
-  image-rendering: pixelated;
+  
   background-size: 32px;
   box-sizing: border-box;
 }
@@ -1151,7 +1151,7 @@ background-size: 100%;
   
   
   
-  image-rendering: pixelated;
+  
   background-size: 32px;
   box-sizing: border-box;
 }
@@ -1161,7 +1161,7 @@ background-size: 100%;
   width: 32px;
   height: 32px;
   background-color: #00000000;
-  image-rendering: pixelated;
+  
   background-size: 32px;
   box-sizing: border-box;
 
@@ -1182,6 +1182,7 @@ background-size: 100%;
   background-size: cover; /* Dopasowuje obraz do wymiarów bloku, zachowując proporcje */
   background-position: center center; /* Ustawia pozycję obrazu w centrum bloku */
 width: 10%;
+image-rendering: pixelated;
 height: 10%
 }
 </style>
@@ -1700,6 +1701,7 @@ var codes=[]
 var onece5 = 1
 var newtilemap=config.savedTileMap
 let Vables = {};
+
 function moveTilesRandomly() {
   if(stop==0){
     for (let tileId in tileConfig) {
@@ -1708,9 +1710,18 @@ function moveTilesRandomly() {
         
         
         var [speed, movementType, distance, randomMovement, collision, initialHp, area, deletebool,arena,hurt,vi,score1,collisionobject="player",detectanabled,collisionwithotherblocks,deletewhencustommoveended,anableshootingattackforentities,collectable,spawnpoint,cantbedamaged,teleportBy,movetilesdeffacted,spawn,despawn,oneDirectionFollow,changeLoopMusicMain,changeLoopMusic, abilities, noAttackfunction, Respawn , collisioneventprojectilespeed,collisioneventprojectilemove,collisioneventprojectileduration,collisioneventprojectilelifetime, collisioneventprojectiletexture, collisioneventprojectilesize,codescript,puzzleblock,patternendbacktostart,gravitypow,
-        changeVariablecollisionevent,
+        changeVariablecollisionevent, gethurttexture,gethurtdelay,
+   //       experimental features 
+        reversedistance ,
+        collisiontexture,
         
-        gethurttexture,gethurtdelay
+        distance2,
+        movementType2,
+        collisionobject2,
+        whendistance2makepattern,
+        NPCdialogue,
+        collisionEVAL
+        
         ] = tileConfig[tileId];
         
 
@@ -1735,6 +1746,8 @@ tiles.forEach((tile) => {
   
     var targetToX=playerX;
     var targetToY=playerY;
+    var targetToX2 = null;
+var targetToY2 = null;
     var shootingTargettargetToX=-100;
     var shootingTargettargetToY=-100;
     
@@ -1769,12 +1782,12 @@ Array.from(document.getElementsByClassName(collisionobject)).forEach(element => 
     // Obliczenie odległości od aktualnego elementu do gracza
     var elementX = parseFloat(element.style.left) || 0;
     var elementY = parseFloat(element.style.top) || 0;
-    var distance = Math.sqrt(Math.pow(elementX - left, 2) + Math.pow(elementY - top, 2));
+    var distance4 = Math.sqrt(Math.pow(elementX - left, 2) + Math.pow(elementY - top, 2));
     
     // Aktualizacja najbliższego elementu, jeśli odległość jest mniejsza
-    if (distance < closestDistance) {
+    if (distance4 < closestDistance) {
         closestElement = element;
-        closestDistance = distance;
+        closestDistance = distance4;
     }
 });
 
@@ -1914,7 +1927,56 @@ if(anableshootingattackforentities==1){
                    distanceToProjectile = Math.sqrt((shootingTargettargetToX - left / tileSize) ** 2 + (shootingTargettargetToY - top / tileSize) ** 2);
                 }
                 let distanceToPlayer = Math.sqrt((targetToX - left / tileSize) ** 2 + (targetToY - top / tileSize) ** 2);
-                if(distanceToPlayer <= 1 ){
+                if(distanceToPlayer <= 1.1 ){
+                  
+                  if (!tile.dataset.dialogue&&NPCdialogue!==undefined &&NPCdialogue!==null&& NPCdialogue!=="") {
+  tile.dataset.dialogue = 0
+  
+}
+if(tile.dataset.dialogue == 0&&NPCdialogue!==undefined &&NPCdialogue!==null&& NPCdialogue!==""){
+  tile.dataset.dialogue = 1
+  var dialog =NPCdialogue
+  pausemove=1
+  for (var i = 0; i < dialog.length; i++) {
+  message(dialog[i])
+  
+  }
+  
+}
+
+if(!tile.dataset.once0C2){
+  tile.dataset.once0C2=0
+}
+if (!tile.dataset.once0C22) {
+  tile.dataset.once0C22 = 0
+}
+if (collisiontexture !== null && collisiontexture !== undefined && tile.dataset.once0C2== 0) {
+
+  tile.dataset.once0C2 = 1;
+  if(tile.dataset.once0C22 == 0){
+  const previousBackground = tile.style.backgroundImage;
+  tile.dataset.once0C22 = previousBackground;
+  }
+  
+  tile.style.backgroundImage = `url('${collisiontexture}')`;
+setTimeout(function() {
+  if (distanceToPlayer <= 0.5) {
+  tile.style.backgroundImage = `url('${collisiontexture}')`;
+tile.dataset.once0C2 = 0;
+}
+setTimeout(function() {
+  tile.style.backgroundSize = "100%";
+tile.style.backgroundImage = tile.dataset.once0C22;
+tile.style.backgroundSize = "100%";
+tile.dataset.once0C2 = 0;
+},2500)
+},2500)
+
+  
+}
+
+
+
 // config.projetitlecfig= {"timelife":40,"nomove":0,"speed":1.5,"cooldownDuration":500};
 if(changeVariablecollisionevent!==undefined&& changeVariablecollisionevent!==null){
   if(changeVariablecollisionevent[0]){
@@ -2446,6 +2508,9 @@ tile.remove()
           }else{
             vi2=1
             tile.dataset.bugfix1=0
+            if (tile.dataset.dialogue) {
+  tile.dataset.dialogue = 0
+}
           }
           }
           if(vi2==0){
@@ -2516,15 +2581,15 @@ if(hurt==1){
 }
             // Check if the tile is within the specified area
             if (isWithinArea(left / tileSize, top / tileSize, area)) {
-                if (movementType === 'follow' && distanceToPlayer <= distance) {
+                if (movementType === 'follow' && distanceToPlayer <= distance || distanceToPlayer >= reversedistance && reversedistance!==undefined&&reversedistance!==null&&reversedistance!=="null") {
                     // Logic for following the player
                     left += Math.cos(directionInRadians) * speed;
                     top += Math.sin(directionInRadians) * speed;
-                } else if (movementType === 'avoid' && distanceToPlayer <= distance) {
+                } else if (movementType === 'avoid' && distanceToPlayer <= distance||distanceToPlayer >= reversedistance && reversedistance!==undefined&&reversedistance!==null&&reversedistance!=="null") {
                     // Logic for avoiding the player
                     left -= Math.cos(directionInRadians) * speed;
                     top -= Math.sin(directionInRadians) * speed;
-                } else if (randomMovement === 1 && distanceToPlayer > distance) {
+                } else if (randomMovement === 1 && distanceToPlayer > distance||distanceToPlayer <= reversedistance && reversedistance!==undefined&&reversedistance!==null&&reversedistance!=="null") {
                     // Logic for random movement when outside the player's distance
                     let randomDirection = parseFloat(tile.dataset.randomDirection); // Get or set random direction from dataset
 
@@ -3605,8 +3670,9 @@ var thiy=0
 var blockspassed=0
 var updatevpifblockspassed=60
 let by4=0
+var pausemove=0
 function movePlayer(dx, dy) {
-  
+  if(pausemove==0){
   const maxHistoryLength = 50;
 
 
@@ -3640,7 +3706,7 @@ if(by4<3){
 
   player.style.left = playerX * tileSize2 + 'px';
   player.style.top = playerY * tileSize2 + 'px';
-  
+  }
 }
 function setPlayer(dx, dy) {
   playerX = dx;
@@ -5326,8 +5392,25 @@ if (file) {
             "gravity",
             "changeVariablecollisionevent [variable,value]",
             "T: hurttexture ",
-            " hurtdelaytexture (number ms)"
+            " hurtdelaytexture (number ms)",
+            "reversedistance !( distance ) <num>",
+"T: collisiontexture",
+"distance2 <number> /disabled",
+"movementType2 [move avoid follow]/disabled",
+"collisionobject2 [name]/disabled",
+"whendistance2makepattern (in PM 2.8)/disabled",
+"NPC Dialogue ['hello','world']"
         ];
+        
+        /*gethurttexture,gethurtdelay,
+// experimental features
+reversedistance ,
+collisiontexture,
+
+distance2,
+movementType2,
+collisionobject2,
+whendistance2makepattern,*/
     }
 
     
@@ -5998,6 +6081,7 @@ dialogue < text > will display dialogue :)
         // If there are no more messages in the queue, hide the dialog and return
         if (dialogQueue.length === 0) {
             npcDialog.style.display = 'none';
+            pausemove=0
             return;
         }
         
@@ -6023,6 +6107,9 @@ dialogue < text > will display dialogue :)
                 npcDialog.addEventListener('click', function displayNext() {
                     npcDialog.removeEventListener('click', displayNext); // Remove the click event listener
                     displayNextDialog(); // Display the next dialog message
+if (dialogQueue.length === 0) {
+  pausemove = 0;
+}
                 });
             }
         }, delay);
