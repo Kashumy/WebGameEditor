@@ -1,4 +1,69 @@
 
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+<!--put your project here-->
+<project-loader author="" license="">
+<project-path>newproject</project-path><!-- your project path defaul newproject path  = ./yourproject.dl -->
+<about-project>
+<!-- some informations about project
+ 
+ 
+-->
+</about-project>
+<script>
+let path=document.querySelector('project-path').innerText;
+
+setTimeout(function(){
+  document.querySelector('project-path').style.display="none"
+},1000)
+
+function loadtestgame2(){
+
+  var gccpath=path
+  if(gccpath!=="newproject"){
+setTimeout(function (){
+  fetch(gccpath)
+    .then(response => response.text())
+    .then(data => handleFileContent(data)
+    )
+    .catch(error => {
+    	
+    }
+    );
+},1000)}
+ }
+  
+setTimeout(function(){
+  
+  if(path!=="newproject"){
+    loadtestgame2()
+  setTimeout(function(){config.testmode=1},6000)
+  setTimeout(function(){
+    config.testmode=1
+  
+gravity=tdt.gravity
+  },10000)
+function hd(){
+    up1()
+    config.testmode=1
+  var elementsToHide = document.getElementsByClassName('notaproject');
+Array.from(elementsToHide).forEach(element => {
+  element.style.display="none"
+});
+}
+requestAnimationFrame(hd)
+  togglemode1()
+}
+},1000)
+</script>
+</project-loader>
+
+
+
+
+
+
 <script>
   let finishproject=1
   
@@ -269,13 +334,13 @@ var downButtonDown = 0;
   <img src="./logo.gif" style="width:100px;height:30px; transform: translate(0,25%)" > is free open source program 
   
 Consout all rights reserved © 
-version 2.6
+version 2.7
 `,
 
 `
 <img src="./logo.gif" style="width:100px;height:30px; transform: translate(0,25%)" >
 
-added: new options in entities menu
+added: added HP bar indicator 
 
 PRO TIP :
 1. click logo of paper maker to play game in Fullscreen
@@ -609,6 +674,11 @@ let code2=JSON.stringify(config)
           position: absolute;
           margin-left: 10%;
         }
+        .Dcontent {
+          touch-action: none;
+          position: absolute;
+          margin-left: 10%;
+        }
                 .Scontent {
                   touch-action: none;
                   position: absolute;
@@ -646,8 +716,9 @@ top:20px; right:20px; width: 30px ; height:30px ; background: red;"> -->
   </div>
 
   <div id="content"></div>
-    <div id="Econtent"></div>
-    <div id="Scontent"></div>
+    <div id="Econtent" ></div>
+    <div id="Scontent" ></div>
+<div id="Dcontent" ></div>
 </div>
   <div id="project2">
 
@@ -1550,8 +1621,9 @@ function movemap(dataSpriteX, dataSpriteY, tag) {
   tag= parseFloat(tag)
   //alert(tag+""+dataSpriteX+""+dataSpriteY)
   tileMap[dimension].forEach((tileCoords) => {
+    
     const [x, y, t] = tileCoords;
-
+//alert(x,y,t)
     if (t === tag) {
       let newX = parseInt(x) + parseInt(dataSpriteX);
       let newY = parseInt(y) + parseInt(dataSpriteY);
@@ -1720,8 +1792,23 @@ function moveTilesRandomly() {
         collisionobject2,
         whendistance2makepattern,
         NPCdialogue,
-        collisionEVAL
+        collisionEVAL,
+        NPCdialogueends_remove,
+        NPCdialogueends_spawn,
+        collisiondistance,
+        spawn2,
+        showindicator,
         
+        
+        
+
+// making for full relase PM2.8
+moveonlywhenplayerlooking,// 1/0
+moveonlywhenplayerlookingaway,// 1/0
+spawningonlywhenlooking, // 1/0
+spawningonlywhenlookingaway, // 1/0
+spawn2onlyifrandom, // [min,max]
+
         ] = tileConfig[tileId];
         
 
@@ -1796,7 +1883,7 @@ Array.from(document.getElementsByClassName(collisionobject)).forEach(element => 
 console.log(closestIndex)
 
 
-              if (despawn!==undefined&&despawn!==null) {
+              if (despawn!==undefined&&despawn!==null&&despawn!=="") {
                 if (!tile.dataset.despawn) {
                   tile.dataset.despawn = despawn
                 }
@@ -1807,12 +1894,19 @@ console.log(closestIndex)
                   tile.remove()
                 }
               }
-               if(spawn!==undefined&&spawn!==null){
+               if(spawn!==undefined&&spawn!==null&&spawn!==""){
     if (!tile.dataset.spawnduration) {
       tile.dataset.spawnduration = spawn[0];
     }
     if (!tile.dataset.currentdurationtime) {
       tile.dataset.currentdurationtime = spawn[0];
+    }}
+    if(spawn2!==undefined&&spawn2!==null&&spawn2!==""){
+    if (!tile.dataset.spawnduration2) {
+      tile.dataset.spawnduration2 = spawn2[0];
+    }
+    if (!tile.dataset.currentdurationtime2) {
+      tile.dataset.currentdurationtime2 = spawn2[0];
     }}
     if (document.getElementsByClassName(collisionobject).length > 0) {
         gototarget = document.getElementsByClassName(collisionobject)[closestIndex];
@@ -1860,9 +1954,77 @@ if(puzzleblock==1){
     }
 }
 */
-    
-    
- if(spawn!==undefined&&spawn!==null){
+if (spawn2 !== undefined && spawn2 !== null && spawn2 !== "") {
+  let duration = tile.dataset.spawnduration2
+  let counting = tile.dataset.currentdurationtime2
+  let element = spawn2[1]
+  tile.dataset.currentdurationtime2--
+  if (tile.dataset.currentdurationtime2 < 1) {
+    tile.dataset.currentdurationtime2 = duration
+    let el = document.createElement('div')
+    let x = left
+    let y = top
+    let elm = parseInt(element)
+
+    el.className = `alltiles${TILES[elm][1]} tile1 sprite${TILES[elm][1]}`;
+
+    el.style.backgroundImage = `url('${TILES[elm][2]}')`;
+
+    el.style.left = x + "px"
+    el.style.top = y + "px"
+    el.style.zIndex = "5"
+    el.classList.add('SPRITE')
+    // tile.style.willChange = 'transform';
+    el.style.width = tileSize - parseInt(el.style.width / 2) + "px"
+    el.style.height = tileSize - parseInt(el.style.height / 2) + "px"
+    //alert(TILES[elm][1]+' '+TILES[elm][2])
+    document.querySelector('#Econtent').appendChild(el);
+  }
+}
+if(!tile.delaylagreduce&&showindicator === 1||showindicator === "1"){
+  tile.delaylagreduce=3
+  tile.delaylagreduce2=2
+}
+    if (showindicator === 1||showindicator === "1") {
+      tile.delaylagreduce-=1
+      
+        // Pobierz wartość HP gracza z datasetu kafelka
+
+        if(tile.delaylagreduce<1){
+        const hpGracza = (tile.dataset.hp);
+        tile.delaylagreduce2-=1
+                if (tile.delaylagreduce2 < 1) {
+          document.querySelectorAll('.hpindicator').forEach(Document => {
+            Document.remove()
+          })
+          tile.delaylagreduce2=2
+        }
+        // Utwórz element dla wskaźnika paska zdrowia
+        const wskaźnikHP = document.createElement('div');
+        wskaźnikHP.classList.add('wskaźnik-hp');
+        wskaźnikHP.textContent = `HP: ${hpGracza}`;
+        wskaźnikHP.style.width="35px"
+        wskaźnikHP.style.fontSize="10px"
+        wskaźnikHP.style.position="absolute"
+        wskaźnikHP.style.top="-20px"
+        wskaźnikHP.transform='translate(-300px,0)'
+        wskaźnikHP.style.color="white"
+        wskaźnikHP.style.background="black"
+        wskaźnikHP.className="hpindicator"
+        // Ustaw pozycję wskaźnika
+        const leftPozycja = parseInt(tile.style.left) + 'px';
+        const topPozycja = (parseInt(tile.style.top) - 20) + 'px'; // 20px nad kafelkiem
+    /*    wskaźnikHP.style.left = leftPozycja;
+        wskaźnikHP.style.top = topPozycja;*/
+        
+        // Dodaj wskaźnik do dokumentu
+        tile.appendChild(wskaźnikHP);
+        tile.delaylagreduce=10
+    }}
+
+
+
+ if(spawn!==undefined&&spawn!==null&&spawn!==""){
    let duration = tile.dataset.spawnduration
    let counting = tile.dataset.currentdurationtime 
    let element = spawn[1]
@@ -1880,6 +2042,7 @@ if(puzzleblock==1){
        
        el.style.left = x+"px"
        el.style.top = y+"px"
+       el.style.zIndex="5"
        el.classList.add('SPRITE')
        // tile.style.willChange = 'transform';
        el.style.width = tileSize - parseInt(el.style.width / 2) + "px"
@@ -1929,11 +2092,15 @@ if(anableshootingattackforentities==1){
                 let distanceToPlayer = Math.sqrt((targetToX - left / tileSize) ** 2 + (targetToY - top / tileSize) ** 2);
                 if(distanceToPlayer <= 1.1 ){
                   
-                  if (!tile.dataset.dialogue&&NPCdialogue!==undefined &&NPCdialogue!==null&& NPCdialogue!=="") {
+                  if (!tile.dataset.dialogue&&NPCdialogue!==undefined &&NPCdialogue!==null&& NPCdialogue!==""&& NPCdialogue!=="null") {
   tile.dataset.dialogue = 0
   
 }
-if(tile.dataset.dialogue == 0&&NPCdialogue!==undefined &&NPCdialogue!==null&& NPCdialogue!==""){
+if(tile.dataset.dialogue == 0&&NPCdialogue!==undefined &&NPCdialogue!==null&& NPCdialogue!==""&& NPCdialogue!=="null"){
+  
+  
+
+
   tile.dataset.dialogue = 1
   var dialog =NPCdialogue
   pausemove=1
@@ -1943,7 +2110,46 @@ if(tile.dataset.dialogue == 0&&NPCdialogue!==undefined &&NPCdialogue!==null&& NP
   }
   
 }
+if(!tile.dataset.ONESPAWN&&NPCdialogueends_spawn !== "" && NPCdialogueends_spawn !== "null" && NPCdialogueends_spawn !== undefined && NPCdialogueends_spawn !== null){
+  tile.dataset.ONESPAWN=0
+}
+if (NPCdialogueends_spawn !== "" && NPCdialogueends_spawn !== "null" && NPCdialogueends_spawn !== undefined && NPCdialogueends_spawn !== null&&tile.dataset.ONESPAWN==0){
+  
+setTimeout(function() {
 
+  if (NPCdialogueends_spawn !== "" && NPCdialogueends_spawn !== "null" && NPCdialogueends_spawn !== undefined && NPCdialogueends_spawn !== null && indialogue == 0&&tile.dataset.ONESPAWN==0) {
+    tile.dataset.ONESPAWN=1
+deletedtiles.push(tile)
+tile.remove()
+    let element = NPCdialogueends_spawn
+
+
+    let el = document.createElement('div')
+    let x = left
+    let y = top
+    let elm = parseInt(element)
+
+    el.className = `alltiles${TILES[elm][1]} tile1 sprite${TILES[elm][1]}`;
+
+    el.style.backgroundImage = `url('${TILES[elm][2]}')`;
+    el.style.zIndex = "5"
+    el.style.left = x + "px"
+    el.style.top = y + "px"
+    el.classList.add('SPRITE')
+    // tile.style.willChange = 'transform';
+    el.style.width = tileSize - parseInt(el.style.width / 2) + "px"
+    el.style.height = tileSize - parseInt(el.style.height / 2) + "px"
+    //alert(TILES[elm][1]+' '+TILES[elm][2])
+    document.querySelector('#Econtent').appendChild(el);
+    
+
+  }
+
+},1000)
+}
+if (NPCdialogueends_remove == 1 && indialogue == 0) {
+  tile.remove()
+}
 if(!tile.dataset.once0C2){
   tile.dataset.once0C2=0
 }
@@ -2874,7 +3080,7 @@ function attack2() {
     } else {
         cooldownDuration=config.projetitlecfig.cooldownDuration||0
     }
-    
+ 
   
   // Odliczanie Cooldown'u                        >: ]
   if (!cooldownActive) {
@@ -2898,12 +3104,14 @@ function attack2() {
         newaudio.play();
       }
     }
-
+  //  alert(JSON.stringify(config.folder.texture.projectile))
+//alert(JSON.stringify(config.projetitlecfig)+config.playershoots+"  x"+config.folder.texture.projectile[0])
     if (config.playershoots == 1 && config.playershoots !== undefined) {
       let el = document.createElement('div');
       el.style.width = '30px';
       el.style.height = '30px';
       el.style.background = `url(${JSON.stringify(config.folder.texture.projectile[0])})`;
+      el.style.zIndex="5"
    //  alert(`url(${JSON.stringify(config.folder.texture.projectile[0])})`)
       el.style.backgroundSize="100%"
       el.style.position = "absolute";
@@ -2921,9 +3129,33 @@ function attack2() {
         scalee=1
       }
       let yshootingspeed=4;
+      let directionp=0
+      let directionl=0
+      switch (ostclick) {
+  case "left":
+    directionp = -shootingspeed;
+    directionl = 0;
+    break;
+  case "right":
+    directionp = shootingspeed;
+    directionl = 0;
+    break;
+  case "up":
+    directionl = -shootingspeed;
+    directionp = 0;
+    break;
+  case "down":
+    directionl = shootingspeed;
+    directionp = 0;
+    break;
+  default:
+    directionl = 0;
+    directionp = 0;
+}
       let projectile = {
         element: el,
-        direction: (ostclick == "left") ? -shootingspeed : (ostclick == "right") ? shootingspeed : 0,
+        directionX: directionp,
+        directionY: directionl,
         lifespan: config.projetitlecfig.timelife||0, // Czas życia pocisku
         speed:config.projetitlecfig.speed||0,
         nomove:config.projetitlecfig.nomove||0,
@@ -2946,10 +3178,12 @@ function animateProjectiles() {
     let projectile = projectiles[i];
     projectile.lifespan--;
    projectile.element.style.zoom=`${parseInt(projectile.scale)}`
+   
     if(parseInt(projectile.nomove==1)){
       
     }else{
-    projectile.element.style.left = (parseInt(projectile.element.style.left) + parseInt(projectile.direction)*parseInt(projectile.speed)) + "px";
+    projectile.element.style.left = (parseInt(projectile.element.style.left) + parseInt(projectile.directionX)*(projectile.speed)) + "px";
+    projectile.element.style.top = (parseInt(projectile.element.style.top) + parseInt(projectile.directionY)*(projectile.speed)) + "px";
     }
     if (projectile.lifespan <= 0) {
       projectile.element.remove();
@@ -3473,7 +3707,15 @@ function checkit() {
 
                 // Sprawdź czy minęło wystarczająco czasu od ostatniego otrzymania obrażeń
                 if (to205) {
-                  
+        if(config.v>0&&config.v){
+if(config.folder){
+if(config.folder.texture.player[8]){
+document.querySelector('.player').style.background=`url(${config.folder.texture.player[8]})`
+setTimeout(function(){
+  document.querySelector('.player').style.background = `url(${playerskin})`
+},2000)
+}
+}}
                   if(config.HpBarConfiguration!==undefined){
                     // Zaktualizuj życie gracza po kolizji
                     
@@ -3949,6 +4191,14 @@ var tlo2 = 0
       var yyy=0
       
 function loop() {
+  
+  if (!('projectile' in config.folder.texture)) {
+  // Jeśli klucz nie istnieje, dodaj go z domyślną wartością
+  config.folder.texture['projectile'] = [0,0];
+} else {
+  
+}
+  
   // tworzenie opcji z wersji 1/2 do 3
   if (!('playersizeNOHITBOX' in config)) {
   config['playersizeNOHITBOX'] = 1;
@@ -5029,7 +5279,7 @@ playerskin=playerskin69
     document.getElementById('Scontent').innerHTML=''
     document.getElementById('Econtent').innerHTML=''
     tileConfig = config.entities
-    document.getElementById('entitiesconfig').innerText = JSON.stringify(config.entities);
+ //   document.getElementById('entitiesconfig').innerText = JSON.stringify(config.entities);
     moveTilesRandomly()
     setTimeout(function(){
       curline=0
@@ -5130,7 +5380,7 @@ slider2.addEventListener('touchend', () => {stop=1; slider2.value = 0; currentVa
   
 
 </div>
-<textarea name="" id="entitiesconfig" cols="30" rows="10" value="" onchange="updateSpriteConfigNpc()"></textarea>
+<!--<textarea name="" id="entitiesconfig" cols="30" rows="10" value="" onchange="updateSpriteConfigNpc()"></textarea>-->
 
 <style>
     .json-editor {
@@ -5254,6 +5504,13 @@ function addEntity() {
               newValue = parseFloat(newValue); // lub parseInt(newValue) dla liczby całkowitej
             }
         }
+        if (parsedValue == "null" ||parsedValue == "undefined"||parsedValue == "" ) {
+  // Jeśli wartość jest obiektem JSON, zachowaj ją jako obiekt
+  newValue = null;
+}
+  // Jeśli wartość jest obiektem JSON, zachowaj ją jako obiekt
+  newValue = parsedValue;
+
     } catch (error) {
         // W przypadku błędu parsowania zachowaj wartość jako string
         
@@ -5264,7 +5521,7 @@ function addEntity() {
     }
 
     config.entities[entityName][index] = newValue;
-    document.querySelector("#entitiesconfig").innerText = JSON.stringify(config.entities);
+ //   document.querySelector("#entitiesconfig").innerText = JSON.stringify(config.entities);
 }
 
 
@@ -5307,7 +5564,7 @@ if (file) {
     config.entities[entityName][index] = base64Wav;
     
    // alert(JSON.stringify(config.entities[entityName][index]))
-    document.querySelector("#entitiesconfig").innerText = JSON.stringify(config.entities);
+   // document.querySelector("#entitiesconfig").innerText = JSON.stringify(config.entities);
   }
   reader.readAsDataURL(file);
 }
@@ -5371,7 +5628,7 @@ if (file) {
             "SpawnPointBlock(1/0)",
             "CantBeDamaged(1/0)",
             "Teleport by([y,x])",
-            "Move Tiles when it is defaced by([(i...),y,x])",
+            "Move Tiles when it is defaced by([(i...),x,y])",
             "spawn [duration,(i...)]",
             "despawn ticks",
             "goes 1 tick one direction good for projectiles :) (1)on else off",
@@ -5399,7 +5656,13 @@ if (file) {
 "movementType2 [move avoid follow]/disabled",
 "collisionobject2 [name]/disabled",
 "whendistance2makepattern (in PM 2.8)/disabled",
-"NPC Dialogue ['hello','world']"
+"NPC Dialogue ['hello','world']",
+"collision (eval javascript )",
+"NPCdialogueends_remove (1)else",
+"NPCdialogueends_spawn and kill this (i...)",
+"collisiondistance <num> 'disabled'",
+"Spawn 2 [duration,(i...)]",
+" show Hp near entity (1)/0"
         ];
         
         /*gethurttexture,gethurtdelay,
@@ -5467,6 +5730,7 @@ vp.style.height = newHeight + 'px';
     }
   //  alert(config.folder.texture.projectile)
     console.log("Zmienna po zmianie:", variable);
+    
   }
 
 
@@ -5493,6 +5757,7 @@ vp.style.height = newHeight + 'px';
         reader.addEventListener('load', () => {
     
     changeVariable(reader.result,variable, index);
+    
         });
   }
 </script>
@@ -5512,6 +5777,8 @@ window.setInterval(updtd,6000)
 </script>
 
 <div>on version 1.1 Experimental</div>
+<button>player take damage</button>
+<input type="file" id="fileInput30" onchange="handleFileInputChangeA(event,config.folder.texture.player,  8)" />
 <input type="file" id="fileInput10" onchange="handleFileInputChangeA(event,config.folder.texture.player,  1)" />
 <button onclick="handleFileButtonClickA('fileInput1', 1)">player Left</button>
 <input type="file" id="fileInput20" onchange="handleFileInputChangeA(event,config.folder.texture.player,  2)" />
@@ -5539,6 +5806,7 @@ window.setInterval(updtd,6000)
   playershoots ? false
 </div>
 <input type="file" id="fileInput40" onchange="handleFileInputChangeA(event,config.folder.texture.projectile,0)" />
+
 <button onclick="handleFileButtonClickA('fileInput4', 2)">player projectile</button>
 <!-- Input do edycji zmiennej -->
 <div>hp barleft </div>
@@ -5563,6 +5831,9 @@ window.setInterval(updtd,6000)
 <input type="text" id="bottomInput" oninput="editInputVariable3(this.value, 'projetitlecfig', 'timelife')">
  duration
 <input type="text" id="bottomInput" oninput="editInputVariable3(this.value, 'projetitlecfig','cooldownDuration')">
+scale
+<input type="text" id="bottomInput" oninput="editInputVariable3(this.value, 'projetitlecfig','scale')">
+
  }
 }
 </div>
@@ -5673,14 +5944,14 @@ function emptyproj(){
   updateViewport()
 }
   // Początkowe ustawienie wartości textarea na podstawie tileConfig
-  document.getElementById('entitiesconfig').innerText=JSON.stringify(config.entities);
+  //document.getElementById('entitiesconfig').innerText=JSON.stringify(config.entities);
 
   // Funkcja do aktualizacji tileConfig na podstawie danych z textarea
   function updateSpriteConfigNpc() {
     try {
       // Parsowanie zawartości textarea do obiektu JSON
       stop=1
-       config.entities =  JSON.parse(document.getElementById('entitiesconfig').value)
+     //  config.entities =  JSON.parse(document.getElementById('entitiesconfig').value)
 
       // Aktualizacja tileConfig
       tileConfig = config.entities
@@ -6058,7 +6329,7 @@ dialogue < text > will display dialogue :)
 <script>
     // Global queue for storing dialog messages
     const dialogQueue = [];
-
+var indialogue=0
     // NPC dialog function
     function message(text) {
         const npcDialog = document.getElementById('npcDialog');
@@ -6070,6 +6341,7 @@ dialogue < text > will display dialogue :)
         // If there's no dialog currently showing, display the next message
         if (!npcDialog.style.display || npcDialog.style.display === 'none') {
             displayNextDialog();
+            
         }
     }
 
@@ -6077,11 +6349,12 @@ dialogue < text > will display dialogue :)
     function displayNextDialog() {
         const npcDialog = document.getElementById('npcDialog');
         const npcText = document.getElementById('npcText');
-        
+        indialogue=1
         // If there are no more messages in the queue, hide the dialog and return
         if (dialogQueue.length === 0) {
             npcDialog.style.display = 'none';
-            pausemove=0
+            indialogue = 0
+pausemove = 0
             return;
         }
         
@@ -6096,7 +6369,7 @@ dialogue < text > will display dialogue :)
         
         // Animate text appearance
         let index = 0;
-        const delay = 50; // Delay between each character appearance
+        const delay = 20; // Delay between each character appearance
         const timer = setInterval(function() {
             npcText.textContent += nextMessage[index];
             index++;
@@ -8047,7 +8320,7 @@ contentElement.style.backgroundImage = `url('${bgimg}')`;
 document.getElementById('Scontent').innerHTML = ''
 document.getElementById('Econtent').innerHTML = ''
 tileConfig = config.entities
-document.getElementById('entitiesconfig').innerText = JSON.stringify(config.entities);
+//document.getElementById('entitiesconfig').innerText = JSON.stringify(config.entities);
 moveTilesRandomly()
 setTimeout(function() {
   curline = 0
