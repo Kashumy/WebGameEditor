@@ -1992,8 +1992,8 @@ tile.dataset.teleporting=1
 
   // Random teleportation logic
   setInterval(() => {
-    const newX = Math.random() * (xmax - xmin) + xmin;
-    const newY = Math.random() * (ymax - ymin) + ymin;
+    const newX = left+Math.random() * (xmax - xmin) + xmin;
+    const newY = top+Math.random() * (ymax - ymin) + ymin;
 
     // Update tile position
     left=newX
