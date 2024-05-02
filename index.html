@@ -4,9 +4,15 @@
 <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
 <!-- put your water mark -->
 <div class="Ylyl" style="position: fixed; left:0; bottom:0px; background: #333 ; z-index: 9; width:30px;height:30px" onclick="saveToFile()">S</div>
-<div class="Ylyl" style="position: fixed; left:35px; bottom:0px; background: #333; z-index: 9; width:30px;height:30px" onclick="loadfile()">L</div>
+<div class="Ylyl" style="position: fixed; left:30px; bottom:0px; background: #333; z-index: 9; width:30px;height:30px" onclick="loadfile()">L</div>
 
 <img src="./watermark.gif" onclick="config.testmode = config.testmode === 1 ? 0 : 1;up1();playUpdateSound2()"style="position: fixed; top:0; left:10px;  width:100px;height:30px; transform: translate(0,25%); z-index: 99999999999" >
+
+<style>
+  gui{
+    margin-left: 50px
+  }
+</style>
 <script>var config ={  "HpBarConfiguration": {
       "texture": "./cross.png",
       "textureempty": "./grass.png",
@@ -30,12 +36,8 @@
 <script>
   const textsArray = [
 `
-Loading A Papermaker2.8 Please Wait
-`,
-`
-Also Good Luck with Making !
-`
-];
+Loading A Game Please Wait
+`];
 </script>
 
 
@@ -7787,7 +7789,7 @@ zrub ustawienia deweloperskie
             <br>
             <input type="text" id="tekstInput" placeholder="Wprowadź tekst dla nowego przycisku">
             <br>
-            <input type="text" id="IdInput" placeholder="Left,Right,Up,Down">
+            <input type="text" id="IdInput" placeholder="Left,Right,Up,Down,Attack,Jump">
             <br>
             <button onclick="dodajPrzyciskZModalu()">Dodaj przycisk</button>
             <button onclick="ukonczoneGUI()">Zakończ gui</button>
@@ -8044,7 +8046,7 @@ if (atackelement) {
         }
 
         function dodajObslugeUsuwanie(element) {
-            element.addEventListener('touchstart',
+            element.addEventListener('',
             function(){usunelgui(element)}
             );
         }
