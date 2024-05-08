@@ -2,6 +2,11 @@
 
 
 
+
+
+
+
+
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
 <!-- put your water mark -->
@@ -38,7 +43,7 @@
 <script>
   const textsArray = [
 `
-Loading A Game Please Wait
+Loading A PM2.9nfr
 `];
 // changing max fps game change game 
 let defaultFps = 15;
@@ -1961,7 +1966,14 @@ changeplayertexture,
 resetkills,
 ifentityexistonVPmovetilesandthiskill,
 otherentitycollision,
-addotherclasses
+addotherclasses,
+collisionchangedimension,
+
+
+lookatobject,
+spawningdistance,//number
+spawningoffset,//[x,y]
+spawnnumber,
 /*
 spawningonlywhenlooking, // 1/0
 spawningonlywhenlookingaway, // 1/0
@@ -1979,6 +1991,63 @@ spawn2onlyifrandom, // [min,max]*/
 tiles.forEach((tile) => {
   var closestIndex = 0;
   var closestDistance; // Zmienna closestDistance musi być zdefiniowana
+  let executeall=0
+  let viewport3 = document.getElementById('viewport');
+const tileRect8 = tile.getBoundingClientRect();
+const viewportRect8 = viewport3.getBoundingClientRect();
+if (
+  tileRect8.top + 2 * tileSize >= viewportRect8.top &&
+  tileRect8.left + 2 * tileSize >= viewportRect8.left &&
+  tileRect8.bottom - 2 * tileSize <= viewportRect8.bottom &&
+  tileRect8.right - 2 * tileSize <= viewportRect8.right&& tile.dataset.x
+) {
+  
+  function findTileDimension(tileMapp, x, y, s) {
+  // Przejście przez wszystkie wymiary tileMap
+  for (var dimensioned = 0; dimensioned < tileMap.length; dimensioned++) {
+    // Sprawdzenie, czy kafelek o podanych współrzędnych istnieje w danym wymiarze
+    const foundTile = tileMapp[dimensioned].find(block =>
+      parseInt(block[0]) === x &&
+      parseInt(block[1]) === y &&
+      parseInt(block[2]) === s
+    );
+
+    // Jeśli kafelek został znaleziony w danym wymiarze, zwróć numer tego wymiaru
+    if (foundTile) {
+      return dimensioned;
+    }
+  }
+
+  // Jeśli kafelek nie został znaleziony w żadnym wymiarze, zwróć -1
+  return -1;
+}
+
+// Przykładowe użycie:
+const xc = parseInt(tile.dataset.x)
+const yc = parseInt(tile.dataset.y)
+const sc = parseInt(tile.dataset.s)
+if(xc){
+
+const dimensionIndex = findTileDimension(tileMap, xc, yc, sc);
+
+if (parseInt(dimensionIndex) == parseInt(dimension)) {
+executeall=1
+//alert("something is there",parseInt(dimensionIndex));
+
+} else {
+  
+  tile.remove()
+  //alert("removing")
+  executeall=0
+}}
+  
+  
+}else{
+  executeall=1
+}
+
+  if(executeall==1){
+  
   function removefromtilemap(){
     const currentX = parseInt(tile.dataset.x)
 const currentY = parseInt(tile.dataset.y)
@@ -1986,6 +2055,8 @@ const currentS = parseInt(tile.dataset.s)
 //alert(currentX+" "+currentY+" "+currentS)
 //alert(currentX+' '+currentY+' '+currentS)
 // Znajdź indeks bloku w tileMap[dimension] na podstawie dataset x, y i s
+
+
 
 
 setTimeout(function() {
@@ -2044,6 +2115,12 @@ if (addotherclasses!==undefined&&addotherclasses!==null&&addotherclasses!==""&&a
 
 function KillThis(){
   if(true){
+    
+    
+    let gototarget = findClosestProjetitle(tile, collisionobject);
+if (gototarget) {
+  gototarget.remove()
+}
                   // Player attacks entity, decrement HP
                   tile.dataset.hp -= 1;
 
@@ -2069,24 +2146,68 @@ if(config.folder!==undefined){
                     
 
 if(spawn_if_killed!==undefined&&spawn_if_killed!==null&&spawn_if_killed!=="undefined"){
-  let el = document.createElement('div')
-let x = left
-let y = top
-let elm = parseInt(spawn_if_killed)
-
-el.className = `alltiles${TILES[elm][1]} tile1 sprite${TILES[elm][1]}`;
-
-el.style.backgroundImage = `url('${TILES[elm][2]}')`;
-
-el.style.left = x + "px"
-el.style.top = y + "px"
-el.style.zIndex = "5"
-el.classList.add('SPRITE')
-// tile.style.willChange = 'transform';
-el.style.width = tileSize - parseInt(el.style.width / 2) + "px"
-el.style.height = tileSize - parseInt(el.style.height / 2) + "px"
-//alert(TILES[elm][1]+' '+TILES[elm][2])
-document.querySelector('#Econtent').appendChild(el);
+  
+     let numbersprites=1
+     if(spawnnumber!==undefined&&spawnnumber!==null&&spawnnumber!=="null"&&spawnnumber!==""){
+       numbersprites=spawnnumber
+       
+     }else{
+       numbersprites=1
+     }
+     for(let i=0;i<numbersprites;i++){
+          let el= document.createElement('div')
+     
+//     alert("spawned")
+     
+     let ofss=1
+     if(ofss!==undefined&&ofss!==null){
+       ofss=spawningdistance*tileSize
+     }else{
+       ofss=1
+     }
+     let offsetXt=0
+     let offsetYt=0
+     if(spawningoffset!==undefined&&spawningoffset!==null){
+     if (spawningoffset[0] !== undefined && spawningoffset[1] !== undefined && spawningoffset[0] !== null && spawningoffset[1] !== null && spawningoffset !== undefined && spawningoffset !== null) {
+       if(spawningoffset[0]!==undefined){
+  offsetXt = parseFloat(spawningoffset[0])*tileSize
+       }if(spawningoffset[1]!==undefined){
+  offsetYt = parseFloat(spawningoffset[1])*tileSize
+       }
+}
+if(offsetXt==undefined&&offsetYt==undefined){offsetXt = 0
+offsetYt = 0}else{
+  
+}}
+     let x=(left+Math.floor(Math.random()*(ofss*2))-ofss)+offsetXt
+     let y=(top+Math.floor(Math.random()*(ofss*2))-ofss)+offsetYt
+     if(isNaN(x)){
+       x=(left+Math.floor(Math.random()*(ofss*2))-ofss)
+       y=(top+Math.floor(Math.random()*(ofss*2))-ofss)
+if (isNaN(x)) {
+  x = left
+  y = top
+}
+     }
+     
+//alert(x+" "+y+" "+left)
+    let elm=parseInt(spawn_if_killed)
+    
+     el.className = `alltiles${TILES[elm][1]} tile1 sprite${TILES[elm][1]}`;
+     
+     el.style.backgroundImage = `url('${TILES[elm][2]}')`;
+       
+       el.style.left = x+"px"
+       el.style.top = y+"px"
+       el.style.zIndex="5"
+       el.classList.add('SPRITE')
+       
+       // tile.style.willChange = 'transform';
+       el.style.width = tileSize - parseInt(el.style.width / 2) + "px"
+       el.style.height = tileSize - parseInt(el.style.height / 2) + "px"
+       //alert(TILES[elm][1]+' '+TILES[elm][2])
+       document.querySelector('#Econtent').appendChild(el);
+     }
 }
 // Pobierz wartości dataset x, y i s dla bieżącego bloku
 const currentX = parseInt(tile.dataset.x)
@@ -2121,6 +2242,13 @@ setTimeout(function() {
     }
   }
 }, 300);
+
+
+
+
+
+
+
 
 
 if(movetilesdeffacted!==undefined&&movetilesdeffacted!==null){
@@ -2218,9 +2346,13 @@ console.log(closestIndex)
                 }
                 tile.dataset.despawn--;
                 if (tile.dataset.despawn < 1) {
+                  if(initialHp>10){
                   deletedtiles.push(tile);
                   
                   tile.remove()
+                  }else{
+                    KillThis()
+                  }
                 }
               }
                if(spawn!==undefined&&spawn!==null&&spawn!==""){
@@ -2289,25 +2421,70 @@ if (spawn2 !== undefined && spawn2 !== null && spawn2 !== "") {
   let element = spawn2[1]
   tile.dataset.currentdurationtime2--
   if (tile.dataset.currentdurationtime2 < 1) {
-    tile.dataset.currentdurationtime2 = duration
-    let el = document.createElement('div')
-    let x = left
-    let y = top
-    let elm = parseInt(element)
-
-    el.className = `alltiles${TILES[elm][1]} tile1 sprite${TILES[elm][1]}`;
-
-    el.style.backgroundImage = `url('${TILES[elm][2]}')`;
-
-    el.style.left = x + "px"
-    el.style.top = y + "px"
-    el.style.zIndex = "5"
-    el.classList.add('SPRITE')
-    // tile.style.willChange = 'transform';
-    el.style.width = tileSize - parseInt(el.style.width / 2) + "px"
-    el.style.height = tileSize - parseInt(el.style.height / 2) + "px"
-    //alert(TILES[elm][1]+' '+TILES[elm][2])
-    document.querySelector('#Econtent').appendChild(el);
+tile.dataset.currentdurationtime = duration
+     let numbersprites=1
+     //alert("he")
+     if(spawnnumber!==undefined&&spawnnumber!==null&&spawnnumber!=="null"&&spawnnumber!==""){
+       numbersprites=spawnnumber
+       
+     }else{
+       numbersprites=1
+     }
+     for(let i=0;i<numbersprites;i++){
+       
+     let el= document.createElement('div')
+     
+//     alert("spawned")
+     
+     let ofss=1
+     if(ofss!==undefined&&ofss!==null){
+       ofss=spawningdistance*tileSize
+     }else{
+       ofss=1
+     }
+     let offsetXt=0
+     let offsetYt=0
+     if(spawningoffset!==undefined&&spawningoffset!==null){
+     if (spawningoffset[0] !== undefined && spawningoffset[1] !== undefined && spawningoffset[0] !== null && spawningoffset[1] !== null && spawningoffset !== undefined && spawningoffset !== null) {
+       if(spawningoffset[0]!==undefined){
+  offsetXt = parseFloat(spawningoffset[0])*tileSize
+       }if(spawningoffset[1]!==undefined){
+  offsetYt = parseFloat(spawningoffset[1])*tileSize
+       }
+}
+if(offsetXt==undefined&&offsetYt==undefined){offsetXt = 0
+offsetYt = 0}else{
+  
+}}
+     let x=(left+Math.floor(Math.random()*(ofss*2))-ofss)+offsetXt
+     let y=(top+Math.floor(Math.random()*(ofss*2))-ofss)+offsetYt
+     if(isNaN(x)){
+       x=(left+Math.floor(Math.random()*(ofss*2))-ofss)
+       y=(top+Math.floor(Math.random()*(ofss*2))-ofss)
+if (isNaN(x)) {
+  x = left
+  y = top
+}
+     }
+     
+//alert(x+" "+y+" "+left)
+    let elm=parseInt(element)
+    
+     el.className = `alltiles${TILES[elm][1]} tile1 sprite${TILES[elm][1]}`;
+     
+     el.style.backgroundImage = `url('${TILES[elm][2]}')`;
+       
+       el.style.left = x+"px"
+       el.style.top = y+"px"
+       el.style.zIndex="5"
+       el.classList.add('SPRITE')
+       
+       // tile.style.willChange = 'transform';
+       el.style.width = tileSize - parseInt(el.style.width / 2) + "px"
+       el.style.height = tileSize - parseInt(el.style.height / 2) + "px"
+       //alert(TILES[elm][1]+' '+TILES[elm][2])
+       document.querySelector('#Econtent').appendChild(el);
+     }
   }
 }
 if(!tile.delaylagreduce&&showindicator === 1||showindicator === "1"){
@@ -2360,9 +2537,50 @@ if(!tile.delaylagreduce&&showindicator === 1||showindicator === "1"){
    tile.dataset.currentdurationtime --
    if(tile.dataset.currentdurationtime  < 1){
      tile.dataset.currentdurationtime = duration
+     let numbersprites=1
+     if(spawnnumber!==undefined&&spawnnumber!==null&&spawnnumber!=="null"&&spawnnumber!==""){
+       numbersprites=spawnnumber
+       
+     }else{
+       numbersprites=1
+     }
+     for(let i=0;i<numbersprites;i++){
      let el= document.createElement('div')
-     let x=left
-     let y=top
+     
+//     alert("spawned")
+     
+     let ofss=1
+     if(ofss!==undefined&&ofss!==null){
+       ofss=spawningdistance*tileSize
+     }else{
+       ofss=1
+     }
+     let offsetXt=0
+     let offsetYt=0
+     if(spawningoffset!==undefined&&spawningoffset!==null){
+     if (spawningoffset[0] !== undefined && spawningoffset[1] !== undefined && spawningoffset[0] !== null && spawningoffset[1] !== null && spawningoffset !== undefined && spawningoffset !== null) {
+       if(spawningoffset[0]!==undefined){
+  offsetXt = parseFloat(spawningoffset[0])*tileSize
+       }if(spawningoffset[1]!==undefined){
+  offsetYt = parseFloat(spawningoffset[1])*tileSize
+       }
+}
+if(offsetXt==undefined&&offsetYt==undefined){offsetXt = 0
+offsetYt = 0}else{
+  
+}}
+     let x=(left+Math.floor(Math.random()*(ofss*2))-ofss)+offsetXt
+     let y=(top+Math.floor(Math.random()*(ofss*2))-ofss)+offsetYt
+     if(isNaN(x)){
+       x=(left+Math.floor(Math.random()*(ofss*2))-ofss)
+       y=(top+Math.floor(Math.random()*(ofss*2))-ofss)
+if (isNaN(x)) {
+  x = left
+  y = top
+}
+     }
+     
+//alert(x+" "+y+" "+left)
     let elm=parseInt(element)
     
      el.className = `alltiles${TILES[elm][1]} tile1 sprite${TILES[elm][1]}`;
@@ -2373,12 +2591,13 @@ if(!tile.delaylagreduce&&showindicator === 1||showindicator === "1"){
        el.style.top = y+"px"
        el.style.zIndex="5"
        el.classList.add('SPRITE')
+       
        // tile.style.willChange = 'transform';
        el.style.width = tileSize - parseInt(el.style.width / 2) + "px"
        el.style.height = tileSize - parseInt(el.style.height / 2) + "px"
        //alert(TILES[elm][1]+' '+TILES[elm][2])
        document.querySelector('#Econtent').appendChild(el);
-     }
+     }}
    }
  
     
@@ -2450,17 +2669,37 @@ for (let tileId in tileConfig) {
   })
 }
 }
+
+
+if(lookatobject==1){
+const playerCenterX = targetX
+const playerCenterY = targetY;
+
+const deltaX = playerCenterX - left;
+const deltaY = playerCenterY - top;
+//ostclick
+const angle = Math.atan2(deltaY, deltaX) * (180 / Math.PI);
+
+tile.style.transform=`rotate(${angle}deg)`
+}
                 
                 if(distanceToPlayer <= 1.1 ){
-                  
+if(collisionchangedimension!==undefined &&collisionchangedimension!==null&&collisionchangedimension!=="undefined"){
+  dimension=parseInt(collisionchangedimension)
+  config.dimension=parseInt(collisionchangedimension)
+  updateViewport()
+}
 if(resetkills==1){
   killed=0
   config.killed=0
 }
 /*
 *-----------------------------------------*
+
 *-----------------------------------------*
+
 *-----------------------------------------*
+
 *-----------------------------------------*
   
   
@@ -2468,11 +2707,14 @@ if(resetkills==1){
   
 
 *-----------------------------------------*
+
 *-----------------------------------------*
+
 *-----------------------------------------*
+
 *-----------------------------------------*
 */
-if(ifentityexistonVPmovetilesandthiskill!==undefined&&ifentityexistonVPmovetilesandthiskill!==null){
+if(ifentityexistonVPmovetilesandthiskill!==undefined&&ifentityexistonVPmovetilesandthiskill!==null&&ifentityexistonVPmovetilesandthiskill!=="undefined"&&ifentityexistonVPmovetilesandthiskill!==null){
   let output1=0
   for (let tileId in tileConfig) {
     let tiles = document.querySelectorAll(`.${tileId}`);
@@ -2873,242 +3115,13 @@ tile.remove();
                 if(collectable!==1){
                   if(attack === 1 && distanceToPlayer <= 1 && anableshootingattackforentities !==1 ){
 if(cantbedamaged!==1||cantbedamaged==undefined||cantbedamaged==null){
-                  // Player attacks entity, decrement HP
-                  tile.dataset.hp -= 1;
-
-if(config.folder!==undefined){
- // alert(config.folder.sounds.player[2])
-  if(config.folder.sounds.player[2]){
-  let newaudio;
-  const base64Wav = config.folder.sounds.player[2];
-  
-  // Utwórz nowy odtwarzacz audio
-  newaudio = new Audio();
-  newaudio.src = base64Wav;
-  newaudio.setAttribute('preload', 'auto');
-  
-  // Dodaj odtwarzacz do dokumentu
-  document.body.appendChild(newaudio);
-  
-  // Odtwórz plik audio WAV
-  newaudio.play();
-  }}
-                  if (tile.dataset.hp < 1) {
-
-                    
-
-if(spawn_if_killed!==undefined&&spawn_if_killed!==null&&spawn_if_killed!=="undefined"){
-  let el = document.createElement('div')
-let x = left
-let y = top
-let elm = parseInt(spawn_if_killed)
-
-el.className = `alltiles${TILES[elm][1]} tile1 sprite${TILES[elm][1]}`;
-
-el.style.backgroundImage = `url('${TILES[elm][2]}')`;
-
-el.style.left = x + "px"
-el.style.top = y + "px"
-el.style.zIndex = "5"
-el.classList.add('SPRITE')
-// tile.style.willChange = 'transform';
-el.style.width = tileSize - parseInt(el.style.width / 2) + "px"
-el.style.height = tileSize - parseInt(el.style.height / 2) + "px"
-//alert(TILES[elm][1]+' '+TILES[elm][2])
-document.querySelector('#Econtent').appendChild(el);
+ KillThis()
 }
-// Pobierz wartości dataset x, y i s dla bieżącego bloku
-const currentX = parseInt(tile.dataset.x)
-const currentY = parseInt(tile.dataset.y)
-const currentS = parseInt(tile.dataset.s)
-//alert(currentX+" "+currentY+" "+currentS)
-//alert(currentX+' '+currentY+' '+currentS)
-// Znajdź indeks bloku w tileMap[dimension] na podstawie dataset x, y i s
-setTimeout(function() {
-  if (onece5 == 1) {
-    if (finishproject == 1) {
-      onece5 = 0;
-      for (var i = 0; i < 2; i++) {
-
-        const blocksToRemove = tileMap[dimension].filter(block =>
-          parseInt(block[0]) === currentX &&
-          parseInt(block[1]) === currentY &&
-          parseInt(block[2]) === currentS
-        );
-
-        blocksToRemove.forEach(blockToRemove => {
-          const indexToRemove = tileMap[dimension].indexOf(blockToRemove);
-          tileMap[dimension].splice(indexToRemove, 1);
-        });
-
-        config.savedTileMap = tileMap;
-
-        setTimeout(function() {
-          onece5 = 1;
-        }, 100);
-      }
-    }
-  }
-}, 300);
-
-
-if(movetilesdeffacted!==undefined&&movetilesdeffacted!==null){
-  movemap(movetilesdeffacted[1],movetilesdeffacted[2],movetilesdeffacted[0]);
-}
-                    if (score1 == 1) {
-                      score += 1
-                    } else {
-                      killed += 1;
-                    }
-                    // Remove 
-                    // Entity is defeated, remove the tile
-                    tile.remove();
-                    deletedtiles.push(tile);
-                  }
-                                      }
                   } else  if (attack === 1 &&  distanceToProjectile <= 1) {
                   //alert("")
                   if(cantbedamaged!==1||cantbedamaged==undefined||cantbedamaged==null){
-                  // Player attacks entity, decrement HP
-                  tile.dataset.hp -= 1;
-                 // console.log(tile.dataset.hp);
-                 let gototarget = findClosestProjetitle(tile, collisionobject);
-                 if(gototarget){
-                 gototarget.remove()
-                 }
-                 
-                 
-
-// Pobierz obecne tło
-
-
-// Ustaw nowe tło
-if (!tile.dataset.once0C) {
-  tile.dataset.once0C = 0;
-}
-
-if (gethurttexture !== null && gethurttexture !== undefined && tile.dataset.once0C == 0) {
-  tile.dataset.once0C = 1;
-  var previousBackground = tile.style.backgroundImage;
-  
-  tile.style.backgroundImage = `url('${gethurttexture}')`;
-  tile.style.backgroundSize = "100%";
-
-  if (gethurtdelay !== undefined && gethurtdelay !== null) {
-    setTimeout(function () {
-      tile.style.backgroundImage = previousBackground;
-      tile.style.backgroundSize = "100%";
-      tile.dataset.once0C = 0;
-    }, parseInt(gethurtdelay));
-  }
-}
-
-// Teraz wartość poprzedniego tła jest przechowywana w zmiennej previousBackground
-
-
-if(config.folder!==undefined){
- // alert(config.folder.sounds.player[2])
-  if(config.folder.sounds.player[2]){
-  let newaudio;
-  const base64Wav = config.folder.sounds.player[2];
-  
-  // Utwórz nowy odtwarzacz audio
-  newaudio = new Audio();
-  newaudio.src = base64Wav;
-  newaudio.setAttribute('preload', 'auto');
-  
-  // Dodaj odtwarzacz do dokumentu
-  document.body.appendChild(newaudio);
-  
-  // Odtwórz plik audio WAV
-  newaudio.play();
-  }}
-                  if (tile.dataset.hp < 1) {
-
-                    
-if (spawn_if_killed !== undefined && spawn_if_killed !== null && spawn_if_killed !== "undefined") {
-  let el = document.createElement('div')
-  let x = left
-  let y = top
-  let elm = parseInt(spawn_if_killed)
-
-  el.className = `alltiles${TILES[elm][1]} tile1 sprite${TILES[elm][1]}`;
-
-  el.style.backgroundImage = `url('${TILES[elm][2]}')`;
-
-  el.style.left = x + "px"
-  el.style.top = y + "px"
-  el.style.zIndex = "5"
-  el.classList.add('SPRITE')
-  // tile.style.willChange = 'transform';
-  el.style.width = tileSize - parseInt(el.style.width / 2) + "px"
-  el.style.height = tileSize - parseInt(el.style.height / 2) + "px"
-  //alert(TILES[elm][1]+' '+TILES[elm][2])
-  document.querySelector('#Econtent').appendChild(el);
-}
-// Pobierz wartości dataset x, y i s dla bieżącego bloku
-const currentX = parseInt(tile.dataset.x)
-const currentY = parseInt(tile.dataset.y)
-const currentS = parseInt(tile.dataset.s)
-//alert(currentX+" "+currentY+" "+currentS)
-//alert(currentX+' '+currentY+' '+currentS)
-// Znajdź indeks bloku w tileMap[dimension] na podstawie dataset x, y i s
-setTimeout(function() {
-  if (onece5 == 1) {
-    if (finishproject == 1) {
-      onece5 = 0;
-      for (var i = 0; i < 2; i++) {
-
-        const blocksToRemove = tileMap[dimension].filter(block =>
-          parseInt(block[0]) === currentX &&
-          parseInt(block[1]) === currentY &&
-          parseInt(block[2]) === currentS
-        );
-
-        blocksToRemove.forEach(blockToRemove => {
-          const indexToRemove = tileMap[dimension].indexOf(blockToRemove);
-          tileMap[dimension].splice(indexToRemove, 1);
-        });
-
-        config.savedTileMap = tileMap;
-
-        setTimeout(function() {
-          onece5 = 1;
-        }, 100);
-      }
-    }
-  }
-}, 300);
-
-/*
-// Sprawdź, czy istnieje blok o danych współrzędnych
-if (existingBlockIndex !== -1) {
-    // Jeśli blok istnieje, usuń go z tileMap[dimension]
-   // alert(existingBlockIndex)
-    alert(existingBlockIndex)
-    if(finishproject==1){
-      tileMap[dimension].splice(existingBlockIndex, 1);
-    
-    }
-}
-*/
-
-
-if(movetilesdeffacted!==undefined&&movetilesdeffacted!==null){
-  movemap(movetilesdeffacted[1],movetilesdeffacted[2],movetilesdeffacted[0]);
-}
-                    if (score1 == 1) {
-                      score += 1
-                    } else {
-                      killed += 1;
-                    }
-                    // Remove 
-                    // Entity is defeated, remove the tile
-                    tile.remove();
-                    deletedtiles.push(tile);
-
-                  }
-                }}
+                    KillThis()
+}}
                   
                   
                 }else{
@@ -3587,7 +3600,7 @@ if(movetilesdeffacted!==undefined&&movetilesdeffacted!==null){
                   }
                                       }
 }
-
+}
         });
     }}
 
@@ -4747,7 +4760,10 @@ var tlo2 = 0
       var yyy=0
       
 function loop() {
-  
+if (!('dimension' in config)) {
+  // Jeśli klucz nie istnieje, dodaj go z domyślną wartością
+  config['dimension'] = 0;
+}
   if (!('projectile' in config.folder.texture)) {
   // Jeśli klucz nie istnieje, dodaj go z domyślną wartością
   config.folder.texture['projectile'] = [0,0];
@@ -5713,7 +5729,7 @@ function handleFileContent(textContent) {
   // Możesz pozostawić resztę Twojego kodu, ale już bez konieczności przekształcania na base64
 //  alert((textContent))
 config = JSON.parse(textContent);
-
+dimension=config.dimension||0
   try {
    
     config = JSON.parse(textContent);
@@ -6198,7 +6214,7 @@ if (file) {
             "Enable Shooting Attack for Entities(1/0)",
             "Collectable(1/0)",
             "SpawnPointBlock(1/0)",
-            "CantBeDamaged(1/0)",
+            "CantBeDamaged(1/0) By player doesn't wor for example for a despawn",
             "Teleport by([y,x])",
             "Move Tiles when it is defaced by([(i...),x,y])",
             "spawn [duration,(i...)]",
@@ -6227,7 +6243,7 @@ if (file) {
 "distance2 <number> /disabled",
 "movementType2 [move avoid follow]/disabled",
 "collisionobject2 [name]/disabled",
-"whendistance2makepattern (in PM 2.8)/disabled",
+"whendistance2makepattern (in PM 2.9 full)/disabled",
 "NPC Dialogue ['hello','world']",
 "collision (eval javascript )",
 "NPCdialogueends_remove (1)else",
@@ -6258,9 +6274,35 @@ if (file) {
 "T: playertexturestaydown",
 "changeplayertexture collision 1/0",
 "resetkills 1/0 collision ",
-"if collision and entity exist on viewport attack this <S> give cant be damaged and 1 hp for better experience",
-"if collision with other entity attack this <S>",
-"addotherclasses ['class']  projetitle is special class it used for all hurtable with anableshootingattackforentities sprites for kiling it "
+"if collision and entity exist on viewport attack this < S > give cant be damaged and 1 hp for better experience",
+"if collision with other entity attack this < S >",
+"addotherclasses ['class']  projetitle is special class it used for all hurtable with anableshootingattackforentities sprites for kiling it ",
+"collisionchangedimension (number of dimension)",
+"lookatobject1/0",
+"spawningdistance", //number
+"spawningoffset [x,y]", //[x,y]
+
+
+/*
+
+playertextureleft,
+playertextureright,
+playertextureup,
+playertexturedown,
+playertexturestayleft,
+playertexturestayright,
+playertexturedefault,
+playertexturestaydown,
+changeplayertexture,
+resetkills,
+ifentityexistonVPmovetilesandthiskill,
+otherentitycollision,
+addotherclasses,
+collisionchangedimension,
+
+*/
+
+
 //"add ID (yourID)"
 //"can hurt and move when you damaged it (1/0)",
         ];
