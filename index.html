@@ -1,7 +1,6 @@
 
 
 
-
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
 <!-- put your water mark -->
@@ -1458,7 +1457,7 @@ position: fixed;
   background-color: #00000080;
 }
 #viewport {
-  //touch-action: none;
+  touch-action: none;
   overflow: hidden auto;
  transform: translate(-50%, -50%);
   top:50%;
@@ -4981,6 +4980,7 @@ var tlo2 = 0
 function loop() {
   if(config.zoom!==1&&config.zoom!==0&&config.zoom!==undefined&& config.testmode==1){
    viewport.style.zoom= config.zoom
+   document.getElementById('content2').style.zoom=config.zoom
   }
 if (!('dimension' in config)) {
   // Jeśli klucz nie istnieje, dodaj go z domyślną wartością
@@ -9640,3 +9640,4 @@ if (!('airjump' in config)) {
 }
 
 </style>
+
