@@ -6,7 +6,10 @@ https://kashumy.github.io/WebGameEditor/
  [Issues](https://github.com/Kashumy/WebGameEditor/issues)
 
   Maked Finally 2.9nfr.8
-  not full relase from 2.8
+  not full relase from 2.8 to 3.0 
+  and next i will add new
+  package and main menu slots localstorage 
+  and more ☺️
 
 
  programming is so hard .
