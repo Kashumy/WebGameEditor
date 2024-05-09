@@ -1,12 +1,6 @@
 
 
 
-
-
-
-
-
-
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
 <!-- put your water mark -->
@@ -91,6 +85,8 @@ document.addEventListener('DOMContentLoaded', function() {
 //    loadtestgame2()
 document.querySelector('#playPauseButton').style.display = "none"
 document.querySelector('#pastemark').style.display = "none"
+document.querySelector('#resizableHandle').style.display = "none"
+resizableHandle
   setTimeout(function(){config.testmode=1},6000)
   setTimeout(function(){
     config.testmode=1
@@ -107,6 +103,8 @@ Array.from(elementsToHide).forEach(element => {
 }
 requestAnimationFrame(hd)
   togglemode1()
+}else{
+  
 }
 
 
@@ -120,6 +118,18 @@ requestAnimationFrame(hd)
     }
 if(path!=="newproject"){
     loadFile(path);
+}else{
+  document.getElementById('viewport').style.resize = "both"
+document.getElementById('viewport').style.border = "1px solid gray"
+
+  let container3 = document.getElementById("viewport");
+  container3.addEventListener("touchstart", touchStart);
+    container3.addEventListener("touchmove", touchMove);
+    container3.addEventListener("touchend", touchEnd);
+    container3.addEventListener("mouseenter", onMouseEnter);
+    container3.addEventListener("mouseleave", onMouseLeave);
+    container3.addEventListener("wheel", onWheel);
+
 }
 });
 
@@ -808,12 +818,57 @@ top:20px; right:20px; width: 30px ; height:30px ; background: red;"> -->
   
 </div>
 
+
+
+
+<style>
+  #resizableDiv {
+    width: 300px;
+    height: 200px;
+    border: 1px solid black;
+    overflow: auto;
+    text-align: center;
+    cursor: pointer;
+    position: relative;
+  }
+
+  #resizableHandle {
+    width: 50px;
+    height: 50px;
+    background-color: #5B25257D;
+    position: absolute;
+    z-index: 9999;
+    bottom:0;
+    right:0;
+    cursor: nwse-resize;
+   // touch-action: none; /* zapobiega domyślnemu przewijaniu na urządzeniach dotykowych */
+  }
+
+  #dimensions {
+    text-align: center;
+    margin-top: 10px;
+  }
+</style>
+</head>
+<body>
+
+
+
+
+
+
+
+
 <div id="project">
 
   <div id="content2">
 
   </div>
-  <div id="viewport">
+  <div id="alaviewport">
+    
+<div id="resizableHandle" class=""></div>
+  <div id="viewport" >
+
   <div id="player" class="player">
   </div>
 
@@ -821,7 +876,7 @@ top:20px; right:20px; width: 30px ; height:30px ; background: red;"> -->
     <div id="Econtent" ></div>
     <div id="Scontent" ></div>
 <div id="Dcontent" ></div>
-</div>
+</div></div>
   <div id="project2">
 
   </div>
@@ -843,6 +898,134 @@ top:20px; right:20px; width: 30px ; height:30px ; background: red;"> -->
  	   	  <div class="jumpbtn added" id="Attack" style="transform: translate(0%,-100%)" onclick="attack2()"></div>
 
 </div>
+<script>
+  var container3 = document.getElementById("viewport");
+  
+
+  var initialTouchDistance = 0;
+  var initialZoom = 1;
+
+  function touchStart(event) {
+    if (event.touches.length === 2) {
+      initialTouchDistance = Math.hypot(event.touches[0].pageX - event.touches[1].pageX, event.touches[0].pageY - event.touches[1].pageY);
+      initialZoom = parseFloat(window.getComputedStyle(container3).zoom);
+    }
+  }
+
+  function touchMove(event) {
+    if (event.touches.length === 2) {
+      var currentTouchDistance = Math.hypot(event.touches[0].pageX - event.touches[1].pageX, event.touches[0].pageY - event.touches[1].pageY);
+      var scaleFactor = currentTouchDistance / initialTouchDistance;
+      container3.style.zoom = initialZoom * scaleFactor * 0.5;
+      
+      if (!('zoom' in config)) {
+  // Jeśli klucz nie istnieje, dodaj go z domyślną wartością
+  config['zoom'] = 0;
+}
+      
+config.zoom=initialZoom * scaleFactor * 0.5;
+
+//cfigZ=initialZoom * scaleFactor * 0.5; 
+
+
+
+ 
+    }
+  }
+
+  function touchEnd(event) {
+    initialTouchDistance = 0;
+  }
+
+  function onWheel(event) {
+    event.preventDefault(); // Zapobiega domyślnemu zachowaniu scrolla
+    var delta = Math.sign(event.deltaY); // Określa kierunek scrolla
+    var currentZoom = parseFloat(window.getComputedStyle(container).zoom);
+    container3.style.zoom = currentZoom + (delta * 0.1);
+  }
+
+  function onMouseEnter() {
+    container3.style.border = "2px solid red"; // Zmiana obramowania na czerwone po najechaniu myszką
+  }
+
+  function onMouseLeave() {
+    container3.style.border = "1px solid black"; // Powrót do standardowego obramowania po opuszczeniu myszką
+  }
+</script>
+<script>
+
+
+
+
+
+  const resizableDiv = document.getElementById('viewport');
+  const resizableHandle = document.getElementById('resizableHandle');
+//  const dimensionsDiv = document.getElementById('dimensions');
+
+  let isResizing = false;
+  let startX;
+  let startY;
+  let startWidth;
+  let startHeight;
+
+  resizableHandle.addEventListener('mousedown', startResize);
+  resizableHandle.addEventListener('touchstart', startResizeTouch, { passive: false });
+  document.addEventListener('mouseup', stopResize);
+  document.addEventListener('touchend', stopResize);
+  document.addEventListener('mousemove', resize);
+  document.addEventListener('touchmove', resize);
+
+  function startResize(e) {
+    e.preventDefault(); // Zapobiegamy domyślnej akcji (np. przewijaniu strony) na urządzeniach dotykowych
+    isResizing = true;
+    startX = e.clientX;
+    startY = e.clientY;
+    startWidth = resizableDiv.offsetWidth;
+    startHeight = resizableDiv.offsetHeight;
+  }
+
+  function startResizeTouch(e) {
+    e.preventDefault(); // Zapobiegamy domyślnej akcji (np. przewijaniu strony) na urządzeniach dotykowych
+    const touch = e.touches[0];
+    isResizing = true;
+    startX = touch.clientX;
+    startY = touch.clientY;
+    startWidth = resizableDiv.offsetWidth;
+    startHeight = resizableDiv.offsetHeight;
+  }
+
+  function stopResize() {
+    isResizing = false;
+  }
+
+  function resize(e) {
+    if (isResizing) {
+      let clientX, clientY;
+      if (e.type === 'touchmove') {
+        const touch = e.touches[0];
+        clientX = touch.clientX;
+        clientY = touch.clientY;
+      } else {
+        clientX = e.clientX;
+        clientY = e.clientY;
+      }
+      const newWidth = startWidth + (clientX - startX);
+      const newHeight = startHeight + (clientY - startY);
+      resizableDiv.style.width = `${newWidth}px`;
+      viewportWidth=newWidth
+      viewportHeight=newHeight
+      config.width=newWidth
+      config.height=newHeight
+      resizableDiv.style.height = `${newHeight}px`;
+      resizableHandle.style.right = `-${resizableHandle.offsetWidth / 2}px`;
+      resizableHandle.style.bottom = `-${resizableHandle.offsetHeight / 2}px`;
+    //  dimensionsDiv.innerHTML = `Width: ${newWidth}px, Height: ${newHeight}px`;
+    }
+  }
+</script>
+
+
+
 <style>
   #project{
     position: absolute;
@@ -1274,7 +1457,7 @@ position: fixed;
   background-color: #00000080;
 }
 #viewport {
-  touch-action: none;
+  //touch-action: none;
   overflow: hidden auto;
  transform: translate(-50%, -50%);
   top:50%;
@@ -1390,8 +1573,8 @@ vp.style.zoom = cfigZ;
 vp.style.width = newWidth + 'px';
 vp.style.height = newHeight + 'px';
 }
-const viewportWidth = viewport.clientWidth;
-const viewportHeight = viewport.clientHeight;
+let viewportWidth = viewport.clientWidth;
+let viewportHeight = viewport.clientHeight;
 const numTilesX = 99999// Liczba kafelków w osi X
 const numTilesY = 99999; // Liczba kafelków w osi Y
 const contentWidth = numTilesX ;
@@ -1974,6 +2157,17 @@ lookatobject,
 spawningdistance,//number
 spawningoffset,//[x,y]
 spawnnumber,
+despawnMS,
+
+
+
+
+
+
+
+
+
+NOTHING
 /*
 spawningonlywhenlooking, // 1/0
 spawningonlywhenlookingaway, // 1/0
@@ -2030,7 +2224,7 @@ if(xc){
 
 const dimensionIndex = findTileDimension(tileMap, xc, yc, sc);
 
-if (parseInt(dimensionIndex) == parseInt(dimension)) {
+if (parseInt(dimensionIndex) == parseInt(dimension)||parseInt(dimensionIndex) == -1) {
 executeall=1
 //alert("something is there",parseInt(dimensionIndex));
 
@@ -2116,11 +2310,12 @@ if (addotherclasses!==undefined&&addotherclasses!==null&&addotherclasses!==""&&a
 function KillThis(){
   if(true){
     
-    
+   // alert("1")
     let gototarget = findClosestProjetitle(tile, collisionobject);
-if (gototarget) {
+if (gototarget&&gototarget!==NaN&&gototarget!==null&&gototarget!==undefined) {
   gototarget.remove()
 }
+//alert("2")
                   // Player attacks entity, decrement HP
                   tile.dataset.hp -= 1;
 
@@ -2154,6 +2349,7 @@ if(spawn_if_killed!==undefined&&spawn_if_killed!==null&&spawn_if_killed!=="undef
      }else{
        numbersprites=1
      }
+  //   alert(spawnnumber)
      for(let i=0;i<numbersprites;i++){
           let el= document.createElement('div')
      
@@ -2254,11 +2450,13 @@ setTimeout(function() {
 if(movetilesdeffacted!==undefined&&movetilesdeffacted!==null){
   movemap(movetilesdeffacted[1],movetilesdeffacted[2],movetilesdeffacted[0]);
 }
+if(cantbedamaged!==1){
                     if (score1 == 1) {
                       score += 1
                     } else {
                       killed += 1;
                     }
+}
                     // Remove 
                     // Entity is defeated, remove the tile
                     tile.remove();
@@ -2340,6 +2538,22 @@ Array.from(document.getElementsByClassName(collisionobject)).forEach(element => 
 console.log(closestIndex)
 
 
+
+if(despawnMS!==undefined&&despawnMS!==null&&despawnMS!==""){
+  if (!tile.dataset.desapwning) {
+  tile.dataset.desapwning = 1
+  setTimeout(function(){
+if (initialHp > 10) {
+  deletedtiles.push(tile);
+  tile.remove()
+} else {
+  KillThis()
+}
+  },parseInt(despawnMS))
+  }
+}
+
+
               if (despawn!==undefined&&despawn!==null&&despawn!=="") {
                 if (!tile.dataset.despawn) {
                   tile.dataset.despawn = despawn
@@ -2355,6 +2569,10 @@ console.log(closestIndex)
                   }
                 }
               }
+              
+              
+
+
                if(spawn!==undefined&&spawn!==null&&spawn!==""){
     if (!tile.dataset.spawnduration) {
       tile.dataset.spawnduration = spawn[0];
@@ -4760,6 +4978,9 @@ var tlo2 = 0
       var yyy=0
       
 function loop() {
+  if(config.zoom!==1&&config.zoom!==0&&config.zoom!==undefined&& config.testmode==1){
+   viewport.style.zoom= config.zoom
+  }
 if (!('dimension' in config)) {
   // Jeśli klucz nie istnieje, dodaj go z domyślną wartością
   config['dimension'] = 0;
@@ -5054,7 +5275,7 @@ requestAnimationFrame(loop);
 
 
 var brushSize = 1; // Ustaw rozmiar pędzla
-
+let bugfix2=0
 function buildBlock(event) {
   // Oblicz pozycję kliknięcia z uwzględnieniem aktualnej translacji viewport
   const rect = content.getBoundingClientRect();
@@ -5075,6 +5296,7 @@ function buildBlock(event) {
       if (layers === 0) {
         if (existingBlockIndex !== -1) {
           // Jeśli blok istnieje, usuń go
+          
           tileMap[dimension].splice(existingBlockIndex, 1);
         } else {
           // Jeśli blok nie istnieje, dodaj nowy blok
@@ -5450,6 +5672,9 @@ window.setInterval(testy, 3000);
     <button onclick="addEntity()">add</button>
     <button onclick="saveJson()">save</button>
   </div>
+  <details>1.type null in editor to turn off the option <br>
+2. ENTITIES configuration is really hard to work with it there is almost everything possible 
+but update will come with others options :) </details><j/^> :) </j/^> 
   <div id="entities-container"></div>
   </div>
 </div>
@@ -5728,6 +5953,7 @@ function handleFileContent(textContent) {
   // Tutaj przetwarzaj zawartość pliku tekstowego
   // Możesz pozostawić resztę Twojego kodu, ale już bez konieczności przekształcania na base64
 //  alert((textContent))
+document.getElementById('Econtent').innerHTML=""
 config = JSON.parse(textContent);
 dimension=config.dimension||0
   try {
@@ -6053,7 +6279,8 @@ function addEntity() {
 
 
     function editEntity(entityName) {
-        const options = config.entities[entityName];
+        const options = config.entities[entityName]
+        alert(options);
         const optionNames = getOptionNames();
         let optionHTML = '';
         for (let i = 0; i < optionNames.length; i++) {
@@ -6092,10 +6319,7 @@ function addEntity() {
               newValue = parseFloat(newValue); // lub parseInt(newValue) dla liczby całkowitej
             }
         }
-        if (parsedValue == "null" ||parsedValue == "undefined"||parsedValue == "" ) {
-  // Jeśli wartość jest obiektem JSON, zachowaj ją jako obiekt
-  newValue = null;
-}
+
   // Jeśli wartość jest obiektem JSON, zachowaj ją jako obiekt
   newValue = parsedValue;
 
@@ -6105,6 +6329,11 @@ function addEntity() {
         newValue = input.value;
         if (!isNaN(newValue)) {
           newValue = parseFloat(newValue); // lub parseInt(newValue) dla liczby całkowitej
+        }
+                if (parsedValue == "null" || parsedValue == "undefined" || parsedValue == "") {
+          // Jeśli wartość jest obiektem JSON, zachowaj ją jako obiekt
+          newValue = null 
+          alert(newValue)
         }
     }
 
@@ -6195,30 +6424,30 @@ if (file) {
     function getOptionNames() {
         // You can define your option names here or fetch them from somewhere
         return [
-            "Speed(num)",
-            "Movement Type(avoid,move,follow)",
-            "Distance(num)",
-            "Random Movement(1/0/3 for Move)",
-            "Collision(1/0)",
-            "Initial HP(Num)",
+            "<p style='color:lime' > Speed(num)",
+            "<p style='color:lime' > Movement Type(avoid,move,follow)",
+            "<p style='color:lime' > Distance(num)",
+            "<p style='color:lime' > Random Movement(1/0/3 for Move)",
+            "<p style='color:red' > Collision for a player(1/0)",
+            "<p style='color:red' > Initial HP(Num)",
             "Area For Entity([startX,startY,endX,endY])",
             "Delete Bool(Boolean)",
-            "arena Pattern moving ([[x,y],[x,y]])",
-            "Hurt(1/0)",
+            "<p style='color:lime' > arena Pattern moving ([[x,y],[x,y]])",
+            "<p style='color:cyan' > Hurt Player(1/0)",
             "Script doesn't work if sprite is out of viewport(1/0)",
             "Score1(1/0)",
-            "Collision Object type ('player') default class that it will be default even for example move follow for player",
+            "<p style='color:yellow' >important !: Collision Object type ('player') default class that it will be default even for example move follow for player",
             "Detect Enabled",
-            "Collision with Other Blocks(1/0)",
+            "<p style='color:cyan' > Collision with Other Blocks(1/0)",
             "Delete When Custom Move Ended(1/0)",
-            "Enable Shooting Attack for Entities(1/0)",
+            "<p style='color:red' > Enable Shooting Attack for this Entity (1/0)",
             "Collectable(1/0)",
             "SpawnPointBlock(1/0)",
-            "CantBeDamaged(1/0) By player doesn't wor for example for a despawn",
+            "<p style='color:cyan' > CantBeDamaged(1/0) only By player doesn't wor for example for a despawn",
             "Teleport by([y,x])",
-            "Move Tiles when it is defaced by([(i...),x,y])",
-            "spawn [duration,(i...)]",
-            "despawn ticks",
+            "<p style='color:pink' > Move Tiles when it is defaced by([(i...),x,y])",
+            "<p style='color:pink' > spawn [duration,(i...)]",
+            "<p style='color:red' > despawn ticks",
             "goes 1 tick one direction good for projectiles :) (1)on else off",
 "changeLoopMusicTodefaul",
             "T: changeLoopMusic",
@@ -6234,35 +6463,35 @@ if (file) {
             "Code In Entities 0 _ 0 how ? ['1:\\n2:\\n3:',0]",
             "Puzzle Block (1/0) with i(object) // doesn't work for now ",
             "back to start position when pattern ended",
-            "gravity",
+            "<p style='color:lime' > gravity",
             "changeVariablecollisionevent [variable,value]",
             "T: hurttexture ",
             " hurtdelaytexture (number ms)",
-            "reversedistance !( distance ) <num>",
+            "<p style='color:lime' > reversedistance !( distance ) <num>",
 "T: collisiontexture",
 "distance2 <number> /disabled",
 "movementType2 [move avoid follow]/disabled",
 "collisionobject2 [name]/disabled",
 "whendistance2makepattern (in PM 2.9 full)/disabled",
-"NPC Dialogue ['hello','world']",
-"collision (eval javascript )",
+"<p style='color:orange' > < NPC > Dialogue by an collision ['hello','world']",
+"collision (eval javascript ) / doesn't work",
 "NPCdialogueends_remove (1)else",
-"NPCdialogueends_spawn and kill this (i...)",
+"<p style='color:pink' > NPCdialogueends_spawn and kill this (i...)",
 "collisiondistance <num> 'disabled'",
 "Spawn 2 [duration,(i...)]",
-" show Hp near entity (1)/0",
-"moveonlywhenplayerlooking, // 1/0 ",
-"moveonlywhenplayerlookingaway // 1/0",
+"<p style='color: purple' > show Hp near entity (1)/0",
+"<p style='color:pink' >moveonlywhenplayerlooking, // 1/0 ",
+"<p style='color:pink' >moveonlywhenplayerlookingaway // 1/0",
 "random teleporting [duration, xmin, xmax, ymin, ymax] !=='undefined' ",
 "collision and killed then remove and move tiles [killed,(i..),x,y]",
-"spawn if defaced (i..)",
+"<p style='color:yellow' > interesting OPTION : spawn if defaced (i..)",
 "ChangeifcollisionBaclgroundtexture(1/0)",
 "backgroundimg from (i...)",
 "hide id when collision (ID)",
 "show id when collision (ID)",
 
 
-"minimumdistance",
+"<p style='color: lime' > minimumdistance",
 
 "T: playertextureleft",
 "T: playertextureright",
@@ -6281,6 +6510,9 @@ if (file) {
 "lookatobject1/0",
 "spawningdistance", //number
 "spawningoffset [x,y]", //[x,y]
+"spawnnumber",
+"despawnMS despawning in Mili seconds (num) /buggy doesn't work on spawned objects",
+" Yeah this is End of Entities Editor in 2.9"
 
 
 /*
