@@ -1,6 +1,7 @@
 
 
 
+
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
 <!-- put your water mark -->
@@ -1017,8 +1018,8 @@ config.zoom=initialZoom * scaleFactor * 0.5;
       config.width=newWidth
       config.height=newHeight
       resizableDiv.style.height = `${newHeight}px`;
-      resizableHandle.style.right = `-${resizableHandle.offsetWidth / 2}px`;
-      resizableHandle.style.bottom = `-${resizableHandle.offsetHeight / 2}px`;
+    /*  resizableHandle.style.right = `-${resizableHandle.offsetWidth / 2}px`;
+      resizableHandle.style.bottom = `-${resizableHandle.offsetHeight / 2}px`;*/
     //  dimensionsDiv.innerHTML = `Width: ${newWidth}px, Height: ${newHeight}px`;
     }
   }
@@ -5441,13 +5442,14 @@ function cofnijczas(ilerazycofnac) {
   </div>
 </gui>
 <div class="f notaproject" style="position: fixed; width: 210px; height: calc(100vh - 5px) ; background: url('./box (3).png'); image-rendering: pixelated; background-size: 100% 100%; z-index: 999999;overflow: hidden;right:0;
-white-space: pre-wrap; overflow : scroll;"><div onclick="toggleVS()" style="align-items: center; justify-content: center; width:30px;height:30px; background: url('./box (3).png'); background-size: 100%; color:lime;
-padding:0px; margin:-5px; display: inline-block; font-size:20px; position: absolute; left: 10px; top:16px"><d style="margin:-5px; position: absolute; top:0; left:0">+</d></div>
-  <div onclick="toggleMENS(); playUpdateSound2()" style="align-items: center; justify-content: center;  width:30px;height:30px; background: url('./box (3).png'); background-size: 100%; color:lime; 
-  padding:0px; margin:-5px; display: inline-block; font-size:20px;  position: absolute; left: 42px; top:16px"><d style="margin:-5px; position: absolute; top:0; left:0 ;">⚙️</d></div>
-  <div onclick="togglemode1(); playUpdateSound()" style="align-items: center; justify-content: center;  width:30px;height:30px; background: url('./box (3).png'); background-size: 100%; color:lime; 
-  padding:0px; margin:-5px; display: inline-block; font-size:20px;  position: absolute; left: 74px; top:16px"><d style="margin:-5px; position: absolute; top:0; left:0 ;">...</d></div>
-  <div id="Iblocks" style="margin-top:0px;padding: 0;"></div>
+overflow : scroll;">
+  
+  <div onclick="toggleVS()" style="width:30px; height:30px; background: url('./box (3).png') center center/contain no-repeat; color:lime; text-align:center; font-size:20px; line-height:30px; position:absolute; left: 10px; top:16px;">+</div>
+<div onclick="toggleMENS(); playUpdateSound2()" style="width:30px; height:30px; background: url('./box (3).png') center center/contain no-repeat; color:lime; text-align:center; font-size:20px; line-height:30px; position:absolute; left: 42px; top:16px;">⚙️</div>
+<div onclick="togglemode1(); playUpdateSound()" style="width:30px; height:30px; background: url('./box (3).png') center center/contain no-repeat; color:lime; text-align:center; font-size:20px; line-height:30px; position:absolute; left: 74px; top:16px;">...</div>
+
+
+  <div id="Iblocks" style="margin-top:60px;padding: 0;"></div>
 </div>
 <style>
   .btn{
