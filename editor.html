@@ -1,7 +1,6 @@
 
 
 
-
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
 <!-- put your water mark -->
@@ -1066,9 +1065,9 @@ white-space: pre-wrap; overflow : scroll; " onclick="togglemode1()" class="notap
   16% { color: #FFE47E; }
   33% { color: #89FF7E; }
   50% { color: #7BF1FC; }
-  66% { color: #A779FF; }
-  83% { color: #FF85E5; }
-  100% { color: #FF83AF; }
+  66% { color: #C3B2FF; }
+  83% { color: #D89FCC; }
+  100% { color: #FBBED3; }
 }
   .f div{
     margin-right:5px;
@@ -1099,7 +1098,7 @@ if(TILES[i][2]){
  display: inline-block;
  image-rendering: pixelated;
  background:url('${TILES[i][2]}');
- background-size:100%; animation: rainbow 3s infinite; font-size:6px;
+ background-size:100%; color: lightgrey; font-size:6px;
  " ondblclick="changeTexture(${TILES[i][0]})" onclick="build(${TILES[i][0]})">i${TILES[i][0]} , S${TILES[i][1]}
 </div>`
 
@@ -1242,9 +1241,9 @@ overflow: scroll;
 
   </div>
   <div class="tile-details">
-    <h2>Make Sprite</h2>
+    <h2 style="animation: 5s rainbow infinite cubic-bezier(0.19, 1, 0.22, 1);" >Make Sprite</h2>
   <input type="file" class="a hide2" accept="image/png/gif" id="imageInput" style="display: none;">
-  <button class="a hide2" id="addButton">add block <br></button>
+  <button class="a hide2" id="addButton" style="animation: 5s rainbow infinite cubic-bezier(0.19, 1, 0.22, 1);">add block <br></button>
   
   
   
@@ -1252,15 +1251,15 @@ overflow: scroll;
   <button class="a hide2" id="addButton2">add deco <br></button>
   
         <input type="file" class="a hide2" accept="image/png/gif" id="imageInput5" style="display: none;">
-        <button class="a hide2" id="addButton5">add entity<br></button>
+        <button class="a hide2" style="animation: 5s rainbow infinite cubic-bezier(0.19, 1, 0.22, 1);" id="addButton5" style="animation: 5s rainbow infinite ;">add entity<br></button>
         <input type="file" class="a hide2" accept="image/png/gif" id="imageInput6" style="display: none;">
         <button class="a hide2"  id="addButton6">add Text Element (experiment can doesn't work properly)<br></button>
       <input type="file" class="a hide2"  id="imageInput3" style="display: none;">
-      <button class="a hide2"  id="addButton3">Change Player<br></button>
+      <button style="animation: 5s rainbow infinite cubic-bezier(0.19, 1, 0.22, 1);" class="a hide2"  id="addButton3">Change Player<br></button>
   
   
       <input class="a hide2" type="file"  accept="image/png" id="imageInput4" style="display: none;">
-      <button class="a hide2" id="addButton4">change BG<br></button>
+      <button class="a hide2" id="addButton4" style="animation: 5s rainbow infinite cubic-bezier(0.19, 1, 0.22, 1);">change BG<br></button>
       
   </div>
   <div class="options">
@@ -2463,7 +2462,7 @@ function KillThis(){
   if(true){
     
    // alert("1")
-   if(cantbedamaged!==1){}else{
+   if(cantbedamaged==1){}else{
     let gototarget = findClosestProjetitle(tile, collisionobject);
 if (gototarget&&gototarget!==NaN&&gototarget!==null&&gototarget!==undefined) {
   gototarget.remove()
@@ -2604,12 +2603,12 @@ if(movetilesdeffacted!==undefined&&movetilesdeffacted!==null){
   movemap(movetilesdeffacted[1],movetilesdeffacted[2],movetilesdeffacted[0]);
 }
 if(cantbedamaged!==1){
-  if(despawn!==undefined&&despawn!==null){}else{
+  
                     if (score1 == 1) {
                       score += 1
                     } else {
                       killed += 1;
-                    }}
+                    }
 }
                     // Remove 
                     // Entity is defeated, remove the tile
@@ -6020,12 +6019,12 @@ function toggleLayers() {
 <pre style="white-space: pre-wrap" class="mn">
   <h3>Menu</h3>
 <hr>
-<div onclick="visibility('.menu2-content'); toggleMENS()" style="background: yellow">Code
+<div onclick="visibility('.menu2-content'); toggleMENS()" style="animation: 5s rainbow infinite cubic-bezier(0.19, 1, 0.22, 1);" style="background: yellow">Code
 </div>
 <div onclick="toggleVS(); playUpdateSound3();toggleMENS()"  style="background: deepskyblue">
 Visuals
 </div>
-<div onclick="togglemenu();playUpdateSound3();toggleMENS()" style="background: deepskyblue">
+<div onclick="togglemenu();playUpdateSound3();toggleMENS()" style="animation: 5s rainbow infinite cubic-bezier(0.19, 1, 0.22, 1);" style="background: deepskyblue">
   make entity Tiles (menu)
 </div>
 <div onclick="loadfile();" style="background: blue">
