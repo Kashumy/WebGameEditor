@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Monokai Style Menu</title>
+<style>
+html{
+  position: fixed;
+  width:100vw;
+  height:100vh;
+  
+}
+  body {
+    position: fixed;
+  width:100vw;
+  height:100vh;
+  
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #272822;
+    color: #f8f8f2;
+  }
+
+  header {
+    background-color: #49483e;
+    padding: 20px;
+    text-align: center;
+  }
+
+  .logo {
+    max-width: 300px;
+  }
+
+  main {
+    text-align: center;
+    margin-top: 20px;
+  }
+
+  button {
+    padding: 10px 20px;
+    margin: 0 10px;
+    font-size: 16px;
+    
+    background-color: #75715e;
+    border: none;
+    color: #f8f8f2;
+    transition: background-color 0.3s;
+  }
+
+  button:hover {
+    background-color: #a59f85;
+  }
+
+  .modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0px;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.4);
+  }
+
+  .modal-content {
+    background-color: #272822;
+    margin: 20px ;
+    padding: 20px;
+    border: 1px solid #75715e;
+    width: 80%;
+  }
+
+  .close {
+    color: #f8f8f2;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    transition: color 0.3s;
+  }
+
+  .close:hover,
+  .close:focus {
+    color: #75715e;
+    text-decoration: none;
+    
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <img src="./watermark.gif" alt="Logo" style="width:200px; image-rendering: pixelated" class="logo">
+</header>
+
+<main>
+ <a href="./editor.html" style="color: rgba(0,0,0,0.0"> <button id="runButton">Run PM 3.0 Experimental</button></a>
+  <button id="aboutButton">About</button>
+  <br> <br>
+<!--<a href="/runthis.html" style="color: rgba(0,0,0,0.0"> <button>Play Game /ubenplatinum</button></a>-->
+</main>
+
+<div id="aboutModal"  class="modal">
+  <div class="modal-content" style="height:60%; overflow: hidden scroll; position: fixed; top:0; left:0;">
+    <span class="close">&times;</span>
+<pre style="white-space: pre-wrap">
+This is PM3
+all of this information is important 
+
+<text style="color:lime;font-size: 120%;">V: 2</text>
+<text style="color:lime;font-size: 120%;">Version 3.0 nafr</text>
+<text style="color:lime;font-size: 120%;">MyEngine: DogLog</text>
+<text style="color:lime;font-size: 120%;">copy right: Program doesn't have copy right : ) </text>
+<text style="color:yellow ;font-size: 80%;">Free and completely editable and can be used for commercial or business also program for everyone</text>
+
+<text style="color:lime;font-size: 120%;">all your game's can be licensed </text>
+
+What i will add
+
+adding custom moving with touch elements 
+with virtualization 
+and deleting by clicking in editor and all of it will be rendered at once but they will be cannot changed 
+out of Virtualzation custom distance 
+
+and entities patch finding movement type
+
+
+    i lost few weeks without sleeping to make
+    this editor/engine
+    also this is my the best project
+    
+    
+</pre>
+  </div>
+</div>
+
+<script>
+  const runButton = document.getElementById('runButton');
+  const aboutButton = document.getElementById('aboutButton');
+  const aboutModal = document.getElementById('aboutModal');
+  const closeButton = document.getElementsByClassName('close')[0];
+
+  runButton.addEventListener('click', () => {
+    // Dodaj funkcję, która uruchamia twój paper maker
+    
+  });
+
+  aboutButton.addEventListener('click', () => {
+    aboutModal.style.display = 'block';
+  });
+
+  closeButton.addEventListener('click', () => {
+    aboutModal.style.display = 'none';
+  });
+
+  window.addEventListener('click', (e) => {
+    if (e.target == aboutModal) {
+      aboutModal.style.display = 'none';
+    }
+  });
+</script>
+
+</body>
+</html>
