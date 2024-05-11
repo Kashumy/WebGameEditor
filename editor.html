@@ -1,6 +1,7 @@
 
 
 
+
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
 <!-- put your water mark -->
@@ -8,6 +9,18 @@
 <div class="Ylyl" style="position: fixed; left:30px; bottom:0px; background: #333; z-index: 9; width:30px;height:30px" onclick="loadfile()">L</div>
 
 <img src="./watermark.gif" id="pastemark" onclick="config.testmode = config.testmode === 1 ? 0 : 1;up1();playUpdateSound2()"style="position: fixed; top:0; left:10px;  width:100px;height:30px; transform: translate(0,25%); z-index: 99999999999" >
+
+<style>
+  @font-face {
+  font-family: font;
+  src: url('./font.ttf');
+}
+
+* {
+  font-family: font;
+  
+}
+</style>
 
 <style>
   gui{
@@ -37,7 +50,7 @@
 <script>
   const textsArray = [
 `
-Loading A PM2.9nfr
+Loading A PM3.0 <img src="./watermark.gif" id="pastemark" style="position: fixed; top:0; left:10px;  width:100px;height:30px; transform: translate(0,-125%); z-index: 99999999999" >
 `];
 // changing max fps game change game 
 let defaultFps = 15;
@@ -51,7 +64,7 @@ let targetFPS = 15;
 	<script>
 	//
 	// writing 'newproject' will turn the developer mode and new project and you can also load a project and edit it
-	
+//	let savinggamestate=1
 		let path='newproject'
 	</script>
 </project-path><!-- your project path defaul newproject path  = ./yourproject.dl -->
@@ -386,25 +399,7 @@ mbs.innerHTML = speed+'mb/s'
     }
 });
 </script>
-<script>
-  function togglemode1(){
-    var elementsToHide = document.getElementsByClassName('d');
-    Array.from(elementsToHide).forEach(element => {
-      element.classList.toggle('hide')
-    });
-  }
-  setTimeout(function(){
-    var elementsToHide = document.getElementsByClassName('d');
-    Array.from(elementsToHide).forEach(element => {
-      element.classList.toggle('hide')
-    });
-  },1000)
-  var leftButtonDown = 0;
-var rightButtonDown = 0;
-var upButtonDown = 0;
-var downButtonDown = 0;
 
-</script>
 <script src="./defaul.js"></script>
 <script src="./bigexample.js"></script>
 <script>
@@ -555,10 +550,10 @@ document.getElementById('project').style.zoom="1.0"
 
 
 
-  <button class="notaproject d" style="position: absolute; left:30vw; bottom:0px; background: blue; z-index: 99999" onclick="saveToFile()">Zapisz do pliku</button>
+  <button class="notaproject d" style="position: absolute; left:30vw; bottom:0px; background: blue; z-index: 99999" onclick="saveToFile()">Save Project File</button>
 
 
-<button class="notaproject d" style="position: absolute; left:0vw; bottom:0px; background: blue; z-index: 99999" onclick="chooseFile()">Wybierz plik WAV</button>
+<button class="notaproject d" style="position: absolute; left:0vw; bottom:0px; background: blue; z-index: 99999" onclick="chooseFile()">Project Loop main Music</button>
 
 <script>
 let toonce = 1;
@@ -836,6 +831,7 @@ top:20px; right:20px; width: 30px ; height:30px ; background: red;"> -->
     width: 50px;
     height: 50px;
     background-color: #5B25257D;
+    color:#3523237D;
     position: absolute;
     z-index: 9999;
     bottom:0;
@@ -866,7 +862,7 @@ top:20px; right:20px; width: 30px ; height:30px ; background: red;"> -->
   </div>
   <div id="alaviewport">
     
-<div id="resizableHandle" class=""></div>
+<div id="resizableHandle" class="">drag to resize renderer</div>
   <div id="viewport" >
 
   <div id="player" class="player">
@@ -1065,6 +1061,15 @@ white-space: pre-wrap; overflow : scroll; " onclick="togglemode1()" class="notap
 .f{
   
 }
+@keyframes rainbow {
+  0% { color: #FF7C7C; }
+  16% { color: #FFE47E; }
+  33% { color: #89FF7E; }
+  50% { color: #7BF1FC; }
+  66% { color: #A779FF; }
+  83% { color: #FF85E5; }
+  100% { color: #FF83AF; }
+}
   .f div{
     margin-right:5px;
   }
@@ -1094,7 +1099,7 @@ if(TILES[i][2]){
  display: inline-block;
  image-rendering: pixelated;
  background:url('${TILES[i][2]}');
- background-size:100%; color:black; font-size:6px;
+ background-size:100%; animation: rainbow 3s infinite; font-size:6px;
  " ondblclick="changeTexture(${TILES[i][0]})" onclick="build(${TILES[i][0]})">i${TILES[i][0]} , S${TILES[i][1]}
 </div>`
 
@@ -1103,7 +1108,7 @@ cnt.innerHTML=v
 }}
 },0)
 }
-window.setInterval(checki1,2000)
+window.setInterval(checki1,3000)
 function build(e){
   item=e
 }
@@ -1535,6 +1540,10 @@ height: 10%
 }
 </style>
 <script>
+var leftButtonDown = 0;
+var rightButtonDown = 0;
+var upButtonDown = 0;
+var downButtonDown = 0;
 const viewport = document.getElementById('viewport');
 const content = document.getElementById('content');
 var showlines=0
@@ -2096,7 +2105,132 @@ return true;
     
 }
 
+function loadoldergamestate(){
+  config = config
+deletedtiles = []
+const playerskin69 = config.playerskin1
+//alert(playerskin69)
+document.querySelector('.player').style.background = `url(${playerskin69})`
+playerskin = playerskin69
+updateViewport();
+setTimeout(function() {
+  if (config.DarknessEffect == 1) {
+    let vp = document.getElementById("viewport")
+    let el = document.createElement('div')
+    el.style = `width:${vp.style.width};height:${vp.style.height};`
+    el.className = 'dark effects added'
+    document.querySelector('#project').appendChild(el)
+  } else {
+    let y = document.querySelectorAll('.effects')
+    for (var i = 0; i < y.length; i++) {
+      if (y[i].classList == 'dark') {
+        y[i].remove()
+      }
+    }
+  }
+}, 1000)
+bgimg = config.bg
 
+
+deletedtiles = []
+document.getElementById('edytor').textContent = config.code
+stop = 1
+code = config.code;
+classicspeed = config.norspeed;
+playerY = config.spawnY;
+playerX = config.spawnX;
+setPlayer(config.spawnX, config.spawnY)
+speed = config.speed;
+playerskin = config.playerskin1;
+TILES = config.blocks;
+tileMap = config.savedTileMap;
+gravity = config.gravity;
+content.style.backgroundSize = (config.bgsize) + "px"
+code = config.code
+if (audioInstance) {
+  // Jeżeli istnieje istniejący odtwarzacz audio, zatrzymaj go
+  audioInstance.pause();
+  audioInstance.currentTime = 0;
+  audioInstance = null;
+}
+
+if (config.music !== '') {
+  const base64Wav = config.music;
+
+  // Utwórz nowy odtwarzacz audio
+  audioInstance = new Audio();
+  audioInstance.src = base64Wav;
+  audioInstance.setAttribute('preload', 'auto');
+
+  // Dodaj odtwarzacz do dokumentu
+  document.body.appendChild(audioInstance);
+
+  // Odtwórz plik audio WAV
+  audioInstance.play();
+  audioInstance.loop = true;
+  toonce = 0;
+}
+
+if (config.customcamera == 1) {
+  viewport.scrollTo(config.cameraX * tileSize2 - viewportWidth / 2, (config.cameraY * tileSize2) - viewportHeight / viewportHeight * viewportHeight / 2)
+}
+
+const contentElement = document.getElementById("content");
+document.querySelector('gui').innerHTML = config.guiHTML
+ukonczoneGUI()
+//contentElement.style.backgroundImage = `url('${config.bg}')`;
+//alert(bgimg)
+contentElement.style.backgroundImage = `url('${bgimg}')`;
+document.getElementById('Scontent').innerHTML = ''
+document.getElementById('Econtent').innerHTML = ''
+tileConfig = config.entities
+//document.getElementById('entitiesconfig').innerText = JSON.stringify(config.entities);
+moveTilesRandomly()
+setTimeout(function() {
+  curline = 0
+  currentLine = 0
+  generateAllTiles()
+  candocmd = 1
+  curline = 0
+  currentLine = 0;
+  candothath = 0
+  defy = 0
+  jmptimes = 0
+  stop = 0
+  RESET()
+
+  if (config.stickybg1 == 0) {
+    document.getElementById('content').style.backgroundImage = `url('${config.bg}')`
+
+    document.getElementById('content2').style.backgroundImage = ``
+
+
+  } else {
+    document.getElementById('content2').style.backgroundImage = `url('${config.bg}')`
+
+    document.getElementById('content').style.backgroundImage = ``
+
+  }
+
+
+
+}, 3000)
+//alert(content.style.backgroundSize)
+tileSize = config.tilesize; // Rozmiar pojedynczego kafelk
+cfigZ = config.zoomoff;
+vp = document.getElementById("viewport");
+/*
+vp.style.zoom = cfigZ * config.zoomadd;
+document.querySelector('#content2').style.width = vp.style.width
+document.querySelector('#content2').style.height = vp.style.height
+document.querySelector('#content2').style.zoom = vp.style.zoom*/
+}
+function savegameslot(){
+  
+}
+function loadgameslot(){
+  
+}
 function moveTilesRandomly() {
   if(stop==0){
     for (let tileId in tileConfig) {
@@ -2186,8 +2320,9 @@ tiles.forEach((tile) => {
   var closestIndex = 0;
   var closestDistance; // Zmienna closestDistance musi być zdefiniowana
   let executeall=0
+  let executeall2=0
   let viewport3 = document.getElementById('viewport');
-const tileRect8 = tile.getBoundingClientRect();
+let tileRect8 = tile.getBoundingClientRect();
 const viewportRect8 = viewport3.getBoundingClientRect();
 if (
   tileRect8.top + 2 * tileSize >= viewportRect8.top &&
@@ -2198,7 +2333,7 @@ if (
   
   function findTileDimension(tileMapp, x, y, s) {
   // Przejście przez wszystkie wymiary tileMap
-  for (var dimensioned = 0; dimensioned < tileMap.length; dimensioned++) {
+  for (var dimensioned = 0; dimensioned < tileMapp.length; dimensioned++) {
     // Sprawdzenie, czy kafelek o podanych współrzędnych istnieje w danym wymiarze
     const foundTile = tileMapp[dimensioned].find(block =>
       parseInt(block[0]) === x &&
@@ -2220,12 +2355,13 @@ if (
 const xc = parseInt(tile.dataset.x)
 const yc = parseInt(tile.dataset.y)
 const sc = parseInt(tile.dataset.s)
-if(xc){
+if(xc!== undefined){
 
 const dimensionIndex = findTileDimension(tileMap, xc, yc, sc);
 
 if (parseInt(dimensionIndex) == parseInt(dimension)||parseInt(dimensionIndex) == -1) {
 executeall=1
+
 //alert("something is there",parseInt(dimensionIndex));
 
 } else {
@@ -2236,11 +2372,27 @@ executeall=1
 }}
   
   
-}else{
-  executeall=1
+}else{executeall=1/*
+  if(vi==1){executeall=0}else{
+  executeall=1}*/
 }
 
-  if(executeall==1){
+
+if (
+  tileRect8.top + 2 * tileSize >= viewportRect8.top &&
+  tileRect8.left + 2 * tileSize >= viewportRect8.left &&
+  tileRect8.bottom - 2 * tileSize <= viewportRect8.bottom &&
+  tileRect8.right - 2 * tileSize <= viewportRect8.right && vi==1
+) {
+  executeall2=1
+}else if(vi==1){
+  executeall2=0
+}
+if(vi!==1){
+  executeall2=1
+}
+
+  if(executeall==1&&executeall2==1){
   
   function removefromtilemap(){
     const currentX = parseInt(tile.dataset.x)
@@ -2311,10 +2463,11 @@ function KillThis(){
   if(true){
     
    // alert("1")
+   if(cantbedamaged!==1){}else{
     let gototarget = findClosestProjetitle(tile, collisionobject);
 if (gototarget&&gototarget!==NaN&&gototarget!==null&&gototarget!==undefined) {
   gototarget.remove()
-}
+}}
 //alert("2")
                   // Player attacks entity, decrement HP
                   tile.dataset.hp -= 1;
@@ -2451,11 +2604,12 @@ if(movetilesdeffacted!==undefined&&movetilesdeffacted!==null){
   movemap(movetilesdeffacted[1],movetilesdeffacted[2],movetilesdeffacted[0]);
 }
 if(cantbedamaged!==1){
+  if(despawn!==undefined&&despawn!==null){}else{
                     if (score1 == 1) {
                       score += 1
                     } else {
                       killed += 1;
-                    }
+                    }}
 }
                     // Remove 
                     // Entity is defeated, remove the tile
@@ -4588,6 +4742,11 @@ updateHpBar(config.HpBarConfiguration.numberHp);
                   setTimeout(updateViewport, 50)
                   setTimeout(updateViewport, 20)
                 }}
+                if (currentHp < 1) {
+                  if(config.savedgamestate!==1&&config.savedgamestate!=="1"){}else{
+                  loadoldergamestate()
+                  }
+                }
             }
         }
     }
@@ -4620,7 +4779,7 @@ function normspeed() {
             rect1.top < rect2.bottom + 80 &&
             rect1.right > rect2.left - 80 &&
             rect1.left < rect2.right + 80)) {
-          speed = classicspeed;
+          speed = config.norspeed;
           //alert("")
         }
       } else {
@@ -4978,6 +5137,15 @@ var tlo2 = 0
       var yyy=0
       
 function loop() {
+  if (!('maxgravityvelocity' in config)) {
+
+config['maxgravityvelocity'] = 1;
+} 
+  if (!('savedgamestate' in config)) {
+  // Jeśli klucz nie istnieje, dodaj go z domyślną wartością
+  config['savedgamestate'] = 0;
+}
+  
   if(config.zoom!==1&&config.zoom!==0&&config.zoom!==undefined&& config.testmode==1){
    viewport.style.zoom= config.zoom
    document.getElementById('content2').style.zoom=config.zoom
@@ -5441,15 +5609,21 @@ function cofnijczas(ilerazycofnac) {
   
   </div>
 </gui>
+<!--<div onclick="toggleUplayer()" style="width:50px; height:50px; background: url('./zlayer1.png') center center/contain no-repeat; color:lime; text-align:center; font-size:30px; line-height:30px; position:absolute; right: 215px; top:16px; z-index: 99" class="notaproject"></div>
+
+<script>
+  
+</script>-->
+
 <div class="f notaproject" style="position: fixed; width: 210px; height: calc(100vh - 5px) ; background: url('./box (3).png'); image-rendering: pixelated; background-size: 100% 100%; z-index: 999999;overflow: hidden;right:0;
 overflow : scroll;">
   
-  <div onclick="toggleVS()" style="width:30px; height:30px; background: url('./box (3).png') center center/contain no-repeat; color:lime; text-align:center; font-size:20px; line-height:30px; position:absolute; left: 10px; top:16px;">+</div>
-<div onclick="toggleMENS(); playUpdateSound2()" style="width:30px; height:30px; background: url('./box (3).png') center center/contain no-repeat; color:lime; text-align:center; font-size:20px; line-height:30px; position:absolute; left: 42px; top:16px;">⚙️</div>
-<div onclick="togglemode1(); playUpdateSound()" style="width:30px; height:30px; background: url('./box (3).png') center center/contain no-repeat; color:lime; text-align:center; font-size:20px; line-height:30px; position:absolute; left: 74px; top:16px;">...</div>
+  <div onclick="toggleVS()" style="width:50px; height:50px; background: url('./box (3).png') center center/contain no-repeat; color:yellow; text-align:center; font-size:30px; line-height:30px; position:absolute; left: 10px; top:16px; animation: rainbow 3s infinite;">+</div>
+<div onclick="toggleMENS(); playUpdateSound2()" style="width:50px; height:50px; background: url('./box (3).png') center center/contain no-repeat; color:yellow; text-align:center; font-size:30px; line-height:30px; position:absolute; left: 62px; top:16px; animation: rainbow 3s infinite;">⚙️</div>
+<div onclick="togglemode1(); playUpdateSound()" style="width:50px; height:50px; background: url('./box (3).png') center center/contain no-repeat; color:yellow; text-align:center; font-size:30px; line-height:30px; position:absolute; left: 114px; top:16px; animation: rainbow 3s infinite;">...</div>
 
 
-  <div id="Iblocks" style="margin-top:60px;padding: 0;"></div>
+  <div id="Iblocks" style="margin-top:70px;padding: 0;"></div>
 </div>
 <style>
   .btn{
@@ -6282,7 +6456,7 @@ function addEntity() {
 
     function editEntity(entityName) {
         const options = config.entities[entityName]
-        alert(options);
+      //  alert(options);
         const optionNames = getOptionNames();
         let optionHTML = '';
         for (let i = 0; i < optionNames.length; i++) {
@@ -6731,6 +6905,14 @@ scale
 <input type="text" id="leftInput" oninput="editInputVariable2(this.value, 'playersizeNOHITBOX'); updspeed()">
 <button onclick="handleFileButtonClickA('fileInput1', 1)">player SIZE With HITBOX(1/0)</button>
 <input type="text" id="leftInput" oninput="editInputVariable2(this.value, 'playersizeHasHitBox'); updspeed()">
+config.savedgamestate
+<input type="text" id="leftInput" oninput="editInputVariable2(this.value, 'savedgamestate'); updspeed()">(1/0) reset progress to ost save point if player died  
+
+config['maxgravityvelocity']
+<input type="text" id="leftInput" value="1" oninput="editInputVariable2(this.value, 'maxgravityvelocity'); updspeed()">(number) max gravity multiple speed def use 1
+
+<input type="text" id="leftInput" value="1" oninput="editInputVariable2(this.value, 'gravitypower'); updspeed()">(number) gravity power default 0.1/0.2
+
 <script>
 function updspeed(){
   
@@ -7244,26 +7426,35 @@ pausemove = 0
         const nextMessage = dialogQueue.shift();
         
         // Animate text appearance
-        let index = 0;
-        const delay = 20; // Delay between each character appearance
-        const timer = setInterval(function() {
-            npcText.textContent += nextMessage[index];
-            index++;
-            // If the entire text is displayed, clear the timer
-            if (index === nextMessage.length) {
-                clearInterval(timer);
-                // Add click event listener to the dialog to display the next message
-                npcDialog.addEventListener('click', function displayNext() {
-                    npcDialog.removeEventListener('click', displayNext); // Remove the click event listener
-                    displayNextDialog(); // Display the next dialog message
-if (dialogQueue.length === 0) {
-  pausemove = 0;
-}
-                });
-            }
-        }, delay);
+        // Animate text appearance
+let index = 0;
+let wordIndex = 0; // Index of the current word
+const delay = 5; // Delay between each character appearance
+const timer = setInterval(function() {
+    // Add the next letter to the text
+    npcText.textContent += nextMessage[wordIndex][index];
+    // Increment index by 2 to skip every other letter
+    index += 2;
+    // If we reached the end of the current word, move to the next word
+    if (index >= nextMessage[wordIndex].length) {
+        index = 0;
+        wordIndex++;
+        // If we reached the end of all words, clear the timer
+        if (wordIndex === nextMessage.length) {
+            clearInterval(timer);
+            // Add click event listener to the dialog to display the next message
+            npcDialog.addEventListener('click', function displayNext() {
+                npcDialog.removeEventListener('click', displayNext); // Remove the click event listener
+                displayNextDialog(); // Display the next dialog message
+                if (dialogQueue.length === 0) {
+                    pausemove = 0;
+                }
+            });
+        }
     }
+}, delay);
 
+}
     // Test messages
     
     
@@ -9445,10 +9636,11 @@ setTimeout(function() {
 tileSize = config.tilesize; // Rozmiar pojedynczego kafelk
 cfigZ = config.zoomoff;
 vp = document.getElementById("viewport");
+/*
 vp.style.zoom = cfigZ * config.zoomadd;
 document.querySelector('#content2').style.width = vp.style.width
 document.querySelector('#content2').style.height = vp.style.height
-document.querySelector('#content2').style.zoom = vp.style.zoom
+document.querySelector('#content2').style.zoom = vp.style.zoom*/
 }
 
 
@@ -9640,4 +9832,19 @@ if (!('airjump' in config)) {
 }
 
 </style>
+<script>
+  function togglemode1(){
+    var elementsToHide = document.getElementsByClassName('d');
+    Array.from(elementsToHide).forEach(element => {
+      element.classList.toggle('hide')
+    });
+  }
+  setTimeout(function(){
+    var elementsToHide = document.getElementsByClassName('d');
+    Array.from(elementsToHide).forEach(element => {
+      element.classList.toggle('hide')
+    });
+  },1000)
+  
 
+</script>
