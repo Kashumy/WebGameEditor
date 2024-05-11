@@ -2394,6 +2394,7 @@ if(vi!==1){
   if(executeall==1&&executeall2==1){
   
   function removefromtilemap(){
+    config.killed=killed
     const currentX = parseInt(tile.dataset.x)
 const currentY = parseInt(tile.dataset.y)
 const currentS = parseInt(tile.dataset.s)
@@ -2608,6 +2609,7 @@ if(cantbedamaged!==1){
                       score += 1
                     } else {
                       killed += 1;
+                      config.killed+=1
                     }
 }
                     // Remove 
