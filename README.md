@@ -1,7 +1,11 @@
 
 PaperMaker3000Engine also called PME
 
-copyright 2024/2025
+no copyright
+
+you can copy program or edit it without problems  : P
+
+
 https://kashumy.github.io/WebGameEditor/
  [Issues](https://github.com/Kashumy/WebGameEditor/issues)
 
