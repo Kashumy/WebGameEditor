@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,84 +10,112 @@ html{
   position: fixed;
   width:100vw;
   height:100vh;
-  
+  overflow: hidden; /* Ukryj przewijanie */
+  animation: 5s ds infinite cubic-bezier(0.86, 0, 0.07, 1);
 }
-  body {
-    position: fixed;
+
+body {
+  position: fixed;
   width:100vw;
   height:100vh;
-  
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: #272822;
-    color: #f8f8f2;
-  }
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #272822;
+  color: #f8f8f2;
+  backdrop-filter: blur(10px); /* Rozmyj krawędzie */
+}
 
-  header {
-    background-color: #49483e;
-    padding: 20px;
-    text-align: center;
-  }
+header {
+  background-color: #49483e;
+  padding: 20px;
+  text-align: center;
+}
 
-  .logo {
-    max-width: 300px;
-  }
+.logo {
+  max-width: 300px;
+}
 
-  main {
-    text-align: center;
-    margin-top: 20px;
-  }
+main {
+  text-align: center;
+  margin-top: 20px;
+}
 
-  button {
-    padding: 10px 20px;
-    margin: 0 10px;
-    font-size: 16px;
-    
-    background-color: #75715e;
-    border: none;
-    color: #f8f8f2;
-    transition: background-color 0.3s;
+@keyframes ds{
+  0%{
+    filter: sepia(20%);
   }
+  50%{
+    filter: sepia(60%);
+  }
+  100%{
+    filter: sepia(20%);
+  }
+}
 
-  button:hover {
-    background-color: #a59f85;
-  }
+button {
+  padding: 10px 20px;
+  margin: 0 10px;
+  font-size: 16px;
+  background-color: #75715e;
+  border: none;
+  color: #f8f8f2;
+  transition: background-color 0.3s;
+}
 
-  .modal {
-    display: none;
-    position: fixed;
-    z-index: 1;
-    left: 0px;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-    background-color: rgba(0,0,0,0.4);
-  }
+button:hover {
+  background-color: #a59f85;
+}
 
-  .modal-content {
-    background-color: #272822;
-    margin: 20px ;
-    padding: 20px;
-    border: 1px solid #75715e;
-    width: 80%;
-  }
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  left: 0px;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0,0,0,0.4);
+}
 
-  .close {
-    color: #f8f8f2;
-    float: right;
-    font-size: 28px;
-    font-weight: bold;
-    transition: color 0.3s;
-  }
+.modal-content {
+  background-color: #272822;
+  margin: 20px ;
+  padding: 20px;
+  border: 1px solid #75715e;
+  width: 80%;
+}
 
-  .close:hover,
-  .close:focus {
-    color: #75715e;
-    text-decoration: none;
-    
+.close {
+  color: #f8f8f2;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+  transition: color 0.3s;
+}
+
+.close:hover,
+.close:focus {
+  color: #75715e;
+  text-decoration: none;
+}
+
+.text-animation {
+  animation: glow 3s infinite;
+}
+
+@keyframes glow {
+  0% {
+    text-shadow: 0 0 5px rgba(255, 255, 147, 0.7);
   }
+  50% {
+    text-shadow: 0 0 10px rgba(215, 255, 147, 0.9);
+  }
+  100% {
+    text-shadow: 0 0 5px rgba(255, 255, 147, 0.7);
+  }
+}
 </style>
 </head>
 <body>
@@ -109,13 +138,15 @@ html{
 This is PM3
 all of this information is important 
 
-<text style="color:lime;font-size: 120%;">V: 2</text>
-<text style="color:lime;font-size: 120%;">Version 3.0 nafr</text>
-<text style="color:lime;font-size: 120%;">MyEngine: DogLog</text>
-<text style="color:lime;font-size: 120%;">copy right: Program doesn't have copy right : ) </text>
-<text style="color:yellow ;font-size: 80%;">Free and completely editable and can be used for commercial or business also program for everyone</text>
+<text class="text-animation" style="color: rgb(120,150,120);font-size: 120%;">V: 2</text>
+<text class="text-animation" style="color: rgb(120,150,120);font-size: 120%;">Version 3.0 nafr</text>
+<text class="text-animation" style="color: rgb(120,150,120);font-size: 120%;">MyEngine: DogLog</text>
+<text class="text-animation" style="color: rgb(120,150,120);font-size: 120%;">copy right: Program doesn't have copy right : ) </text>
+<text class="text-animation" style="color: rgb(150,150,120);font-size: 80%;">Free and completely editable and can be used for commercial or business also program for everyone</text>
 
-<text style="color:lime;font-size: 120%;">all your game's can be licensed </text>
+<text class="text-animation" style="color: rgb(150,150,120);font-size: 80%;">if you making copy of program you can add information about program or author but this isn't needed </text>
+
+<text class="text-animation" style="color: rgb(120,150,120);font-size: 120%;">all your game's can be licensed </text>
 
 What i will add
 
@@ -164,3 +195,4 @@ and entities patch finding movement type
 
 </body>
 </html>
+
