@@ -1,5 +1,7 @@
 
 
+
+
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
 <!-- put your water mark -->
@@ -548,10 +550,10 @@ document.getElementById('project').style.zoom="1.0"
 
 
 
-  <button class="notaproject d" style="position: absolute; left:30vw; bottom:0px; background: blue; z-index: 99999" onclick="saveToFile()">Save Project File</button>
+  <button class="notaproject d" style="position: absolute; left:30vw; bottom:0px; background: blue; z-index: 99999999999999999999999999999999999999999999" onclick="saveToFile()">Save Project File</button>
 
 
-<button class="notaproject d" style="position: absolute; left:0vw; bottom:0px; background: blue; z-index: 99999" onclick="chooseFile()">Project Loop main Music</button>
+<button class="notaproject d" style="position: absolute; left:50vw; bottom:0px; background: blue; z-index: 99999999999999999999999999999999999999999999999999" onclick="chooseFile()">Project Loop main Music</button>
 
 <script>
 let toonce = 1;
@@ -1351,7 +1353,7 @@ var translateY=0;
       <button class="a hide2" style="position: fixed; top:calc(5% + 120px);left:20%;" id="addButton4">zmień tlo<br></button>
       
 	  <p id="cns" ><p id="fps"></p>
-	  <p id="console" class="notaproject"></p></p>
+	  <p id="console" style="z-index: 999999999999999" class="notaproject"></p></p>
 <style>
 #cns{
   position :absolute ;
@@ -1386,7 +1388,7 @@ var translateY=0;
   }
 }
 #console {
-width: 100%;
+width: 140px;
 color:white;
 background: #00000047;
 position: absolute;
@@ -1679,7 +1681,7 @@ document.getElementById('withgui').style.position = ""
       document.getElementById('pastemark').style.left = "220px"
       document.getElementById('pastemark').style.opacity="1"
       document.getElementById('pastemark').style.top = "0px"
-      document.getElementById('withgui').style.transform = "translate(150px,0%)"
+     document.getElementById('withgui').style.transform = "translate(150px,0%)"
       document.getElementById('withgui').style.position="absolute"
       var elementsToHide = document.getElementsByClassName('notaproject');
       Array.from(elementsToHide).forEach(element => {
@@ -2118,7 +2120,8 @@ return true;
 }
 
 function loadoldergamestate(){
-  config = config
+  config.bg=config.oldbg
+//  config = config
 deletedtiles = []
 const playerskin69 = config.playerskin1
 //alert(playerskin69)
@@ -2167,8 +2170,8 @@ if (audioInstance) {
 }
 
 if (config.music !== '') {
-  const base64Wav = config.music;
-
+  const base64Wav = config.oldmusic;
+//alert(config.oldmusic)
   // Utwórz nowy odtwarzacz audio
   audioInstance = new Audio();
   audioInstance.src = base64Wav;
@@ -2212,6 +2215,7 @@ setTimeout(function() {
   RESET()
 
   if (config.stickybg1 == 0) {
+    
     document.getElementById('content').style.backgroundImage = `url('${config.bg}')`
 
     document.getElementById('content2').style.backgroundImage = ``
@@ -2243,6 +2247,8 @@ function savegameslot(){
 function loadgameslot(){
   
 }
+let currentbase64=''
+let currentbase64img=''
 function moveTilesRandomly() {
   if(stop==0){
     for (let tileId in tileConfig) {
@@ -2333,19 +2339,19 @@ spawn2onlyifrandom, // [min,max]*/
 tiles.forEach((tile) => {
   var closestIndex = 0;
   var closestDistance; // Zmienna closestDistance musi być zdefiniowana
-  if(damageplayer!==undefined&&damageplayer!==null){
-  tile.dataset.damage=parseInt(damageplayer)
-  }else{
-    tile.dataset.damage=1
-  }
+  
   let executeall=0
   let executeall2=0
   let viewport3 = document.getElementById('viewport');
   
-  
+  if (damageplayer !== undefined && damageplayer !== null) {
+  tile.dataset.damage = parseInt(damageplayer) || 1
+} else {
+  tile.dataset.damage = 1
+}
                 let dist = 1
-                if (playercollisiondistance !== undefined && playercollisiondistance !== null) {
-                  dist = parseInt(playercollisiondistance) 
+                if (playercollisiondistance !== undefined &&playercollisiondistance&& playercollisiondistance !== null) {
+                  dist = parseInt(playercollisiondistance) ||1
                   
                 }
                 tile.dataset.damagedist=dist
@@ -3193,6 +3199,7 @@ if (showifevent !== undefined && showifevent !== null && showifevent !== "undefi
 }
 if(parseInt(changebackground)==1){
   let texture=backgroundtexture
+   currentbase64img=TILES[texture][2]
                       document.getElementById('content').style.backgroundImage = `url('${TILES[texture][2]}')`
 
 
@@ -3387,6 +3394,8 @@ if (collisioneventprojectilesize !== null && collisioneventprojectilesize !== un
                     },3000)
                   }
                 if(spawnpoint==1){
+                  config.oldmusic=currentbase64
+                  config.oldbg=currentbase64img
                   config.spawnX=left / tileSize
                   config.spawnY=(top / tileSize)-1
                 }
@@ -3408,6 +3417,7 @@ if (changeLoopMusic !== undefined && changeLoopMusic !== null) {
 
     if (changeLoopMusic !== '') {
         const base64Wav = changeLoopMusic;
+        currentbase64=changeLoopMusic
 
         // Utwórz nowy odtwarzacz audio
         audioInstance = new Audio();
@@ -3438,7 +3448,7 @@ if (changeLoopMusic !== undefined && changeLoopMusic !== null) {
 
     if (config.music !== '') {
         const base64Wav = config.music;
-
+currentbase64=changeLoopMusic
         // Utwórz nowy odtwarzacz audio
         audioInstance = new Audio();
         audioInstance.src = base64Wav;
@@ -4680,7 +4690,14 @@ function checkit() {
             const rect2 = tile.getBoundingClientRect();
             const wallThickness = 2;
 let fxc=parseInt(tile.dataset.damagedist)*(tileSize2/2)
-if(parseInt(tile.dataset.damagedist)==1||parseInt(tile.dataset.damagedist)==0){
+let hurtdmg=1
+if(tile.dataset.damage){
+  hurtdmg=parseInt(tile.dataset.damage)
+   
+}else{
+   hurtdmg=1
+}
+if(parseInt(tile.dataset.damagedist)==1||parseInt(tile.dataset.damagedist)==0||(tile.dataset.damagedist)==undefined){
   fxc=0
 }
 
@@ -4703,11 +4720,12 @@ setTimeout(function(){
                   if(config.HpBarConfiguration!==undefined){
                     // Zaktualizuj życie gracza po kolizji
                     
-                    config.HpBarConfiguration.numberHP-= parseInt(tile.dataset.damage)
+                    config.HpBarConfiguration.numberHP-= hurtdmg
                     currentHp=config.HpBarConfiguration.numberHP
                     updateHpBar(currentHp);
                     
                     if (currentHp < 1) {
+                      config.bg=config.oldbg
                       
                         playerY = config.spawnY;
                         playerX = config.spawnX;
@@ -4719,7 +4737,7 @@ setTimeout(function(){
                         }
                         
                         if (config.music !== '') {
-                          const base64Wav = config.music;
+                          const base64Wav = config.oldmusic;
                         
                           // Utwórz nowy odtwarzacz audio
                           audioInstance = new Audio();
@@ -4766,8 +4784,13 @@ updateHpBar(config.HpBarConfiguration.numberHp);
                   }
                   
                   if (config.music !== '') {
-                    const base64Wav = config.music;
-                  
+                    let base64Wav = config.music;
+                  if(config.oldmusic!==undefined&&config.oldmusic!==null){
+if (config.oldmusic.slice(0, 10) !== config.oldmusic) {
+    base64Wav = config.oldmusic;
+} else {
+    base64Wav = config.music;
+}}
                     // Utwórz nowy odtwarzacz audio
                     audioInstance = new Audio();
                     audioInstance.src = base64Wav;
@@ -4785,8 +4808,11 @@ updateHpBar(config.HpBarConfiguration.numberHp);
                   setTimeout(updateViewport, 20)
                 }}
                 if (currentHp < 1) {
+                  config.bg=config.oldbg
                   if(config.savedgamestate!==1&&config.savedgamestate!=="1"){}else{
+                    if(config.savedgamestate!==undefined){
                   loadoldergamestate()
+                    }
                   }
                 }
             }
@@ -5179,7 +5205,14 @@ var tlo2 = 0
       var yyy=0
       
 function loop() {
-  
+  config.px=(playerX)/tileSize;config.py=playerY/tileSize;
+  if (!('oldmusic' in config)) {
+
+  config['oldmusic'] = config.music;
+}if (!('oldbg' in config)) {
+
+  config['oldbg'] = config.bg;
+}
   
   if (!('playerdamage' in config)) {
 
@@ -5971,7 +6004,7 @@ but update will come with others options :) </details><j/^> :) </j/^>
 
 
 
-<div id="toggleButton" style="width:50px;height:40px;background: #6F6F6F; float: left; margin:4px; justify-content: center; align-items: center ; display: flex; position:absolute;font-size: 5px; top:50px;"onclick="toggleLayers()" class="notaproject">build on blocks</div>
+<div id="toggleButton" style="width:50px;height:40px;background: #6F6F6F; float: left; margin:4px; justify-content: center; align-items: center ; display: flex; position:absolute;font-size: 5px; top:50px; right:50px; z-index:999"onclick="toggleLayers()" class="notaproject">build on blocks</div>
 <script>
   let layers = 0;
 
@@ -6276,8 +6309,7 @@ playerskin=playerskin69
     stop=1
     code = config.code;
     classicspeed = config.norspeed;
-    playerY = config.spawnY;
-    playerX = config.spawnX;
+    
    setPlayer(config.px*tileSize,config.py*tileSize)
     speed = config.speed;
     playerskin = config.playerskin1;
@@ -6294,8 +6326,16 @@ playerskin=playerskin69
     }
     
     if (config.music !== '') {
-      const base64Wav = config.music;
+     
+      let base64Wav = config.music;
     
+if(config.oldmusic!==undefined&&config.oldmusic!==null){
+if (config.oldmusic.slice(0, 10) !== config.oldmusic) {
+    base64Wav = config.oldmusic;
+} else {
+    base64Wav = config.music;
+}}
+
       // Utwórz nowy odtwarzacz audio
       audioInstance = new Audio();
       audioInstance.src = base64Wav;
@@ -6469,7 +6509,7 @@ var testexample={"examples":{"alltiles0":[2,"move , follow , avoid",0,3,0,1,[0,0
                 
                 const deleteButton = document.createElement('button');
                 deleteButton.textContent = 'Delete';
-                deleteButton.onclick = function() {
+                deleteButton.ondblclick = function() {
                     delete config.entities[entity];
                     displayEntities();
                 };
@@ -7580,10 +7620,7 @@ function checkclassCollision(class1, class2) {
       CY=parseInt(elements2[j].style.top)
 let distanceToPlayer = Math.sqrt(((CX - AX) / tileSize) ** 2 + ((CY - AY) / tileSize) ** 2);
 
-let dist=1
-if(playercollisiondistance!==undefined&&playercollisiondistance!==null){
-  dist=parseInt(playercollisiondistance)||1
-}
+let dist =1.1
 
 
       if (
