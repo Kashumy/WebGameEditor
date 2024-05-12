@@ -1,13 +1,21 @@
 
 PaperMaker3000Engine also called PME
 
-no copyright
+copyright: my games have it and logo any sprite in editor but its maded by me 
+
+
+
+https://kashumy.itch.io/papermaker3engine
+
+
 
 you can copy program or edit it without problems  : P
+and it can be used for business and commercial properties without pushing my nickname in, or program 
 
 
 https://kashumy.github.io/WebGameEditor/
- [Issues](https://github.com/Kashumy/WebGameEditor/issues)
+
+ [Issues ⭕](https://github.com/Kashumy/WebGameEditor/issues)
 
   Maked Finally 2.9nfr.8
   not full relase from 2.8 to 3.0 
