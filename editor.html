@@ -1,13 +1,12 @@
 
 
-
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
 <!-- put your water mark -->
 <div class="Ylyl" style="position: fixed; left:0; bottom:0px; background: #333 ; z-index: 9; width:30px;height:30px" onclick="saveToFile()">S</div>
 <div class="Ylyl" style="position: fixed; left:30px; bottom:0px; background: #333; z-index: 9; width:30px;height:30px" onclick="loadfile()">L</div>
 
-<img src="./watermark.gif" id="pastemark" onclick="config.testmode = config.testmode === 1 ? 0 : 1;up1();playUpdateSound2()"style="position: fixed; top:0; left:10px;  width:100px;height:30px; transform: translate(0,25%); z-index: 99999999999" >
+<img src="./watermark.gif" id="pastemark" onclick="config.testmode = config.testmode === 1 ? 0 : 1;up1();playUpdateSound2()"style="position: fixed; top:5px; left:10px;  width:100px;height:30px; transform: translate(0,25%); z-index: 99999999999" >
 
 <style>
   @font-face {
@@ -445,7 +444,7 @@ mbs.innerHTML = speed+'mb/s'
   </head>
 
   <body>
-    <div id="blackScreen">
+    <div id="blackScreen" style="z-index: 999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999; position: fixed;">
       <pre id="helloWorldText" style="white-space: pre-wrap"></pre>
     </div>
 
@@ -830,7 +829,7 @@ top:20px; right:20px; width: 30px ; height:30px ; background: red;"> -->
     width: 50px;
     height: 50px;
     background-color: #5B25257D;
-    color:#3523237D;
+    color:#A886867D;
     position: absolute;
     z-index: 9999;
     bottom:0;
@@ -1657,6 +1656,9 @@ function up1() {
       document.querySelector('#content2').style.zoom = vp.style.zoom 
     }
     if (config.testmode === 1) {
+      
+      
+      
       document.getElementById('viewport').style.left = "50%"
       var elementsToHide = document.getElementsByClassName('notaproject');
       Array.from(elementsToHide).forEach(element => {
@@ -1666,8 +1668,19 @@ function up1() {
       Array.from(elementsTomove).forEach(element => {
         element.style.right = '1px';
       });
+      document.getElementById('withgui').style.transform = ""
+      document.getElementById('pastemark').style.left = "5px"
+      document.getElementById('pastemark').style.top = ""
+      document.getElementById('pastemark').style.opacity="0.5"
+document.getElementById('withgui').style.position = ""
     } else {
-      document.getElementById('viewport').style.left = "50%"
+      // editor mode
+      document.getElementById('viewport').style.left = "calc(50% + 100px)"
+      document.getElementById('pastemark').style.left = "220px"
+      document.getElementById('pastemark').style.opacity="1"
+      document.getElementById('pastemark').style.top = "0px"
+      document.getElementById('withgui').style.transform = "translate(150px,0%)"
+      document.getElementById('withgui').style.position="absolute"
       var elementsToHide = document.getElementsByClassName('notaproject');
       Array.from(elementsToHide).forEach(element => {
         element.classList.remove('hide3')
@@ -2292,7 +2305,9 @@ spawningoffset,//[x,y]
 spawnnumber,
 despawnMS,
 
-
+playercollisiondistance,
+damageplayer,
+changeplayerdamage,
 
 
 
@@ -2318,9 +2333,23 @@ spawn2onlyifrandom, // [min,max]*/
 tiles.forEach((tile) => {
   var closestIndex = 0;
   var closestDistance; // Zmienna closestDistance musi być zdefiniowana
+  if(damageplayer!==undefined&&damageplayer!==null){
+  tile.dataset.damage=parseInt(damageplayer)
+  }else{
+    tile.dataset.damage=1
+  }
   let executeall=0
   let executeall2=0
   let viewport3 = document.getElementById('viewport');
+  
+  
+                let dist = 1
+                if (playercollisiondistance !== undefined && playercollisiondistance !== null) {
+                  dist = parseInt(playercollisiondistance) 
+                  
+                }
+                tile.dataset.damagedist=dist
+
 let tileRect8 = tile.getBoundingClientRect();
 const viewportRect8 = viewport3.getBoundingClientRect();
 if (
@@ -2470,7 +2499,7 @@ if (gototarget&&gototarget!==NaN&&gototarget!==null&&gototarget!==undefined) {
 }}
 //alert("2")
                   // Player attacks entity, decrement HP
-                  tile.dataset.hp -= 1;
+                  tile.dataset.hp -= config.playerdamage;
 
 if(config.folder!==undefined){
  // alert(config.folder.sounds.player[2])
@@ -3055,8 +3084,16 @@ const angle = Math.atan2(deltaY, deltaX) * (180 / Math.PI);
 
 tile.style.transform=`rotate(${angle}deg)`
 }
-                
-                if(distanceToPlayer <= 1.1 ){
+
+
+                if(distanceToPlayer <= dist ){
+                  
+if(changeplayerdamage!==undefined&&changeplayerdamage!==null&&changeplayerdamage!==' '){
+  config.playerdamage=parseInt(changeplayerdamage)
+}
+
+
+
 if(collisionchangedimension!==undefined &&collisionchangedimension!==null&&collisionchangedimension!=="undefined"){
   dimension=parseInt(collisionchangedimension)
   config.dimension=parseInt(collisionchangedimension)
@@ -3267,7 +3304,7 @@ if (collisiontexture !== null && collisiontexture !== undefined && tile.dataset.
   
   tile.style.backgroundImage = `url('${collisiontexture}')`;
 setTimeout(function() {
-  if (distanceToPlayer <= 0.5) {
+  if (distanceToPlayer <= dist/2) {
   tile.style.backgroundImage = `url('${collisiontexture}')`;
 tile.dataset.once0C2 = 0;
 }
@@ -3429,7 +3466,7 @@ if (changeLoopMusic !== undefined && changeLoopMusic !== null) {
                 
 if(collectable!==1&&collectable!==undefined){
     }else{
-      if (collecting === 1 && distanceToPlayer <= 2) {
+      if (collecting === 1 && distanceToPlayer <= dist*2) {
       // Pobierz wartości dataset x, y i s dla bieżącego bloku
       
       
@@ -3486,7 +3523,7 @@ tile.remove();
     }
                 
                 if(collectable!==1){
-                  if(attack === 1 && distanceToPlayer <= 1 && anableshootingattackforentities !==1 ){
+                  if(attack === 1 && distanceToPlayer <= dist && anableshootingattackforentities !==1 ){
 if(cantbedamaged!==1||cantbedamaged==undefined||cantbedamaged==null){
  KillThis()
 }
@@ -4642,11 +4679,15 @@ function checkit() {
             const rect1 = player.getBoundingClientRect();
             const rect2 = tile.getBoundingClientRect();
             const wallThickness = 2;
+let fxc=parseInt(tile.dataset.damagedist)*(tileSize2/2)
+if(parseInt(tile.dataset.damagedist)==1||parseInt(tile.dataset.damagedist)==0){
+  fxc=0
+}
 
-            if (rect1.bottom > rect2.top - 5 &&
-                rect1.top < rect2.bottom + 5 &&
-                rect1.right > rect2.left - 5 &&
-                rect1.left < rect2.right + 5) {
+            if (rect1.bottom > rect2.top -(5+fxc) &&
+                rect1.top < rect2.bottom + (5+fxc) &&
+                rect1.right > rect2.left - (5+fxc) &&
+                rect1.left < rect2.right + (5+fxc)) {
 
                 // Sprawdź czy minęło wystarczająco czasu od ostatniego otrzymania obrażeń
                 if (to205) {
@@ -4662,7 +4703,7 @@ setTimeout(function(){
                   if(config.HpBarConfiguration!==undefined){
                     // Zaktualizuj życie gracza po kolizji
                     
-                    config.HpBarConfiguration.numberHP-=1
+                    config.HpBarConfiguration.numberHP-= parseInt(tile.dataset.damage)
                     currentHp=config.HpBarConfiguration.numberHP
                     updateHpBar(currentHp);
                     
@@ -4981,7 +5022,7 @@ var collidingjump2=0
           const rect1 = player.getBoundingClientRect();
           const rect2 = tile.getBoundingClientRect();
           const wallThickness = 2;
-          
+       /*   
           if (rect1.bottom > rect2.top + 5 &&
             rect1.top < rect2.bottom - 10 &&
             rect1.right + 5 > rect2.left + 5 &&
@@ -4995,13 +5036,13 @@ var collidingjump2=0
             topside = 0;
          /*   playerY -= 0.6;*/
          //   playerX -= 0.1;
-         speed=config.backspeed
+ /*        speed=config.backspeed
          setTimeout(normspeed,1000)
           } else {
 
             Centercol = 0
 
-          }
+          }*/
           if (rect1.top < rect2.bottom + 3 && rect1.bottom > rect2.bottom + 3 && rect1.right > rect2.left && rect1.left < rect2.right) {
           
             playerY +=power * speed;
@@ -5138,6 +5179,12 @@ var tlo2 = 0
       var yyy=0
       
 function loop() {
+  
+  
+  if (!('playerdamage' in config)) {
+
+  config['playerdamage'] = 1;
+}
   if (!('maxgravityvelocity' in config)) {
 
 config['maxgravityvelocity'] = 1;
@@ -5594,9 +5641,14 @@ function cofnijczas(ilerazycofnac) {
     </script>
 </body>
 </html>
+<style>
+  .added{
+    pointer-events: all;
+  }
+  
+</style>
 
-
-<gui>
+<gui id="withgui" style="pointer-events: none">
   <div class="btns">
     <div class="null added"></div>
     <div class="btn added" id="Up"></div>
@@ -5616,7 +5668,7 @@ function cofnijczas(ilerazycofnac) {
   
 </script>-->
 
-<div class="f notaproject" style="position: fixed; width: 210px; height: calc(100vh - 5px) ; background: url('./box (3).png'); image-rendering: pixelated; background-size: 100% 100%; z-index: 999999;overflow: hidden;right:0;
+<div class="f notaproject" style="position: absolute; width: 210px; height: calc(100vh - 2px) ; background: url('./box (3).png'); image-rendering: pixelated; background-size: 100% 100%; z-index: 999999;overflow: hidden;left:0;
 overflow : scroll;">
   
   <div onclick="toggleVS()" style="width:50px; height:50px; background: url('./box (3).png') center center/contain no-repeat; color:yellow; text-align:center; font-size:30px; line-height:30px; position:absolute; left: 10px; top:16px; animation: rainbow 3s infinite;">+</div>
@@ -5624,7 +5676,7 @@ overflow : scroll;">
 <div onclick="togglemode1(); playUpdateSound()" style="width:50px; height:50px; background: url('./box (3).png') center center/contain no-repeat; color:yellow; text-align:center; font-size:30px; line-height:30px; position:absolute; left: 114px; top:16px; animation: rainbow 3s infinite;">...</div>
 
 
-  <div id="Iblocks" style="margin-top:70px;padding: 0;"></div>
+  <div id="Iblocks" style="margin-top:70px; margin-left:20px;padding: 0;"></div>
 </div>
 <style>
   .btn{
@@ -5835,7 +5887,7 @@ window.setInterval(testy, 3000);
 
 </script>
 
-<div style="overflow:hidden;overflow:scroll;position: absolute; top:50vh; left:50vw; transform: translate(-50%,-50%); width: 90%; height:80%; background: black; padding: 10px; z-index: 9999;"class="entitymenu">
+<div style="overflow:hidden;overflow:scroll;position: absolute; top:50vh; left:50vw; transform: translate(-50%,-50%); width: 90%; height:80%; background: black; padding: 10px; z-index: 999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999;"class="entitymenu">
 <div onclick="togglemenu()">
   close menu
 </div>
@@ -5844,7 +5896,7 @@ window.setInterval(testy, 3000);
     zoom:0.8;
   }
 </style>
-<div id="contentofjsoneditor" style="z-index: 9999999999;">
+<div id="contentofjsoneditor" style="z-index: 999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999; ">
 <div class="json-editor" >
     <button onclick="addEntity()">add</button>
     <button onclick="saveJson()">save</button>
@@ -6376,6 +6428,7 @@ slider2.addEventListener('touchend', () => {stop=1; slider2.value = 0; currentVa
 <style>
     .json-editor {
         margin-bottom: 10px;
+        
     }
     .json-editor button {
         margin-right: 10px;
@@ -6689,7 +6742,10 @@ if (file) {
 "spawningoffset [x,y]", //[x,y]
 "spawnnumber",
 "despawnMS despawning in Mili seconds (num) /buggy doesn't work on spawned objects",
-" Yeah this is End of Entities Editor in 2.9"
+"distance collision player (number def 1)",
+"deal damage player (num def 1) ",
+"changeplayerdamage on collision (number def 1)",
+"<p style='color:gray'> 3.0[nafu] not a finnal update</p>",
 
 
 /*
@@ -7524,8 +7580,14 @@ function checkclassCollision(class1, class2) {
       CY=parseInt(elements2[j].style.top)
 let distanceToPlayer = Math.sqrt(((CX - AX) / tileSize) ** 2 + ((CY - AY) / tileSize) ** 2);
 
+let dist=1
+if(playercollisiondistance!==undefined&&playercollisiondistance!==null){
+  dist=parseInt(playercollisiondistance)||1
+}
+
+
       if (
-        distanceToPlayer<=1
+        distanceToPlayer<=dist
       ) {
         return 1; // Zwraca 1 w przypadku kolizji
       }
@@ -8693,7 +8755,7 @@ zrub ustawienia deweloperskie
     text-decoration: none;
     
     font-size: 16px;
-    margin: 4px 2px;" class="notaproject d" onclick="usunElementy()">Usun wsz</button>
+    margin: 4px 2px;" class="notaproject d" onclick="usunElementy()">delete gui</button>
 
     <div id="modal-container" >
         <div id="modal-content">
