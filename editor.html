@@ -1,7 +1,6 @@
 
 
 
-
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
 <!-- put your water mark -->
@@ -504,7 +503,7 @@ CONFIG VABLES
 var tileMap =
 [[[9, 10, 1]],[],[]]
 
-let update3=()=>{ document.querySelector('#player').style.background=`url("${config.playerskin1}");`;config.playerskin1=playerskin;config.bg=bgimg;config.blocks=TILES;config.savedTileMap=tileMap;config.px=(playerX)/tileSize;config.py=playerY/tileSize; /*console.log(config)*/ }
+let update3=()=>{ document.querySelector('#player').style.background=`url("${config.playerskin1}");`;config.playerskin1=playerskin;config.bg=bgimg;config.blocks=TILES;config.px=(playerX)/tileSize;config.py=playerY/tileSize; /*console.log(config)*/ }
 //playerskin=config.playerskin1
 setTimeout(function(){
  // alert(config.bg)
@@ -1243,23 +1242,23 @@ overflow: scroll;
   </div>
   <div class="tile-details">
     <h2 style="animation: 5s rainbow infinite cubic-bezier(0.19, 1, 0.22, 1);" >Make Sprite</h2>
-  <input type="file" class="a hide2" accept="image/png/gif" id="imageInput" style="display: none;">
+  <input type="file" class="a hide2" accept="image/png, image/gif" id="imageInput" style="display: none;">
   <button class="a hide2" id="addButton" style="animation: 5s rainbow infinite cubic-bezier(0.19, 1, 0.22, 1);">add block <br></button>
   
   
   
-    <input type="file" class="a hide2"  accept="image/png/gif" id="imageInput2" style="display: none;">
-  <button class="a hide2" id="addButton2">add deco <br></button>
+    <input type="file" class="a hide2"  accept="image/png, image/gif"id="imageInput2" style="display: none;">
+  <button class="a hide2" style="animation: 5s rainbow infinite cubic-bezier(0.19, 1, 0.22, 1); filter: hue-rotate(50deg); filter: sepia(50%);" id="addButton2"> Add normal deco <br></button>
   
-        <input type="file" class="a hide2" accept="image/png/gif" id="imageInput5" style="display: none;">
+        <input type="file" class="a hide2" accept="image/png, image/gif" id="imageInput5" style="display: none;">
         <button class="a hide2" style="animation: 5s rainbow infinite cubic-bezier(0.19, 1, 0.22, 1);" id="addButton5" style="animation: 5s rainbow infinite ;">add entity<br></button>
-        <input type="file" class="a hide2" accept="image/png/gif" id="imageInput6" style="display: none;">
+        <input type="file" class="a hide2" accept="image/png, image/gif" id="imageInput6" style="display: none;">
         <button class="a hide2"  id="addButton6">add Text Element (experiment can doesn't work properly)<br></button>
-      <input type="file" class="a hide2"  id="imageInput3" style="display: none;">
+      <input type="file" class="a hide2"  id="imageInput3" accept="image/png, image/gif" style="display: none;">
       <button style="animation: 5s rainbow infinite cubic-bezier(0.19, 1, 0.22, 1);" class="a hide2"  id="addButton3">Change Player<br></button>
   
   
-      <input class="a hide2" type="file"  accept="image/png" id="imageInput4" style="display: none;">
+      <input class="a hide2" type="file"  accept="image/png, image/gif" id="imageInput4" style="display: none;">
       <button class="a hide2" id="addButton4" style="animation: 5s rainbow infinite cubic-bezier(0.19, 1, 0.22, 1);">change BG<br></button>
       
   </div>
@@ -1358,7 +1357,7 @@ var translateY=0;
 #cns{
   position :absolute ;
   top :0;
-  left :200px;
+  right :200px;
   z-index :5;
 }
 .darkness{
@@ -1393,7 +1392,8 @@ color:white;
 background: #00000047;
 position: absolute;
 z-index: 999;
-bottom: 0
+bottom: 0;
+right:30px;
 }
 .player {
   position: absolute;
@@ -2121,6 +2121,7 @@ return true;
 
 function loadoldergamestate(){
   config.bg=config.oldbg
+  tileMap=config.savedTileMap
 //  config = config
 deletedtiles = []
 const playerskin69 = config.playerskin1
@@ -2248,7 +2249,9 @@ function loadgameslot(){
   
 }
 let currentbase64=''
+let currentdimension=dimension
 let currentbase64img=''
+var currentsoundformessage=''
 function moveTilesRandomly() {
   if(stop==0){
     for (let tileId in tileConfig) {
@@ -2314,9 +2317,29 @@ despawnMS,
 playercollisiondistance,
 damageplayer,
 changeplayerdamage,
+spawn3inside,
+changeloopmusicwhendialogueends,
+
+changedimensionifdeffacted,
+collisionchangerandomdimension,
+whenkilledspawnSprite,
+dialiguesounds,//+stop
+/*
+
+"🆕<p style='animation: 5s rainbow infinite; filter:sepia(50%);' >changedimensionifdeffacted (number) </p>",
 
 
+"collisionchangerandomdimension [min ,max, dimension ]",
+"whenkilledspawnSprite (S...)",
+"T: dialiguesounds", //+stop
 
+
+*/
+/*"🆕<p style='animation: 5s rainbow infinite; filter:sepia(50%);'> collision change random dimension [min,max] </p>",
+"🆕<p style='animation: 5s rainbow infinite; filter:sepia(50%);'>when killed spawn But no index just (S...) </p>",
+"🆕<p style='animation: 5s rainbow infinite; filter:sepia(50%);'>every damage it will be speeder (power by an damage)</p>",
+"T: 🆕<p style='animation: 5s rainbow infinite; filter:sepia(50%);'>dialogue sound and stop when ended one message</p>",
+"🆕<p style='animation: 5s rainbow infinite; filter:sepia(50%);'>follow on entities [entities,...]</p>",*/
 
 
 
@@ -2429,7 +2452,7 @@ if(vi!==1){
   if(executeall==1&&executeall2==1){
   
   function removefromtilemap(){
-    config.killed=killed
+    
     const currentX = parseInt(tile.dataset.x)
 const currentY = parseInt(tile.dataset.y)
 const currentS = parseInt(tile.dataset.s)
@@ -2527,6 +2550,11 @@ if(config.folder!==undefined){
                   if (tile.dataset.hp < 1) {
 
                     
+if(changedimensionifdeffacted!==undefined&&changedimensionifdeffacted!==null&&changedimensionifdeffacted!==" "){
+  dimension=parseInt(changedimensionifdeffacted)
+  config.dimension=parseInt(changedimensionifdeffacted)
+}
+/*
 
 if(spawn_if_killed!==undefined&&spawn_if_killed!==null&&spawn_if_killed!=="undefined"){
   
@@ -2589,6 +2617,77 @@ if (isNaN(x)) {
        // tile.style.willChange = 'transform';
        el.style.width = tileSize - parseInt(el.style.width / 2) + "px"
        el.style.height = tileSize - parseInt(el.style.height / 2) + "px"
+       el.style.transform=`scale(${TILES[elm][3]||1})`;
+       //alert(TILES[elm][1]+' '+TILES[elm][2])
+       document.querySelector('#Econtent').appendChild(el);
+     }
+}
+*/
+
+
+
+if(spawn_if_killed!==undefined&&spawn_if_killed!==null&&spawn_if_killed!=="undefined"){
+  
+     let numbersprites=1
+     if(spawnnumber!==undefined&&spawnnumber!==null&&spawnnumber!=="null"&&spawnnumber!==""){
+       numbersprites=spawnnumber
+       
+     }else{
+       numbersprites=1
+     }
+  //   alert(spawnnumber)
+     for(let i=0;i<numbersprites;i++){
+          let el= document.createElement('div')
+     
+//     alert("spawned")
+     
+     let ofss=1
+     if(ofss!==undefined&&ofss!==null){
+       ofss=spawningdistance*tileSize
+     }else{
+       ofss=1
+     }
+     let offsetXt=0
+     let offsetYt=0
+     if(spawningoffset!==undefined&&spawningoffset!==null){
+     if (spawningoffset[0] !== undefined && spawningoffset[1] !== undefined && spawningoffset[0] !== null && spawningoffset[1] !== null && spawningoffset !== undefined && spawningoffset !== null) {
+       if(spawningoffset[0]!==undefined){
+  offsetXt = parseFloat(spawningoffset[0])*tileSize
+       }if(spawningoffset[1]!==undefined){
+  offsetYt = parseFloat(spawningoffset[1])*tileSize
+       }
+}
+if(offsetXt==undefined&&offsetYt==undefined){offsetXt = 0
+offsetYt = 0}else{
+  
+}}
+     let x=(left+Math.floor(Math.random()*(ofss*2))-ofss)+offsetXt
+     let y=(top+Math.floor(Math.random()*(ofss*2))-ofss)+offsetYt
+     if(isNaN(x)){
+       x=(left+Math.floor(Math.random()*(ofss*2))-ofss)
+       y=(top+Math.floor(Math.random()*(ofss*2))-ofss)
+if (isNaN(x)) {
+  x = left
+  y = top
+}
+     }
+     
+//alert(x+" "+y+" "+left)
+    let elm=parseInt(spawn_if_killed)
+    
+     el.className = `alltiles${TILES[elm][1]} tile1 sprite${TILES[elm][1]}`;
+     
+     el.style.backgroundImage = `url('${TILES[elm][2]}')`;
+       
+       el.style.left = x+"px"
+       el.style.top = y+"px"
+       el.style.zIndex="5"
+       el.classList.add('SPRITE')
+       
+       // tile.style.willChange = 'transform';
+       el.style.width = tileSize - parseInt(el.style.width / 2) + "px"
+       el.style.height = tileSize - parseInt(el.style.height / 2) + "px"
+       el.style.transform=`scale(${TILES[elm][3]||1})`;
        //alert(TILES[elm][1]+' '+TILES[elm][2])
        document.querySelector('#Econtent').appendChild(el);
      }
@@ -2617,7 +2716,7 @@ setTimeout(function() {
           tileMap[dimension].splice(indexToRemove, 1);
         });
 
-        config.savedTileMap = tileMap;
+   //     config.savedTileMap = tileMap;
 
         setTimeout(function() {
           onece5 = 1;
@@ -2777,6 +2876,16 @@ if (initialHp > 10) {
     if (!tile.dataset.currentdurationtime2) {
       tile.dataset.currentdurationtime2 = spawn2[0];
     }}
+    
+    if(spawn3inside!==undefined&&spawn3inside!==null&&spawn3inside!==""){
+    if (!tile.dataset.spawnduration3) {
+      tile.dataset.spawnduration3 = spawn3inside[0];
+    }
+    if (!tile.dataset.currentdurationtime3) {
+      tile.dataset.currentdurationtime3 = spawn3inside[0];
+    }}
+
+
     if (document.getElementsByClassName(collisionobject).length > 0) {
         gototarget = document.getElementsByClassName(collisionobject)[closestIndex];
         targetToX = parseInt(gototarget.style.left) / tileSize;
@@ -2823,13 +2932,84 @@ if(puzzleblock==1){
     }
 }
 */
+
+
+if (spawn3inside !== undefined && spawn3inside !== null && spawn3inside !== "") {
+  let duration = tile.dataset.spawnduration3
+  let counting = tile.dataset.currentdurationtime3
+  let element = spawn3inside[1]
+  tile.dataset.currentdurationtime3--
+  if (tile.dataset.currentdurationtime3 < 1) {
+tile.dataset.currentdurationtime3 = duration
+     let numbersprites=1
+     //alert("he")
+     
+
+     for(let i=0;i<numbersprites;i++){
+       
+     let el= document.createElement('div')
+     
+//     alert("spawned")
+     
+     let ofss=1
+     if(ofss!==undefined&&ofss!==null){
+       ofss=1
+     }else{
+       ofss=1
+     }
+     let offsetXt=0
+     let offsetYt=0
+     if(spawningoffset!==undefined&&spawningoffset!==null){
+     if (spawningoffset[0] !== undefined && spawningoffset[1] !== undefined && spawningoffset[0] !== null && spawningoffset[1] !== null && spawningoffset !== undefined && spawningoffset !== null) {
+       if(spawningoffset[0]!==undefined){
+  offsetXt = parseFloat(spawningoffset[0])*tileSize
+       }if(spawningoffset[1]!==undefined){
+  offsetYt = parseFloat(spawningoffset[1])*tileSize
+       }
+}
+if(offsetXt==undefined&&offsetYt==undefined){offsetXt = 0
+offsetYt = 0}else{
+  
+}}
+     let x=(left+Math.floor(Math.random()*(ofss*2))-ofss)+offsetXt
+     let y=(top+Math.floor(Math.random()*(ofss*2))-ofss)+offsetYt
+     if(isNaN(x)){
+       x=(left+Math.floor(Math.random()*(ofss*2))-ofss)
+       y=(top+Math.floor(Math.random()*(ofss*2))-ofss)
+if (isNaN(x)) {
+  x = left
+  y = top
+}
+     }
+     
+//alert(x+" "+y+" "+left)
+    let elm=parseInt(element)
+    
+     el.className = `alltiles${TILES[elm][1]} tile1 sprite${TILES[elm][1]}`;
+     
+     el.style.backgroundImage = `url('${TILES[elm][2]}')`;
+       
+       el.style.left = x+"px"
+       el.style.top = y+"px"
+       el.style.zIndex="5"
+       el.classList.add('SPRITE')
+       el.style.transform=`scale(${TILES[elm][3]||1})`;
+       // tile.style.willChange = 'transform';
+       el.style.width = tileSize - parseInt(el.style.width / 2) + "px"
+       el.style.height = tileSize - parseInt(el.style.height / 2) + "px"
+       //alert(TILES[elm][1]+' '+TILES[elm][2])
+       document.querySelector('#Econtent').appendChild(el);
+     }
+  }
+}
+
 if (spawn2 !== undefined && spawn2 !== null && spawn2 !== "") {
   let duration = tile.dataset.spawnduration2
   let counting = tile.dataset.currentdurationtime2
   let element = spawn2[1]
   tile.dataset.currentdurationtime2--
   if (tile.dataset.currentdurationtime2 < 1) {
-tile.dataset.currentdurationtime = duration
+tile.dataset.currentdurationtime2 = duration
      let numbersprites=1
      //alert("he")
      if(spawnnumber!==undefined&&spawnnumber!==null&&spawnnumber!=="null"&&spawnnumber!==""){
@@ -2885,8 +3065,9 @@ if (isNaN(x)) {
        el.style.left = x+"px"
        el.style.top = y+"px"
        el.style.zIndex="5"
+       tile.style.transform=`scale(${TILES[elm][3]||1})`;
        el.classList.add('SPRITE')
-       
+       el.style.transform=`scale(${TILES[elm][3]||1})`;
        // tile.style.willChange = 'transform';
        el.style.width = tileSize - parseInt(el.style.width / 2) + "px"
        el.style.height = tileSize - parseInt(el.style.height / 2) + "px"
@@ -2997,6 +3178,7 @@ if (isNaN(x)) {
        
        el.style.left = x+"px"
        el.style.top = y+"px"
+       el.style.transform=`scale(${TILES[element][3]||1})`;
        el.style.zIndex="5"
        el.classList.add('SPRITE')
        
@@ -3097,6 +3279,17 @@ tile.style.transform=`rotate(${angle}deg)`
 if(changeplayerdamage!==undefined&&changeplayerdamage!==null&&changeplayerdamage!==' '){
   config.playerdamage=parseInt(changeplayerdamage)
 }
+
+
+  if(collisionchangerandomdimension!==undefined&&collisionchangerandomdimension!==null){
+  const randomDimension = Math.floor(Math.random() * (collisionchangerandomdimension[1] - collisionchangerandomdimension[0] + 1)) + collisionchangerandomdimension[0];
+  if (randomDimension !== undefined && randomDimension !== null && randomDimension !== "undefined") {
+    dimension = parseInt(randomDimension);
+    config.dimension = parseInt(randomDimension);
+    updateViewport();
+  }}
+
+
 
 
 
@@ -3234,12 +3427,50 @@ if(parseInt(changebackground)==1){
   movemap(dialogueends_killedmoveandthisremove[2], dialogueends_killedmoveandthisremove[3], dialogueends_killedmoveandthisremove[1]);
   deletedtiles.push(tile)
   tile.remove()
+  
+if (changeloopmusicwhendialogueends !== undefined && changeloopmusicwhendialogueends !== null) {
+  if (audioInstance !== undefined) {
+    // Jeżeli istnieje istniejący odtwarzacz audio, zatrzymaj go
+    audioInstance.pause();
+    audioInstance.currentTime = 0;
+    audioInstance = null;
+  }
+
+  if (changeloopmusicwhendialogueends !== '') {
+    const base64Wav = changeloopmusicwhendialogueends;
+    currentbase64 = changeloopmusicwhendialogueends
+
+    // Utwórz nowy odtwarzacz audio
+    audioInstance = new Audio();
+    audioInstance.src = base64Wav;
+    audioInstance.setAttribute('preload', 'auto');
+
+    // Dodaj odtwarzacz do dokumentu
+    document.body.appendChild(audioInstance);
+
+    // Obsługa zdarzenia canplay
+    audioInstance.addEventListener('canplay', function() {
+      // Odtwórz plik audio WAV
+      audioInstance.play().catch(function(error) {
+        console.log("Błąd odtwarzania dźwięku:", error);
+      });
+    });
+
+    audioInstance.loop = true;
+    toonce = 0;
+  }
+}
+
+
   removefromtilemap()
 }
                   
                   if (!tile.dataset.dialogue&&NPCdialogue!==undefined &&NPCdialogue!==null&& NPCdialogue!==""&& NPCdialogue!=="null") {
   tile.dataset.dialogue = 0
   
+}
+if(dialiguesounds!==undefined&&dialiguesounds!==null){
+  currentsoundformessage=dialiguesounds
 }
 if(tile.dataset.dialogue == 0&&NPCdialogue!==undefined &&NPCdialogue!==null&& NPCdialogue!==""&& NPCdialogue!=="null"){
   
@@ -3266,6 +3497,40 @@ if (NPCdialogueends_spawn !== "" && NPCdialogueends_spawn !== "null" && NPCdialo
     tile.dataset.ONESPAWN=1
 deletedtiles.push(tile)
 tile.remove()
+
+if (changeloopmusicwhendialogueends !== undefined && changeloopmusicwhendialogueends !== null) {
+  if (audioInstance !== undefined) {
+    // Jeżeli istnieje istniejący odtwarzacz audio, zatrzymaj go
+    audioInstance.pause();
+    audioInstance.currentTime = 0;
+    audioInstance = null;
+  }
+
+  if (changeloopmusicwhendialogueends !== '') {
+    const base64Wav = changeloopmusicwhendialogueends;
+    currentbase64 = changeloopmusicwhendialogueends
+
+    // Utwórz nowy odtwarzacz audio
+    audioInstance = new Audio();
+    audioInstance.src = base64Wav;
+    audioInstance.setAttribute('preload', 'auto');
+
+    // Dodaj odtwarzacz do dokumentu
+    document.body.appendChild(audioInstance);
+
+    // Obsługa zdarzenia canplay
+    audioInstance.addEventListener('canplay', function() {
+      // Odtwórz plik audio WAV
+      audioInstance.play().catch(function(error) {
+        console.log("Błąd odtwarzania dźwięku:", error);
+      });
+    });
+
+    audioInstance.loop = true;
+    toonce = 0;
+  }
+}
+
     let element = NPCdialogueends_spawn
 
 
@@ -3280,6 +3545,7 @@ tile.remove()
     el.style.zIndex = "5"
     el.style.left = x + "px"
     el.style.top = y + "px"
+    el.style.transform=`scale(${TILES[element][3]||1})`;
     el.classList.add('SPRITE')
     // tile.style.willChange = 'transform';
     el.style.width = tileSize - parseInt(el.style.width / 2) + "px"
@@ -3395,6 +3661,9 @@ if (collisioneventprojectilesize !== null && collisioneventprojectilesize !== un
                   }
                 if(spawnpoint==1){
                   config.oldmusic=currentbase64
+                  config.savedTileMap=tileMap;
+                  config.olddimension=dimension
+                  config.dimension=dimension
                   config.oldbg=currentbase64img
                   config.spawnX=left / tileSize
                   config.spawnY=(top / tileSize)-1
@@ -3504,7 +3773,7 @@ setTimeout(function() {
           tileMap[dimension].splice(indexToRemove, 1);
         });
 
-        config.savedTileMap = tileMap;
+    //    config.savedTileMap = tileMap;
 
         setTimeout(function() {
           onece5 = 1;
@@ -3993,7 +4262,7 @@ setTimeout(function() {
 
       if (existingBlockIndex !== -1) {
         tileMap[dimension].splice(existingBlockIndex, 1);
-        config.savedTileMap=tileMap
+     //   config.savedTileMap=tileMap
       }
       setTimeout(function() {
         onece5 = 1
@@ -4544,18 +4813,30 @@ var gravity=config.gravity;
     var ostclick;
   function movright(){
     movePlayer(-0.08*speed,0)
+    if(config.debugmode==1){
+      movePlayer(-0.08*8,0)
+    }
     ostclick="left"
   }
   function movleft() {
     movePlayer(0.08*speed,0)
+    if (config.debugmode == 1) {
+  movePlayer(0.08 * 8, 0)
+}
     ostclick="right"
   }
   function movup() {
 movePlayer(0,-0.08*speed)
+if (config.debugmode == 1) {
+  movePlayer(0,-0.08*8)
+}
 ostclick="up"
   }
   function movdown() {
     movePlayer(0,0.06*speed)
+    if (config.debugmode == 1) {
+  movePlayer(0, 0.08 * 8)
+}
     ostclick="down"
   }
     function updateJoystick(event) {
@@ -4671,7 +4952,7 @@ hpBarContainer.style.bottom=HpbarConfig.bottom+"%"
 }
 
 // Przykładowe użycie
-var currentHp = 0; // Aktualne życie
+var currentHp = 1; // Aktualne życie
 
 let hurtdelayed=0
 // Kod, który zabija gracza
@@ -4717,13 +4998,34 @@ setTimeout(function(){
 },2000)
 }
 }}
+
+
+
                   if(config.HpBarConfiguration!==undefined){
+                    
+                    
+
+
                     // Zaktualizuj życie gracza po kolizji
                     
                     config.HpBarConfiguration.numberHP-= hurtdmg
                     currentHp=config.HpBarConfiguration.numberHP
-                    updateHpBar(currentHp);
-                    
+                    updateHpBar(currentHp)
+
+if (currentHp < 1) {
+
+
+  config.bg = config.oldbg
+  dimension = config.olddimension
+  if (config.savedgamestate !== 1 && config.savedgamestate !== "1") {} else {
+    if (config.savedgamestate !== undefined) {
+
+      loadoldergamestate()
+    }
+  }
+}
+
+
                     if (currentHp < 1) {
                       config.bg=config.oldbg
                       
@@ -4807,14 +5109,10 @@ if (config.oldmusic.slice(0, 10) !== config.oldmusic) {
                   setTimeout(updateViewport, 50)
                   setTimeout(updateViewport, 20)
                 }}
-                if (currentHp < 1) {
-                  config.bg=config.oldbg
-                  if(config.savedgamestate!==1&&config.savedgamestate!=="1"){}else{
-                    if(config.savedgamestate!==undefined){
-                  loadoldergamestate()
-                    }
-                  }
-                }
+                
+                
+                
+
             }
         }
     }
@@ -5205,11 +5503,27 @@ var tlo2 = 0
       var yyy=0
       
 function loop() {
+  if(isgamepaused==1){
+classicspeed = 8
+
+speed = 8
+}else{
+  
+}
   config.px=(playerX)/tileSize;config.py=playerY/tileSize;
   if (!('oldmusic' in config)) {
 
   config['oldmusic'] = config.music;
-}if (!('oldbg' in config)) {
+}
+if (!('oldmap' in config)) {
+
+  config['oldmap'] = 0;
+}
+if (!('olddimension' in config)) {
+
+  config['olddimension'] = dimension;
+}
+if (!('oldbg' in config)) {
 
   config['oldbg'] = config.bg;
 }
@@ -5558,6 +5872,7 @@ function buildBlock(event) {
         tileMap[dimension].push([currentX, currentY, item]);
         newtilemap[dimension].push([currentX, currentY, item]); // Zakładając, że 1 reprezentuje blok, dostosuj, jeśli trzeba
       }
+      config.savedTileMap=tileMap;
     }
   }
 
@@ -5567,10 +5882,11 @@ function buildBlock(event) {
 }
 
   // Wywołaj funkcję budującą bloki wokół klikniętej pozycji
+  if(config.testmode==0){
   buildBlocksAroundPosition(x, y);
 
   updateViewport();
-}
+}}
 
 dld()
 function dld(){
@@ -6508,8 +6824,14 @@ var testexample={"examples":{"alltiles0":[2,"move , follow , avoid",0,3,0,1,[0,0
                 entityDiv.textContent = entity;
                 
                 const deleteButton = document.createElement('button');
-                deleteButton.textContent = 'Delete';
-                deleteButton.ondblclick = function() {
+                deleteButton.style.animation='5s rainbow infinite'
+                deleteButton.style.transform="translate(90vw,0)"
+                deleteButton.style.border="none"
+                deleteButton.style.outline="none"
+                deleteButton.style.background="none"
+                
+                deleteButton.textContent = 'x';
+                deleteButton.onclick = function() {
                     delete config.entities[entity];
                     displayEntities();
                 };
@@ -6785,7 +7107,16 @@ if (file) {
 "distance collision player (number def 1)",
 "deal damage player (num def 1) ",
 "changeplayerdamage on collision (number def 1)",
-"<p style='color:gray'> 3.0[nafu] not a finnal update</p>",
+"🆕<p style='animation: 5s rainbow infinite; filter:sepia(50%);' >Spawn3without Spawn distance spawning inside [duration,i..] </p>",
+"T:🆕 <p style='animation: 5s rainbow infinite; filter:sepia(50%);' >drop a music loop will be played if dialogue ends </p>",
+"🆕<p style='animation: 5s rainbow infinite; filter:sepia(50%);' >changedimensionifdeffacted (number) </p>",
+
+
+"collisionchangerandomdimension [min ,max]",
+"disabled - use index instead whenkilledspawnSprite (S...)",
+"T: dialiguesounds", //+stop
+
+"<p style='animation: 5s rainbow infinite;'>3.0[nafu] not a finnal update</p>",
 
 
 /*
@@ -7486,6 +7817,7 @@ dialogue < text > will display dialogue :)
     const dialogQueue = [];
 var indialogue=0
     // NPC dialog function
+    
     function message(text) {
         const npcDialog = document.getElementById('npcDialog');
         const npcText = document.getElementById('npcText');
@@ -7500,58 +7832,115 @@ var indialogue=0
         }
     }
 
-    // Function to display the next dialog message
-    function displayNextDialog() {
-        const npcDialog = document.getElementById('npcDialog');
-        const npcText = document.getElementById('npcText');
-        indialogue=1
-        // If there are no more messages in the queue, hide the dialog and return
-        if (dialogQueue.length === 0) {
-            npcDialog.style.display = 'none';
-            indialogue = 0
-pausemove = 0
-            return;
-        }
-        
-        // Show NPC dialog
-        npcDialog.style.display = 'block';
-        
-        // Clear previous text
-        npcText.textContent = '';
-        
-        // Get the next message from the queue
-        const nextMessage = dialogQueue.shift();
-        
-        // Animate text appearance
-        // Animate text appearance
-let index = 0;
-let wordIndex = 0; // Index of the current word
-const delay = 5; // Delay between each character appearance
-const timer = setInterval(function() {
-    // Add the next letter to the text
-    npcText.textContent += nextMessage[wordIndex][index];
-    // Increment index by 2 to skip every other letter
-    index += 2;
-    // If we reached the end of the current word, move to the next word
-    if (index >= nextMessage[wordIndex].length) {
-        index = 0;
-        wordIndex++;
-        // If we reached the end of all words, clear the timer
-        if (wordIndex === nextMessage.length) {
-            clearInterval(timer);
-            // Add click event listener to the dialog to display the next message
-            npcDialog.addEventListener('click', function displayNext() {
-                npcDialog.removeEventListener('click', displayNext); // Remove the click event listener
-                displayNextDialog(); // Display the next dialog message
-                if (dialogQueue.length === 0) {
-                    pausemove = 0;
-                }
-            });
+let newaudio2;
+
+function displayNextDialog() {
+    const npcDialog = document.getElementById('npcDialog');
+    const npcText = document.getElementById('npcText');
+
+    if (indialogue !== 1) {
+        if (currentsoundformessage.length > 20) {
+            const base64Wav = currentsoundformessage;
+
+            // Utwórz nowy odtwarzacz audio
+            newaudio2 = new Audio();
+            newaudio2.src = base64Wav;
+            newaudio2.setAttribute('preload', 'auto');
+            newaudio2.loop = true;
+            // Dodaj odtwarzacz do dokumentu
+            document.body.appendChild(newaudio2);
+
+            // Odtwórz plik audio WAV
+            newaudio2.play();
         }
     }
-}, delay);
 
+    indialogue = 1;
+    
+    // If there are no more messages in the queue, hide the dialog and return
+    
+    if (dialogQueue.length === 0) {
+        npcDialog.style.display = 'none';
+        if (newaudio2) {
+            newaudio2.pause();
+            newaudio2.currentTime = 0;
+        }
+        indialogue = 0;
+        
+        npcDialog.style.display = 'none';
+indialogue = 0
+pausemove = 0
+if (newaudio2) {
+  newaudio2.pause();
+  newaudio2.currentTime = 0;
 }
+        return;
+    }
+
+    // Show NPC dialog
+    npcDialog.style.display = 'block';
+
+    // Clear previous text
+    npcText.textContent = '';
+
+    // Get the next message from the queue
+    const nextMessage = dialogQueue.shift();
+
+    // Animate text appearance
+    let index = 0;
+    let wordIndex = 0; // Index of the current word
+    const delay = 50; // Delay between each character appearance (increased for better readability)
+    const timer = setInterval(function() {
+        // Add the next letter to the text
+        npcText.textContent += nextMessage[wordIndex][index];
+        index++;
+        // If we reached the end of the current word, move to the next word
+        if (index >= nextMessage[wordIndex].length) {
+            index = 0;
+            wordIndex++;
+            // If we reached the end of all words, clear the timer
+            if (wordIndex === nextMessage.length) {
+                clearInterval(timer);
+                if (newaudio2) {
+                    newaudio2.pause();
+                    newaudio2.currentTime = 0;
+                }
+                
+                // Add click event listener to the dialog to display the next message
+                npcDialog.addEventListener('click', function displayNext() {
+                    npcDialog.removeEventListener('click', displayNext); // Remove the click event listener
+
+              
+  if (currentsoundformessage.length > 20) {
+    const base64Wav = currentsoundformessage;
+
+    // Utwórz nowy odtwarzacz audio
+    newaudio2 = new Audio();
+    newaudio2.src = base64Wav;
+    newaudio2.setAttribute('preload', 'auto');
+    newaudio2.loop = true;
+    // Dodaj odtwarzacz do dokumentu
+    document.body.appendChild(newaudio2);
+
+    // Odtwórz plik audio WAV
+    newaudio2.play();
+  }
+
+                    
+                    
+                    displayNextDialog(); // Display the next dialog message
+                    if (dialogQueue.length === 0) {
+                      
+                    }
+                    
+                });
+            }
+        }
+    }, delay);
+}
+
+// Pamiętaj, aby ustawić początkowe wartości dla zmiennych dialogQueue, indialogue, currentsoundformessage.
+
     // Test messages
     
     
