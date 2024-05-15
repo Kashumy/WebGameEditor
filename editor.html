@@ -1,9 +1,18 @@
 
 
 
-
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+
+<script>
+  // my bad day :( 
+  
+</script>
+<style>
+  html{
+    filter: brightness(0);
+  }
+</style>
 <!-- put your water mark -->
 <div class="Ylyl" style="position: fixed; left:0; bottom:0px; background: #333 ; z-index: 9; width:30px;height:30px" onclick="saveToFile()">S</div>
 <div class="Ylyl" style="position: fixed; left:30px; bottom:0px; background: #333; z-index: 9; width:30px;height:30px" onclick="loadfile()">L</div>
@@ -417,14 +426,16 @@ mbs.innerHTML = speed+'mb/s'
       
       
       display: none;
-      position: absolute;
-      z-index:999999999;
+      position: fixed;
+      order: 99;
+      z-index:999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999;
       top: 0;
       left: 0;
       width: 100vw;
       height: 100vh;
       background-color: black;
      display: flex;
+     transform: translateZ(9999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999);
       align-items: center;
       justify-content: center;
       color: white;
@@ -440,6 +451,7 @@ mbs.innerHTML = speed+'mb/s'
       display: block;
       position: absolute;
       top:50vh;
+      z-index: 999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999;
       left:50vw;
       transform: translate(-50%,-50%);
       opacity: 1;
@@ -449,43 +461,6 @@ mbs.innerHTML = speed+'mb/s'
   </head>
 
   <body>
-    <div id="blackScreen" style="z-index: 999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999; position: fixed;">
-      <pre id="helloWorldText" style="white-space: pre-wrap"></pre>
-    </div>
-
-    <script>
-      const helloWorldText = document.getElementById('helloWorldText');
-      
-      let currentIndex = 0;
-
-      setTimeout(() => {
-        const blackScreen = document.getElementById('blackScreen');
-        fadeInNextText();
-
-        function fadeInNextText() {
-          helloWorldText.style.opacity = 0;
-
-          setTimeout(() => {
-            if (currentIndex < textsArray.length) {
-              helloWorldText.innerHTML = textsArray[currentIndex];
-              helloWorldText.style.opacity = 1;
-
-              setTimeout(() => {
-                fadeInNextText();
-              }, 1500);
-
-              currentIndex++;
-            } else {
-              blackScreen.style.opacity = 0;
-
-              setTimeout(() => {
-                blackScreen.style.display = 'none';
-              }, 2000);
-            }
-          }, 200);
-        }
-      }, 1000);
-    </script>
 
 
 
@@ -553,10 +528,10 @@ document.getElementById('project').style.zoom="1.0"
 
 
 
-  <button class="notaproject d" style="position: absolute; left:30vw; bottom:0px; background: blue; z-index: 99999999999999999999999999999999999999999999" onclick="saveToFile()">Save Project File</button>
+  <button class="notaproject d hide" style="position: absolute; left:30vw; bottom:0px; background: blue; z-index: 99999999999999999999999999999999999999999999" onclick="saveToFile()">Save Project File</button>
 
 
-<button class="notaproject d" style="position: absolute; left:50vw; bottom:0px; background: blue; z-index: 99999999999999999999999999999999999999999999999999" onclick="chooseFile()">Project Loop main Music</button>
+<button class="notaproject d hide" style="position: absolute; left:50vw; bottom:0px; background: blue; z-index: 99999999999999999999999999999999999999999999999999" onclick="chooseFile()">Project Loop main Music</button>
 
 <script>
 let toonce = 1;
@@ -1289,7 +1264,7 @@ overflow: scroll;
 
 ENTITY IDENTYFICATOR
 <div id="container123212" class="notaproject  a hide2">
-  <div  class="box0" onclick="add123212()"   >+</div>
+  <div  class="box0 " onclick="add123212()"   >+</div>
   <input type="number" id="value123212" oninput="DZ(this.value)" class="box1"></input>
   <div class="box0" onclick="sub123212()"   >-</div>
 </div>
@@ -6282,15 +6257,17 @@ but update will come with others options :) </details><j/^> :) </j/^>
 
 <style>
   #container123{
-    position: absolute; top:0;right:0;zoom:0.7
+    position: absolute; top:0;right:100px;zoom:0.7;
+    transform : translate(-50px,0);
+    font-size: 7px;
   }
   .box0{ width:50px;height:60px;background: #6F6F6F; float: left; margin:4px; justify-content: center; align-items: center ; display: flex; font-size: 30px}
-  .box1{ width:50px;height:60px;background: #ACACAC; float: left; margin:4px; justify-content: center; align-items: center ; display: flex; font-size: 30px}
+  .box1{ width:50px;height:60px;background: #ACACAC; float: left; margin:4px; justify-content: center; align-items: center ; display: flex; font-size: 20px}
   
 </style>
-<div id="container123" class="notaproject d dr">
+<div id="container123" class="notaproject d dr hide">
   <div id="add123" class="box0" onclick="add123()"   >+</div>
-  <div id="value123" class="box1"                      ></div>
+  <div id="value123" class="box1"                      >doesn't work :P </div>
   <div id="sub123" class="box0" onclick="sub123()"   >-</div>
 </div>
 <script>
@@ -6301,17 +6278,18 @@ but update will come with others options :) </details><j/^> :) </j/^>
 
 <style>
   #container1232{
-    position: absolute; top:0px;right:55px
+    position: absolute; top:0px;right:155px
     ;zoom:0.7;
-    
+    font-size: 7px;
+    transform : translate(-50px,0);
   }
 .d{
   z-index: 999999
 }
 </style>
-<div id="container1232" class="notaproject d dr">
+<div id="container1232" class="notaproject d dr hide">
   <div  class="box0" onclick="add1232()"   >+</div>
-  <div id="value1232" class="box1"                      ></div>
+  <div id="value1232" class="box1"                      >dimension</div>
   <div class="box0" onclick="sub1232()"   >-</div>
 </div>
 <script>
@@ -6323,13 +6301,15 @@ but update will come with others options :) </details><j/^> :) </j/^>
 
 <style>
   #container1233{
-    position: absolute; top:0px;right:110px;zoom:0.7
+    position: absolute; top:0px;right:210px;zoom:0.7;
+    font-size: 7px;
+    transform : translate(-50px,0);
   }
 
 </style>
-<div id="container1233" class="notaproject d dr">
+<div id="container1233" class="notaproject d dr hide">
   <div  class="box0" onclick="add1233()"   >+</div>
-  <div id="value1233" class="box1"                      ></div>
+  <div id="value1233" class="box1"                      >brush size</div>
   <div class="box0" onclick="sub1233()"   >-</div>
 </div>
 <script>
@@ -9199,7 +9179,7 @@ zrub ustawienia deweloperskie
     
     font-size: 16px;
     margin: 4px 2px;"
-    class="notaproject d"
+    class="notaproject d hide"
     onclick="pokazModal()">opcje zaw</button>
 
     <button style="position: absolute; top:70px; left:0px;background-color: #4CAF50;
@@ -9209,7 +9189,7 @@ zrub ustawienia deweloperskie
     text-decoration: none;
     
     font-size: 16px;
-    margin: 4px 2px;" class="notaproject d" onclick="usunElementy()">delete gui</button>
+    margin: 4px 2px;" class="notaproject d hide" onclick="usunElementy()">delete gui</button>
 
     <div id="modal-container" >
         <div id="modal-content">
@@ -9915,7 +9895,7 @@ emitParticles()
 </head>
 <body>
 
-  <div id="editor" class="d notaproject"></div>
+  <div id="editor"  class="d notaproject hide"></div>
 
 <script>
     var example = config;
@@ -10355,12 +10335,59 @@ if (!('airjump' in config)) {
     Array.from(elementsToHide).forEach(element => {
       element.classList.toggle('hide')
     });
-  }
+  }/*
   setTimeout(function(){
     var elementsToHide = document.getElementsByClassName('d');
     Array.from(elementsToHide).forEach(element => {
       element.classList.toggle('hide')
     });
-  },1000)
+  },4000)
   
 
+*/
+</script>
+
+    <div id="blackScreen" >
+      <pre id="helloWorldText" style="white-space: pre-wrap"></pre>
+    </div>
+
+    <script>
+    
+    
+    
+      const helloWorldText = document.getElementById('helloWorldText');
+      
+      let currentIndex = 0;
+
+      setTimeout(() => {
+        
+document.querySelector('html').style.filter="brightness(100%)"
+
+
+        const blackScreen = document.getElementById('blackScreen');
+        fadeInNextText();
+
+        function fadeInNextText() {
+          helloWorldText.style.opacity = 0;
+
+          setTimeout(() => {
+            if (currentIndex < textsArray.length) {
+              helloWorldText.innerHTML = textsArray[currentIndex];
+              helloWorldText.style.opacity = 1;
+
+              setTimeout(() => {
+                fadeInNextText();
+              }, 1500);
+
+              currentIndex++;
+            } else {
+              blackScreen.style.opacity = 0;
+
+              setTimeout(() => {
+                blackScreen.style.display = 'none';
+              }, 2000);
+            }
+          }, 200);
+        }
+      }, 1000);
+    </script>
