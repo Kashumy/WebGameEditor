@@ -1,6 +1,7 @@
 
 
 
+
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
 <!-- put your water mark -->
@@ -26,7 +27,10 @@
     margin-left: 50px
   }
 </style>
-<script>var config ={  "HpBarConfiguration": {
+<script>
+var editor="right"
+
+var config ={  "HpBarConfiguration": {
       "texture": "./cross.png",
       "textureempty": "./grass.png",
       "numberHP": 0,
@@ -1677,12 +1681,26 @@ function up1() {
 document.getElementById('withgui').style.position = ""
     } else {
       // editor mode
+      
+      if(editor=="left"){
       document.getElementById('viewport').style.left = "calc(50% + 100px)"
       document.getElementById('pastemark').style.left = "220px"
       document.getElementById('pastemark').style.opacity="1"
       document.getElementById('pastemark').style.top = "0px"
      document.getElementById('withgui').style.transform = "translate(150px,0%)"
       document.getElementById('withgui').style.position="absolute"
+      document.getElementById('sus').style.right = ""
+document.getElementById('sus').style.left = "0px"
+
+document.getElementById('sus').style.right = ""
+document.getElementById('sus').style.left = "0px"
+      }else{
+        document.getElementById('sus').style.right="0px"
+        document.getElementById('sus').style.left=""
+        document.getElementById('viewport').style.left = "calc(50%)"
+        document.getElementById('withgui').style.transform = "translate(0%,0%)"
+        document.getElementById('toggleButton').style.left="0px"
+      }
       var elementsToHide = document.getElementsByClassName('notaproject');
       Array.from(elementsToHide).forEach(element => {
         element.classList.remove('hide3')
@@ -6017,7 +6035,7 @@ function cofnijczas(ilerazycofnac) {
   
 </script>-->
 
-<div class="f notaproject" style="position: absolute; width: 210px; height: calc(100vh - 2px) ; background: url('./box (3).png'); image-rendering: pixelated; background-size: 100% 100%; z-index: 999999;overflow: hidden;left:0;
+<div class="f notaproject" id="sus" style="position: absolute; width: 210px; height: calc(100vh - 2px) ; background: url('./box (3).png'); image-rendering: pixelated; background-size: 100% 100%; z-index: 999999;overflow: hidden;left:0;
 overflow : scroll;">
   
   <div onclick="toggleVS()" style="width:50px; height:50px; background: url('./box (3).png') center center/contain no-repeat; color:yellow; text-align:center; font-size:30px; line-height:30px; position:absolute; left: 10px; top:16px; animation: rainbow 3s infinite;">+</div>
@@ -6433,6 +6451,16 @@ Visuals
 <div onclick="loadfile();" style="background: blue">
   LoadProjectFile
 </div>
+
+<div onclick="editor ='left';up1()" style="background: deepskyblue">
+  Editor Left
+</div>
+<div onclick="editor ='right';up1()" style="background: deepskyblue">
+  Editor right
+</div>
+
+
+
 <div onclick="handleFileContent(JSON.stringify(example2));toggleMENS()">
   load example platformer game
 </div>
@@ -10336,4 +10364,3 @@ if (!('airjump' in config)) {
   },1000)
   
 
-</script>
