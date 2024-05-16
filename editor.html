@@ -62,7 +62,12 @@ var config ={  "HpBarConfiguration": {
   const textsArray = [
 `
 Loading A PM3.0 <img src="./watermark.gif" id="pastemark" style="position: fixed; top:0; left:10px;  width:100px;height:30px; transform: translate(0,-125%); z-index: 99999999999" >
-`];
+
+<p style='animation: 5s rainbow infinite; filter:sepia(50%);' > Editor + & Configuration + </p>
+<p style='animation: 5s rainbow infinite; filter:sepia(0%);' >UPDATE </p>
+`,
+`<p style='animation: 5s rainbow infinite; filter: hue-rotate(50%);' > EXPERIMENTAL </p>
+bug fixing,better editor,and more configurations for sprites`];
 // changing max fps game change game 
 let defaultFps = 15;
 let targetFPS = 15;
@@ -2295,7 +2300,7 @@ dialiguesounds,//+stop
 
 ifvariablekillthiswhencollision,
 ifvariablekillthiswhenshown,
-
+regenerateplayerpos,
 /*
 
 "🆕<p style='animation: 5s rainbow infinite; filter:sepia(50%);' >changedimensionifdeffacted (number) </p>",
@@ -3241,15 +3246,16 @@ for (let tileId in tileConfig) {
 
 
 if(lookatobject==1){
-const playerCenterX = targetX
-const playerCenterY = targetY;
+  
+const playerCenterXz = targetToX 
+const playerCenterYz = targetToY
 
-const deltaX = playerCenterX - left;
-const deltaY = playerCenterY - top;
+const deltaXz = playerCenterXz - (parseInt(tile.style.left)/tileSize);
+const deltaYz = playerCenterYz - (parseInt(tile.style.top)/tileSize);
 //ostclick
-const angle = Math.atan2(deltaY, deltaX) * (180 / Math.PI);
+let anglez = Math.atan2(deltaYz, deltaXz) * (180 / Math.PI);
 
-tile.style.transform=`rotate(${angle}deg)`
+tile.style.transform=`rotate(${anglez}deg)`
 }
 if (ifvariablekillthiswhenshown !== undefined && ifvariablekillthiswhenshown !== null) {
   let name = ifvariablekillthiswhenshown[0];
@@ -4194,6 +4200,19 @@ if (currentPositionIndex >= arena.lenght ) {
                 tile.style.left = left + "px";
                 tile.style.top = top + "px";
 
+
+    if (regenerateplayerpos !== undefined && regenerateplayerpos !== null) {
+      if(!tile.dataset.ticksupd){
+        tile.dataset.ticksupd=-1
+      }
+    }
+if (tile.dataset.ticksupd) {
+  tile.dataset.ticksupd++
+  if(tile.dataset.ticksupd>parseInt(regenerateplayerpos)){
+    tile.dataset.direction = Math.atan2(targetToY - top / tileSize, targetToX - left / tileSize) * (180 / Math.PI);
+    tile.dataset.ticksupd=-1
+  }
+}
                 // Change direction randomly after a certain time
                 if(oneDirectionFollow==1){
                 if((tile.dataset.oneDirectionFollow2)){
@@ -4205,8 +4224,14 @@ if (currentPositionIndex >= arena.lenght ) {
                   tile.dataset.oneDirectionFollow2=1
                 }
                 // Math.random() < 0.5
-                if (tile.dataset.oneDirectionFollow2==1) { // Adjust the probability as needed
+                if (tile.dataset.oneDirectionFollow2==1) {
+                  if(oneDirectionFollow==1){
+                    tile.dataset.oneDirectionFollow2=0
+                  }
+
+// Adjust the probability as needed
                     tile.dataset.direction = Math.atan2(targetToY - top / tileSize, targetToX - left / tileSize) * (180 / Math.PI);
+                
                 }
                 
             } else {
@@ -7085,7 +7110,7 @@ if (file) {
             "Detect Enabled",
             "<p style='color:cyan' > Collision with Other Blocks(1/0)",
             "Delete When Custom Move Ended(1/0)",
-            "<p style='color:red' > Enable Shooting Attack for this Entity (1/0)",
+            "<p style='color:red' > Your Shooting attack can Hurt this entity (1/0)",
             "Collectable(1/0)",
             "SpawnPointBlock(1/0)",
             "<p style='color:cyan' > CantBeDamaged(1/0) only By player doesn't wor for example for a despawn",
@@ -7170,6 +7195,8 @@ if (file) {
 "T: dialiguesounds", //+stop
 "ifvariablekillthiswhencollision ['definedVariable','=,>,<,!=',number] ",
 "ifvariablekillthiswhenitspawnonmap ['definedVariable','=,>,<,!=',number] ",
+"<p style='animation: 5s rainbow infinite; filter:sepia(50%);' >Interesting: </p> regenerate Player position by a ticks (10) is more like a 1 second and use one direction follow good for projectile this will reset player current position by a time (enter number) ",
+
 "<p style='animation: 5s rainbow infinite;'>3.0[nafu] not a finnal update  50% of this instructions configuration are not understandable for a human :P  </p>",
 
 
@@ -10423,7 +10450,7 @@ document.querySelector('html').style.filter="brightness(100%)"
 
               setTimeout(() => {
                 fadeInNextText();
-              }, 1500);
+              }, 3500);
 
               currentIndex++;
             } else {
@@ -10431,9 +10458,9 @@ document.querySelector('html').style.filter="brightness(100%)"
 
               setTimeout(() => {
                 blackScreen.style.display = 'none';
-              }, 2000);
+              }, 3000);
             }
-          }, 200);
+          }, 400);
         }
       }, 1000);
     </script>
