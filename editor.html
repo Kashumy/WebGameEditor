@@ -6282,7 +6282,7 @@ window.setInterval(testy, 3000);
   </div>
   <details>1.type null in editor to turn off the option <br>
 2. ENTITIES configuration is really hard to work with it there is almost everything possible 
-but update will come with others options :) </details><j/^> :) </j/^> 
+but update will come with others options :) </details>
   <div id="entities-container"></div>
   </div>
 </div>
@@ -6857,7 +6857,7 @@ slider2.addEventListener('touchend', () => {stop=1; slider2.value = 0; currentVa
     
     entities":{"alltiles13":[0,"null",10,3,0,99999,[0,0,999999,999999],true,[[10,0],[-10,0]],null,1,1,null,null,1, , , ,1],"alltiles3":[8,"follow",10,3,0,199,[0,0,999999,999999],true,[[10,0],[-10,0]],null,1,1,null,null,1],"alltiles5":[1,"null",4,3,0,0,[0,0,999999,999999],true,[[10,0],[-10,0]],0,1,1],"alltiles2":[3,"move",4,3,0,1,[0,0,999999,999999],true,[[0,3],[0,-3]],1,0,null,null,1,null,null,1],"alltiles10":[5,"follow",5,0,0,1,[0,0,999999,999999],true,[[0,3],[0,-3]],1,0,null,"player",1,null,null,1],"alltiles6":[2,"move",4,3,0,100,[0,0,999999,999999],true,[[0,3],[0,-3]],1,0,null,null,1]}
 */
-var testexample={"examples":{"alltiles0":[2,"move , follow , avoid",0,3,0,1,[0,0,999999,999999],true,"[[0,0],[0,0]]",0,1,0,"player"]}}
+var testexample={"examples":{"alltiles0":[2,"move",0,3,0,1,[0,0,999999,999999],true,"[[0,0],[0,0]]",0,1,0,"player"]}}
 // speed, movementType, distance, randomMovement, collision, initialHp, area, deletebool,arena,hurt,vi,score1,collisionobject="player",detectanabled,collisionwithotherblocks,deletewhencustommoveended,anableshootingattackforentities,collectable,spawnpoint
     function displayEntities() {
         const container = document.getElementById('entities-container');
@@ -6941,11 +6941,13 @@ function addEntity() {
     function updateOption(input) {
     const entityName = input.getAttribute('data-entity');
     const index = parseFloat(input.getAttribute('data-index'));
+    
+    
     let newValue = input.value;
-
+config.entities[entityName][index] = newValue;
     // Sprawdzenie czy wartość jest poprawnym obiektem JSON
     try {
-        const parsedValue = JSON.parse(newValue);
+       let parsedValue = JSON.parse(newValue);
         if (parsedValue !== null && typeof parsedValue === 'object') {
             // Jeśli wartość jest obiektem JSON, zachowaj ją jako obiekt
             newValue = parsedValue;
@@ -6955,6 +6957,7 @@ function addEntity() {
             if (!isNaN(newValue)) {
               newValue = parseFloat(newValue); // lub parseInt(newValue) dla liczby całkowitej
             }
+            
         }
 
   // Jeśli wartość jest obiektem JSON, zachowaj ją jako obiekt
@@ -6967,12 +6970,17 @@ function addEntity() {
         if (!isNaN(newValue)) {
           newValue = parseFloat(newValue); // lub parseInt(newValue) dla liczby całkowitej
         }
+        
+  
+
                 if (parsedValue == "null" || parsedValue == "undefined" || parsedValue == "") {
           // Jeśli wartość jest obiektem JSON, zachowaj ją jako obiekt
           newValue = null 
-          alert(newValue)
+        //  alert(newValue)
         }
     }
+    
+    
 
     config.entities[entityName][index] = newValue;
  //   document.querySelector("#entitiesconfig").innerText = JSON.stringify(config.entities);
