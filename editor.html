@@ -1,5 +1,6 @@
 
 
+
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
 
@@ -4708,8 +4709,10 @@ var last = TILES[TILES.length - 1][2]
 
 
     <script>
+    var ended=0
         async function loadFile(path, retries = 5, delay = 500) {
             for (let i = 0; i < retries; i++) {
+              if(ended==0){
                 try {
                     let response = await fetch(path);
 
@@ -4740,13 +4743,14 @@ var last = TILES[TILES.length - 1][2]
                     } else {
                         setupNewProject();
                     }
+                    ended=1
                     return; // Jeśli załadunek się powiódł, zakończ funkcję.
                     },1000)
                 } catch (error) {
                     console.error('Wystąpił błąd podczas ładowania pliku:', error);
                     await new Promise(resolve => setTimeout(resolve, delay)); // Odczekaj przed ponowną próbą.
                 }
-            }
+            }}
             console.error('Nie udało się załadować pliku po maksymalnej liczbie prób.');
         }
 
