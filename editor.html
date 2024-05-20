@@ -1,6 +1,5 @@
 
 
-
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
 
@@ -14,12 +13,12 @@
   }
 </style>
 
-<script id="game" src="nothing" type="text/plain"></script>
+<script id="game" src="newproject" type="text/plain"></script>
         <script>
           let path = 'newproject';// newproject
         </script>
 <e_gameinfoinput>
-nothing
+Howdy you using PaperMaker
 </e_gameinfoinput>
 
 
@@ -79,7 +78,8 @@ var config ={  "HpBarConfiguration": {
 
 <p style='animation: 5s rainbow infinite; filter:sepia(50%);' > loading </p>
 v 1.0
-`,`always make a backup of your projects`];
+`,`
+IF you see black screen try reload page`];
 // changing max fps game change game 
 let defaultFps = 15;
 let targetFPS = 15;
@@ -4708,14 +4708,17 @@ var last = TILES[TILES.length - 1][2]
 
 
     <script>
-        async function loadFile(path, retries = 5, delay = 1000) {
+        async function loadFile(path, retries = 5, delay = 500) {
             for (let i = 0; i < retries; i++) {
                 try {
                     let response = await fetch(path);
+
                     if (!response.ok) {
                         throw new Error('Network response was not ok');
                     }
-                    let data = await response.text();
+                    let data = await response.text()
+                    //alert(data)
+                    setTimeout(function(){
                     handleFileContent(data);
                     hideProjectPath();
                     if (path !== "newproject") {
@@ -4738,6 +4741,7 @@ var last = TILES[TILES.length - 1][2]
                         setupNewProject();
                     }
                     return; // Jeśli załadunek się powiódł, zakończ funkcję.
+                    },1000)
                 } catch (error) {
                     console.error('Wystąpił błąd podczas ładowania pliku:', error);
                     await new Promise(resolve => setTimeout(resolve, delay)); // Odczekaj przed ponowną próbą.
