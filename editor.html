@@ -1,5 +1,6 @@
 
 
+
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
 
@@ -64,8 +65,8 @@ var config ={  "HpBarConfiguration": {
   const textsArray = [
 `
 
-<p style='animation: 5s rainbow infinite; filter:sepia(50%);' > loading pm 3.pre 1 </p>
-
+<p style='animation: 5s rainbow infinite; filter:sepia(50%);' > loading uben platin </p>
+v 1.0
 `];
 // changing max fps game change game 
 let defaultFps = 15;
@@ -111,7 +112,16 @@ document.addEventListener('DOMContentLoaded', function() {
   
   if(path!=="newproject"){
 //    loadtestgame2()
+
+
+
+/*
+
 document.querySelector('#playPauseButton').style.display = "none"
+
+*/
+
+
 document.querySelector('#pastemark').style.display = "none"
 document.querySelector('#resizableHandle').style.display = "none"
 resizableHandle
@@ -184,7 +194,7 @@ setTimeout(function (){
 setTimeout(function(){
   
   if(path!=="newproject"){
-    document.querySelector('#playPauseButton').style.display="none"
+  //  document.querySelector('#playPauseButton').style.display="none"
     document.querySelector('#pastemark').style.display="none"
   //  loadtestgame2()
   setTimeout(function(){config.testmode=1},6000)
@@ -1310,10 +1320,10 @@ var translateY=0;
 	  <p id="console" style="z-index: 999999999999999" class="notaproject"></p></p>
 <style>
 #cns{
-  position : fixed ;
+  position :absolute ;
   top :0;
-  left :200px;
-  z-index :999998999999999999998999999999999998999999999;
+  right :200px;
+  z-index :5;
 }
 .darkness{
   position :absolute ;
@@ -1381,7 +1391,7 @@ right:30px;
 
 #fps{
   position: fixed;
-  display: block;
+  display: none;
   top:0;
   left:0;
 }
@@ -1668,7 +1678,7 @@ document.getElementById('sus').style.left = "0px"
 }
 setTimeout(up1,1000)
 function updateViewport() {
-  content.innerHTML = ""; // Clear old content
+  content.innerHTML=""
   const scrollLeft = viewport.scrollLeft;
   const scrollTop = viewport.scrollTop;
   const { numVisibleTilesX, numVisibleTilesY } = calculateVisibleTiles();
@@ -1710,7 +1720,7 @@ let blockzindex=0
           if (tileType) {
                           s = tileType[2];
             if (tileType[2] === 1) {
-              tile.className = 'tile alltiles';
+              tile.className = ' alltiles';
               treh = 0;
 
             } else {
@@ -1798,17 +1808,13 @@ const similarDeletedTile = deletedtiles.find((deletedTile) => {
             tile.style.left = x * tileSize + 'px';
             tile.style.top = (y + treh) * tileSize + 'px';
             fragment.appendChild(tile);
+            content.appendChild(fragment);
             
-content.appendChild(fragment); // 
           }
           if(blockzindex>1||blockdataindex>0){
           tile.style.zIndex=blockzindex+blockdataindex+1
           }
-        });
-          
-
-
-        }
+        });}
       }
     
   }
@@ -2148,7 +2154,14 @@ if (audioInstance) {
 }
 
 if (config.music !== '') {
-  const base64Wav = config.oldmusic;
+  let base64Wav = config.oldmusic;
+  //alert(base64Wav)
+ if (base64Wav!==null&&base64Wav!==undefined) {
+  base64Wav = config.oldmusic;
+} else {
+  base64Wav = config.music;
+}
+  
 //alert(config.oldmusic)
   // Utwórz nowy odtwarzacz audio
   audioInstance = new Audio();
@@ -5639,6 +5652,18 @@ document.querySelector('.player').style.transform=`scale(${parseInt(config.playe
 // Pobierz element .player
 }
 
+
+let resizableDiv=document.getElementById('viewport')
+const newWidth=config.width
+const newHeight=config.height
+resizableDiv.style.width = `${newWidth}px`;
+viewportWidth = newWidth
+viewportHeight = newHeight
+config.width = newWidth
+config.height = newHeight
+resizableDiv.style.height = `${newHeight}px`;
+
+
   document.addEventListener('keydown', function(event) {
   switch (event.key) {
     case 'w':
@@ -8224,7 +8249,8 @@ touchY = Infinity;
 // Przykład użycia:
 document.querySelector('*').addEventListener('touchstart', setTouchPosition);
 document.querySelector('*').addEventListener('touchend', notouchposition);
-
+document.querySelector('*').addEventListener('mousedown', setTouchPosition);
+document.querySelector('*').addEventListener('mouseup', notouchposition);
 
 function trzymamId(klasaElementu) {
   
@@ -10478,3 +10504,11 @@ document.querySelector('html').style.filter="brightness(100%)"
         }
       }, 1000);
     </script>
+
+
+
+<style>
+  #Start{
+    border-radius: 0%;
+  }
+</style>
