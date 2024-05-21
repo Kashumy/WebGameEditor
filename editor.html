@@ -1,4 +1,8 @@
 
+<!-- Paper Maker 3000 free source code-->
+<!-- Version 3.pre1 , doglog 1.0      -->
+
+
 
 
 
@@ -76,7 +80,7 @@ var config ={  "HpBarConfiguration": {
 <!-- HEY PUT HERE YOUR PROJECt Path -->
 <!-- ---------+----+----+----------- -->
 <!-- ---------+----+----+----------- -->
-<script src="./your_path.js"></script>
+<script src="./yourpath.js"></script>
 <!-- ---------+----+----+----------- -->
 <!-- ---------+----+----+----------- -->
         <script>
@@ -118,72 +122,7 @@ let targetFPS = 15;
 
 
 
-    <script>
-    
 
-
-
-        function hd() {
-  up1();
-  config.testmode = 1;
-  var elementsToHide = document.getElementsByClassName('notaproject');
-  Array.from(elementsToHide).forEach(element => {
-    element.style.display = "none";
-  });
-}
-
-        
-
-        function hideProjectPath() {
-            setTimeout(() => {
-                document.querySelector('project-path').style.display = "none";
-            }, 1000);
-        }
-
-        function setupNewProject() {
-            document.getElementById('viewport').style.resize = "both";
-            document.getElementById('viewport').style.border = "1px solid gray";
-            let container3 = document.getElementById("viewport");
-            container3.addEventListener("touchstart", touchStart);
-            container3.addEventListener("touchmove", touchMove);
-            container3.addEventListener("touchend", touchEnd);
-            container3.addEventListener("mouseenter", onMouseEnter);
-            container3.addEventListener("mouseleave", onMouseLeave);
-            container3.addEventListener("wheel", onWheel);
-        }
-
-        document.addEventListener('DOMContentLoaded', () => {
-         //   let path = path;
-          //  loadFile(path);
-            if (document.querySelector('_gameinfoinput_')) {
-  document.querySelector('_gameinfoinput_').style.display = "none"
-}
-setTimeout(function() {
-  if (path !== "newproject") {
-    document.querySelector('#pastemark').style.display = "none";
-    document.querySelector('#resizableHandle').style.display = "none";
-    setTimeout(() => config.testmode = 1, 6000);
-    setTimeout(() => {
-      config.testmode = 1;
-      gravity = tdt.gravity;
-      dimension=config.dimension
-      updateViewport()
-    }, 100);
-    requestAnimationFrame(hd);
-    let contentd=config
-    handleFileContent(contentd)
-    requestAnimationFrame(hd);
-    togglemode1();
-  } else {
-    setupNewProject();
-  }
-}, 3000)
-        });
-
-        
-
-        
-    </script>
 </head>
 <body>
 
@@ -6613,14 +6552,16 @@ input.accept=`${specialname2}`
   input.click();
 }
 let tdt=0;
-function handleFileContent(textContent) {
+ function handleFileContent(textContent) {
   // Tutaj przetwarzaj zawartość pliku tekstowego
   // Możesz pozostawić resztę Twojego kodu, ale już bez konieczności przekształcania na base64
 //  alert((textContent))
 document.getElementById('Econtent').innerHTML=""
 //document.querySelector('html').innerText=JSON.parse(textContent)
 //alert(textContent)
+//alert(config)
 config = JSON.parse(textContent);
+
 dimension=config.dimension||0
   try {
    
@@ -10497,3 +10438,70 @@ document.querySelector('html').style.filter="brightness(100%)"
     border-radius: 0%;
   }
 </style>
+
+    <script>
+    
+
+
+
+        function hd() {
+  up1();
+  config.testmode = 1;
+  var elementsToHide = document.getElementsByClassName('notaproject');
+  Array.from(elementsToHide).forEach(element => {
+    element.style.display = "none";
+  });
+}
+
+        
+
+        function hideProjectPath() {
+            setTimeout(() => {
+                document.querySelector('project-path').style.display = "none";
+            }, 1000);
+        }
+
+        function setupNewProject() {
+            document.getElementById('viewport').style.resize = "both";
+            document.getElementById('viewport').style.border = "1px solid gray";
+            let container3 = document.getElementById("viewport");
+            container3.addEventListener("touchstart", touchStart);
+            container3.addEventListener("touchmove", touchMove);
+            container3.addEventListener("touchend", touchEnd);
+            container3.addEventListener("mouseenter", onMouseEnter);
+            container3.addEventListener("mouseleave", onMouseLeave);
+            container3.addEventListener("wheel", onWheel);
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+         //   let path = path;
+          //  loadFile(path);
+            if (document.querySelector('_gameinfoinput_')) {
+  document.querySelector('_gameinfoinput_').style.display = "none"
+}
+setTimeout(function() {
+  if (path !== "newproject") {
+    document.querySelector('#pastemark').style.display = "none";
+    document.querySelector('#resizableHandle').style.display = "none";
+    setTimeout(() => config.testmode = 1, 6000);
+    setTimeout(() => {
+      config.testmode = 1;
+      gravity = tdt.gravity;
+      dimension=config.dimension
+      updateViewport()
+    }, 100);
+    //requestAnimationFrame(hd);
+    
+    handleFileContent(JSON.stringify(config))
+    requestAnimationFrame(hd);
+    togglemode1();
+  } else {
+    setupNewProject();
+  }
+}, 3000)
+        });
+
+        
+
+        
+    </script>
