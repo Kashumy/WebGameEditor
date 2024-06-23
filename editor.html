@@ -1,4 +1,6 @@
 
+
+
  <!-- Paper Maker Free License -->
 
  
@@ -443,35 +445,35 @@ let toonce = 1;
 let audioInstance = null;
 
 function handleClick() {
-    if (toonce === 1) {
-        if (audioInstance) {
-            // Jeżeli istnieje istniejący odtwarzacz audio, zatrzymaj go
-            audioInstance.pause();
-            audioInstance.currentTime = 0;
-            audioInstance = null;
-        }
-
-        if (config.music !== '') {
-            const base64Wav = config.music;
-
-            // Utwórz nowy odtwarzacz audio
-            audioInstance = new Audio();
-            audioInstance.src = base64Wav;
-            audioInstance.setAttribute('preload', 'auto');
-
-            // Dodaj odtwarzacz do dokumentu
-            document.body.appendChild(audioInstance);
-
-            // Odtwórz plik audio WAV
-            audioInstance.play();
-            audioInstance.loop = true;
-            toonce = 0;
-        }
+  if (toonce === 1) {
+    if (audioInstance) {
+      // Jeżeli istnieje istniejący odtwarzacz audio, zatrzymaj go
+      audioInstance.pause();
+      audioInstance.currentTime = 0;
+      audioInstance = null;
     }
+
+    if (config.music !== '') {
+      const base64Wav = config.music;
+
+      // Utwórz nowy odtwarzacz audio
+      audioInstance = new Audio();
+      audioInstance.src = base64Wav;
+      audioInstance.setAttribute('preload', 'auto');
+
+      // Dodaj odtwarzacz do dokumentu
+      document.body.appendChild(audioInstance);
+
+      // Odtwórz plik audio WAV
+      audioInstance.play();
+      audioInstance.loop = true;
+      toonce = 0;
+    }
+  }
 }
 
 // Dodaj nasłuchiwanie na kliknięcie
-document.addEventListener('touchstart', handleClick);
+document.querySelector('html').addEventListener('click', handleClick);
 
 function chooseFile() {
     // Utwórz element input typu file
@@ -5093,15 +5095,17 @@ if (currentHp < 1) {
                       
                         playerY = config.spawnY;
                         playerX = config.spawnX;
-                        if (audioInstance) {
+                        const base64Wav = config.oldmusic;
+                        
+                        if (audioInstance&&base64Wav.length>20) {
                           // Jeżeli istnieje istniejący odtwarzacz audio, zatrzymaj go
                           audioInstance.pause();
                           audioInstance.currentTime = 0;
                           audioInstance = null;
                         }
                         
-                        if (config.music !== '') {
-                          const base64Wav = config.oldmusic;
+                        if (config.music !== ''&&base64Wav.length>20) {
+                          
                         
                           // Utwórz nowy odtwarzacz audio
                           audioInstance = new Audio();
