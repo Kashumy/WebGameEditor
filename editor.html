@@ -1,6 +1,4 @@
 
-
-
  <!-- Paper Maker Free License -->
 
  
@@ -78,10 +76,12 @@ var config ={  "HpBarConfiguration": {
 <!-- HEY PUT HERE YOUR PROJECt Path -->
 <!-- ---------+----+----+----------- -->
 <!-- ---------+----+----+----------- -->
-<script src="null"></script>
+<script src="./h"></script>
 <!-- ---------+----+----+----------- -->
 <!-- ---------+----+----+----------- -->
         <script>
+        // if 0- do nothing if 1 anable gravity
+        var gmgravity=0
           let path = 'newproject';
         </script>
         <e_gameinfoinput>
@@ -5310,7 +5310,8 @@ if(by4<3){
   blockspassed++;
   if (isScrolling && blockspassed > updatevpifblockspassed*speed) {
     blockspassed = 0
-  updateViewport()
+    if (config.roommode !== 1&&config.roommode !== 1) {
+  updateViewport()}
     isScrolling = false;
   
   }
@@ -5343,13 +5344,83 @@ function move(){
   
 }
 function checkIfElementExited(player, viewport) {
-  let dzoom=1
-if(parseInt(viewport.style.zoom)){
-  dzoom=parseInt(viewport.style.zoom)
-}
-  viewport.scrollTo((playerX * tileSize2) - viewportWidth /viewportWidth* viewportWidth/2*(dzoom+0.1), (playerY * tileSize2) - viewportHeight / viewportHeight* viewportHeight/2*(dzoom+0.1))
+    let dzoom = 1;
+    //config.roommode = 2
+    if (parseInt(viewport.style.zoom)) {
+        dzoom = parseInt(viewport.style.zoom);
+    }
+
+    if (config.roommode !== 1&& config.roommode!==2) {
+        viewport.scrollTo(
+            (playerX * tileSize2) - viewportWidth / 2 * (dzoom + 0.1), 
+            (playerY * tileSize2) - viewportHeight / 2 * (dzoom + 0.1)
+        );
+    } else if (config.roommode == 1) {
+        // Calculate player's position relative to the viewport
+        const playerViewportX = playerX* tileSize2 - viewport.scrollLeft;
+        const playerViewportY = playerY * tileSize2 - viewport.scrollTop;
+
+        const edgeThreshold = 50; // 50 pixels from the edge of the viewport
+
+        let scrollX = viewport.scrollLeft;
+        let scrollY = viewport.scrollTop;
+
+        if (playerViewportX < edgeThreshold) {
+            scrollX = playerX* tileSize2 - edgeThreshold;
+        } else if (playerViewportX > viewport.clientWidth - edgeThreshold) {
+            scrollX = playerX * tileSize2 - viewport.clientWidth + edgeThreshold;
+        }
+
+        if (playerViewportY < edgeThreshold) {
+            scrollY = playerY * tileSize2 - edgeThreshold;
+        } else if (playerViewportY > viewport.clientHeight - edgeThreshold) {
+            scrollY = playerY * tileSize2 - viewport.clientHeight + edgeThreshold;
+        }
+
+        viewport.scrollTo(scrollX, scrollY);
+    }else if (config.roommode == 2) {
+  // Calculate player's position relative to the viewport
+  const playerViewportX = playerX * tileSize2 - viewport.scrollLeft;
+  const playerViewportY = playerY * tileSize2 - viewport.scrollTop;
+
+  const edgeThreshold = 50; // 50 pixels from the edge of the viewport
+
+  let scrollX = viewport.scrollLeft;
+  let scrollY = viewport.scrollTop;
+
+  if (playerViewportX < edgeThreshold) {
+    scrollX = playerX * tileSize2 - edgeThreshold;
+    viewport.scrollTo(
+  (playerX * tileSize2) - viewportWidth / 2 * (dzoom + 0.1),
+  (playerY * tileSize2) - viewportHeight / 2 * (dzoom + 0.1));
+  updateViewport()
+  } else if (playerViewportX > viewport.clientWidth - edgeThreshold) {
+    scrollX = playerX * tileSize2 - viewport.clientWidth + edgeThreshold;
+   viewport.scrollTo(
+  (playerX * tileSize2) - viewportWidth / 2 * (dzoom + 0.1),
+  (playerY * tileSize2) - viewportHeight / 2 * (dzoom + 0.1));
+updateViewport()
+  }
+
+  if (playerViewportY < edgeThreshold) {
+    scrollY = playerY * tileSize2 - edgeThreshold;
+    viewport.scrollTo(
+  (playerX * tileSize2) - viewportWidth / 2 * (dzoom + 0.1),
+  (playerY * tileSize2) - viewportHeight / 2 * (dzoom + 0.1));
+updateViewport()
+  } else if (playerViewportY > viewport.clientHeight - edgeThreshold) {
+    scrollY = playerY * tileSize2 - viewport.clientHeight + edgeThreshold;
+ 
+viewport.scrollTo(
+  (playerX * tileSize2) - viewportWidth / 2 * (dzoom + 0.1),
+  (playerY * tileSize2) - viewportHeight / 2 * (dzoom + 0.1));
+  updateViewport()
+  }
+
   
 }
+}
+
 // Przykład użycia
 // Przykład użycia
 var power=0.20
@@ -5564,9 +5635,7 @@ var tlo2 = 0
       }
       var yyy=0
       let yzd=0
-      
 function loop() {
-  
   if(isgamepaused==1){
 classicspeed = 8
 
@@ -5574,6 +5643,7 @@ speed = 8
 }else{
   
 }
+
   config.px=(playerX)/tileSize;config.py=playerY/tileSize;
   if (!('oldmusic' in config)) {
 
@@ -6531,6 +6601,9 @@ Visuals
 <div onclick="config.savedTileMap.push([]);tileMap.push([])" style="background:wheat">
   + Add dimension
 </div>
+<div   onclick="config.roommode=2">Room scroller</div>
+<div   onclick="config.roommode=1">Closer sidescroller</div>
+<div   onclick="config.roommode=0">Normal sidescroller</div>
 
 <div onclick="handleFileContent(JSON.stringify(example2));toggleMENS()">
   load example platformer game
@@ -10502,15 +10575,7 @@ document.querySelector('html').style.filter="brightness(100%)"
         }
       }, 1000);
       
-      
-      if (!('stickybg1' in config)) {
-  // Jeśli klucz nie istnieje, dodaj go z domyślną wartością
-  config['stickybg1'] = 0;
-} else {
-
-}
-
-if (config.stickybg1 == 0) {
+      if (config.stickybg1 == 0) {
   let content = document.getElementById('content');
   let content2 = document.getElementById('content2');
   if (content2.style.backgroundImage) {
@@ -10525,6 +10590,18 @@ if (config.stickybg1 == 0) {
   content2.style.backgroundImage = getComputedStyle(content).backgroundImage;
   content.style.backgroundImage = '';
 }
+gravity = config.gravity
+//alert(config.gravity)
+setTimeout(function() {
+  playerY = config.px;
+  playerX = config.px;
+  if (gmgravity == 1) {
+    config.gravity = 1
+    gravity = 1
+  }
+  setPlayer(config.spawnX, config.spawnY + 0.9)
+  config.spawnY = config.spawnY + 0.9
+}, 4000)
     </script>
 
 
