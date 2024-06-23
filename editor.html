@@ -1,4 +1,6 @@
 
+
+
  <!-- Paper Maker Free License -->
 
  
@@ -76,7 +78,7 @@ var config ={  "HpBarConfiguration": {
 <!-- HEY PUT HERE YOUR PROJECt Path -->
 <!-- ---------+----+----+----------- -->
 <!-- ---------+----+----+----------- -->
-<script src="./d.js"></script>
+<script src="null"></script>
 <!-- ---------+----+----+----------- -->
 <!-- ---------+----+----+----------- -->
         <script>
@@ -5562,7 +5564,9 @@ var tlo2 = 0
       }
       var yyy=0
       let yzd=0
+      
 function loop() {
+  
   if(isgamepaused==1){
 classicspeed = 8
 
@@ -10497,6 +10501,30 @@ document.querySelector('html').style.filter="brightness(100%)"
           }, 400);
         }
       }, 1000);
+      
+      
+      if (!('stickybg1' in config)) {
+  // Jeśli klucz nie istnieje, dodaj go z domyślną wartością
+  config['stickybg1'] = 0;
+} else {
+
+}
+
+if (config.stickybg1 == 0) {
+  let content = document.getElementById('content');
+  let content2 = document.getElementById('content2');
+  if (content2.style.backgroundImage) {
+    content.style.backgroundImage = getComputedStyle(content2).backgroundImage;
+    setTimeout(function() {
+      content2.style.backgroundImage = ''; // Usuwa tło po 3 sekundach
+    }, 1000);
+  }
+} else {
+  let content = document.getElementById('content');
+  let content2 = document.getElementById('content2');
+  content2.style.backgroundImage = getComputedStyle(content).backgroundImage;
+  content.style.backgroundImage = '';
+}
     </script>
 
 
