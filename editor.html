@@ -84,6 +84,7 @@ var config ={  "HpBarConfiguration": {
         <script>
         // if 0- do nothing if 1 anable gravity
         var gmgravity=0
+        var disableDEBUGPAUSE = 0
           let path = 'newproject';
         </script>
         <e_gameinfoinput>
@@ -441,6 +442,7 @@ document.getElementById('project').style.zoom="1.0"
 <button class="notaproject d hide" style="position: absolute; left:50vw; bottom:0px; background: blue; z-index: 99999999999999999999999999999999999999999999999999" onclick="chooseFile()">Project Loop main Music</button>
 
 <script>
+
 let toonce = 1;
 let audioInstance = null;
 
@@ -791,6 +793,10 @@ top:20px; right:20px; width: 30px ; height:30px ; background: red;"> -->
      <span id="icon">🔁</span>
    </div>
 <script>
+
+if (disableDEBUGPAUSE == 1) {
+  document.getElementById('playPauseButton').style.display = "none"
+}
   document.querySelector('#viewport').style.width = config.width + "px"
   document.querySelector('#viewport').style.height = config.height + "px"
   document.querySelector('#content2').style.width = config.width + "px"
