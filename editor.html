@@ -1,6 +1,5 @@
 
 
-
  <!-- Paper Maker Free License -->
 
  
@@ -3756,7 +3755,7 @@ if (changeLoopMusic !== undefined && changeLoopMusic !== null) {
         toonce = 0;
     }
 } else if (changeLoopMusicMain == 1) {
-  if (currentbase64 == config.music && currentbase64 !== '') {if (audioInstance) {
+  if (currentbase64 !== config.music && currentbase64 !== '') {if (audioInstance) {
         // Jeżeli istnieje istniejący odtwarzacz audio, zatrzymaj go
         audioInstance.pause();
         audioInstance.currentTime = 0;
