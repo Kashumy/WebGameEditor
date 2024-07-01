@@ -1,6 +1,7 @@
 
 
 
+
 <!-- PAPERMAKER 3 free license -->
 
   <!-- VERSION : 3+ -->
@@ -37,8 +38,16 @@ le that have your game project
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
 <script>
+
+/* edit it for your game preferences */
+
           var gmgravity = 0
           var resetMusicifdeath = 1
+          var disableDEBUGPAUSE=0
+          
+          
+          let defaultFps = 15;
+          let targetFPS = 15;
 </script>
 <style>
   html{
@@ -120,8 +129,7 @@ var config ={  "HpBarConfiguration": {
     in: JavaScript 
     draw-with : div </div>
 `,];
-let defaultFps = 15;
-let targetFPS = 15;
+
 </script>
     <script>
         function hd() {
@@ -635,7 +643,7 @@ function saveToFileasJs() {
      <span id="icon">🔁</span>
    </div>
 <script>
-var disableDEBUGPAUSE=1
+
 if(disableDEBUGPAUSE==1){
   document.getElementById('playPauseButton').style.display="none"
 }
