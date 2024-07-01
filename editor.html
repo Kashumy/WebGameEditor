@@ -110,13 +110,15 @@ var config ={  "HpBarConfiguration": {
 <script>
   const textsArray = [
 `
-<div style='width:100vw; height:100vh'> 
+<div style='width:80vw; height:80vh; animation: 2s rainbow infinite;'> 
 
 
 
-         paper maker 3+
+         PAPER MAKER 3+
+         
+         
     in: JavaScript 
-    draw: div </div>
+    draw-with : div </div>
 `,];
 let defaultFps = 15;
 let targetFPS = 15;
@@ -4005,34 +4007,42 @@ var updatevpifblockspassed=25
 let by4=0
 var pausemove=0
 function movePlayer(dx, dy) {
-  collision();
   if(pausemove==0){
   const maxHistoryLength = 50;
+
+
+
 if(by4<3){
   by4++;
 }else{
   by4=0
   // Add the current position to the history array
   lastplayerpos.push({ x: playerX, y: playerY });
+
   // Ensure the history array does not exceed the maximum length
   if (lastplayerpos.length > maxHistoryLength) {
     lastplayerpos.shift(); // Remove the oldest element
   }
 }
+  
   blockspassed++;
   if (isScrolling && blockspassed > updatevpifblockspassed*speed) {
     blockspassed = 0
-  updateViewport()
+    if (config.roommode !== 1&&config.roommode !== 1) {
+  updateViewport()}
     isScrolling = false;
+  
   }
   playerX += dx;
   thiy=dy;
   thix=dx;
   playerY += dy;
+  
   document.getElementById('console').innerHTML ='x:'+ Math.round(playerX*100)/100 +' &nbsp &nbsp &nbsp y:'+Math.round(playerY*100)/100
+
   player.style.left = playerX * tileSize2 + 'px';
   player.style.top = playerY * tileSize2 + 'px';
-  }
+  }collision();
 }
 function setPlayer(dx, dy) {
   playerX = dx;
@@ -4048,12 +4058,83 @@ checkIfElementExited(player, viewport)
 function move(){
 }
 function checkIfElementExited(player, viewport) {
-  let dzoom=1
-if(parseInt(viewport.style.zoom)){
-  dzoom=parseInt(viewport.style.zoom)
+    let dzoom = 1;
+    //config.roommode = 2
+    if (parseInt(viewport.style.zoom)) {
+        dzoom = parseInt(viewport.style.zoom);
+    }
+
+    if (config.roommode !== 1&& config.roommode!==2) {
+        viewport.scrollTo(
+            (playerX * tileSize2) - viewportWidth / 2 * (dzoom + 0.1), 
+            (playerY * tileSize2) - viewportHeight / 2 * (dzoom + 0.1)
+        );
+    } else if (config.roommode == 1) {
+        // Calculate player's position relative to the viewport
+        const playerViewportX = playerX* tileSize2 - viewport.scrollLeft;
+        const playerViewportY = playerY * tileSize2 - viewport.scrollTop;
+
+        const edgeThreshold = 50; // 50 pixels from the edge of the viewport
+
+        let scrollX = viewport.scrollLeft;
+        let scrollY = viewport.scrollTop;
+
+        if (playerViewportX < edgeThreshold) {
+            scrollX = playerX* tileSize2 - edgeThreshold;
+        } else if (playerViewportX > viewport.clientWidth - edgeThreshold) {
+            scrollX = playerX * tileSize2 - viewport.clientWidth + edgeThreshold;
+        }
+
+        if (playerViewportY < edgeThreshold) {
+            scrollY = playerY * tileSize2 - edgeThreshold;
+        } else if (playerViewportY > viewport.clientHeight - edgeThreshold) {
+            scrollY = playerY * tileSize2 - viewport.clientHeight + edgeThreshold;
+        }
+
+        viewport.scrollTo(scrollX, scrollY);
+    }else if (config.roommode == 2) {
+  // Calculate player's position relative to the viewport
+  const playerViewportX = playerX * tileSize2 - viewport.scrollLeft;
+  const playerViewportY = playerY * tileSize2 - viewport.scrollTop;
+
+  const edgeThreshold = 50; // 50 pixels from the edge of the viewport
+
+  let scrollX = viewport.scrollLeft;
+  let scrollY = viewport.scrollTop;
+
+  if (playerViewportX < edgeThreshold) {
+    scrollX = playerX * tileSize2 - edgeThreshold;
+    viewport.scrollTo(
+  (playerX * tileSize2) - viewportWidth / 2 * (dzoom + 0.1),
+  (playerY * tileSize2) - viewportHeight / 2 * (dzoom + 0.1));
+  updateViewport()
+  } else if (playerViewportX > viewport.clientWidth - edgeThreshold) {
+    scrollX = playerX * tileSize2 - viewport.clientWidth + edgeThreshold;
+   viewport.scrollTo(
+  (playerX * tileSize2) - viewportWidth / 2 * (dzoom + 0.1),
+  (playerY * tileSize2) - viewportHeight / 2 * (dzoom + 0.1));
+updateViewport()
+  }
+
+  if (playerViewportY < edgeThreshold) {
+    scrollY = playerY * tileSize2 - edgeThreshold;
+    viewport.scrollTo(
+  (playerX * tileSize2) - viewportWidth / 2 * (dzoom + 0.1),
+  (playerY * tileSize2) - viewportHeight / 2 * (dzoom + 0.1));
+updateViewport()
+  } else if (playerViewportY > viewport.clientHeight - edgeThreshold) {
+    scrollY = playerY * tileSize2 - viewport.clientHeight + edgeThreshold;
+ 
+viewport.scrollTo(
+  (playerX * tileSize2) - viewportWidth / 2 * (dzoom + 0.1),
+  (playerY * tileSize2) - viewportHeight / 2 * (dzoom + 0.1));
+  updateViewport()
+  }
+
+  
 }
-  viewport.scrollTo((playerX * tileSize2) - viewportWidth /viewportWidth* viewportWidth/2*(dzoom+0.1), (playerY * tileSize2) - viewportHeight / viewportHeight* viewportHeight/2*(dzoom+0.1))
 }
+
 
 var power=0.20
 var tiles = document.querySelectorAll('.tile');
@@ -5042,6 +5123,9 @@ Visuals
 <div onclick="config.savedTileMap.push([]);tileMap.push([])" style="background:wheat">
   + Add dimension
 </div>
+<div onclick="config.roommode=2">Room scroller</div>
+<div onclick="config.roommode=1">Closer sidescroller</div>
+<div onclick="config.roommode=0">Normal sidescroller</div>
 <div onclick="handleFileContent(JSON.stringify(example2));toggleMENS()">
   load example platformer game
 </div>
