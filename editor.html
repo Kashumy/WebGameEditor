@@ -1,7 +1,6 @@
 
 
 
-
 <!-- PAPERMAKER 3 free license -->
 
   <!-- VERSION : 3+ -->
@@ -8344,7 +8343,8 @@ config.spawnY=config.spawnY+0.9
   #controlsdrw {
     margin-bottom: 20px;
     position: absolute;
-    top: 50px;
+    left:20px;
+    top: 20px;
   }
 
   #outputImg {
@@ -8431,7 +8431,7 @@ if (width && height) {
 }
 }
     const canvas = document.getElementById('canvas');
-    const ctx = canvas.getContext('2d');
+    const ctx = canvas.getContext('2d', { alpha: true });
     const colorPicker = document.getElementById('colorPicker');
     const brushSize4 = document.getElementById('brushSize');
     const eraser = document.getElementById('eraser');
@@ -8458,18 +8458,37 @@ if (width && height) {
     });
 
     saveBtn.addEventListener('click', () => {
-      const dataURL = canvas.toDataURL();
-      outputImg.src = dataURL;
-      outputImg.style.display = 'block';
+    /*
+var img = document.getElementById("your-image");
+// create and customize the canvas
+var canvas = document.createElement("canvas");
+canvas.width = 500;
+canvas.height = 200;
+document.body.appendChild(canvas);
+// get the context
+var ctx = canvas.getContext("2d");
+// draw the image into the canvas
+ctx.drawImage(img, 0, 0);*/
+    
+    
+    var image = ctx.getImageData(0, 0, canvas.width, canvas.height);
+    outputImg.src =  canvas.toDataURL();
+   // alert(canvas.toDataURL())
 
-      let blob = new Blob([dataURL], { type: "png" });
+outputImg.style.display="block"
+fetch(outputImg.src)
+  .then(response => response.blob())
+  .then(blob => {
+    let a = document.createElement("a");
+    a.href = window.URL.createObjectURL(blob);
+    a.download = "Your sprite.png";
+    a.click();
+  });
+
+ 
+});
 
 
-      let a = document.createElement("a");
-      a.href = window.URL.createObjectURL(blob);
-      a.download = "painted.png";
-      a.click();
-    });
 
 
     function getPos(e) {
@@ -8511,7 +8530,7 @@ if (width && height) {
       }
 
       // For low resolutions, use pixel drawing technique
-      if (canvas.width < 50 && canvas.height < 50) {
+      if (canvas.width < 300 && canvas.height < 300) {
         if (erasing) {
           ctx.clearRect(Math.floor(pos.x), Math.floor(pos.y), brushSize4.value, brushSize4.value);
         } else {
