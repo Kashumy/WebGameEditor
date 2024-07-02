@@ -104,30 +104,20 @@ var config ={  "HpBarConfiguration": {
           let path = 'newproject';
         </script>
         <e_gameinfoinput>
-          HELLO PUT HERE YOUR DESCRIPTION
-          in code is no absolutely any information about
-          PAPERMAKER and me ( but this is a information bruh )
-          please delete this message if you make custom game
-          and edit code for making that good for you
-          you can use it for business and fun or something
+          Game Info 
         </e_gameinfoinput>
 <script>
   if (document.querySelector('e_gameinfoinput')) {
   document.querySelector('e_gameinfoinput').style.display = "none"
 }
 </script>
+
 <script>
+
   const textsArray = [
 `
-<div style='width:80vw; height:80vh; animation: 2s rainbow infinite;'> 
-
-
-
-         PAPER MAKER 3+
-         
-         
-    in: JavaScript 
-    draw-with : div </div>
+<div style=' color:lime; text-shadow: #0F0 1px 0 20px;'> 
+PAPER MAKER 3+</div>
 `,];
 
 </script>
@@ -5114,6 +5104,8 @@ function toggleLayers() {
 <div onclick="toggleVS(); playUpdateSound3();toggleMENS()"  style="background: deepskyblue">
 Visuals
 </div>
+
+    <div style="background: deepskyblue" id="" onclick="hideee()">Start drawing</div>
 <div   onclick="saveToFile()">SaveToProjectFile</div>
 <div   onclick="saveToFileasJs()">SaveAsFinnalProjectJSfile</div>
 <div onclick="togglemenu();playUpdateSound3();toggleMENS()" >
@@ -8303,3 +8295,236 @@ config.spawnY=config.spawnY+0.9
     user-select: none
   }
 </style>
+
+
+
+
+
+<style>
+  * {
+    margin: 0;
+  }
+
+  Maintenance button {
+    background: #D5D5D5;
+
+    border: 1.5px inset #7C7C7C2E;
+  }
+
+  Maintenance {
+    border: 2px inset #B5B5B5D6;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    top:0px;
+    height: 100vh;
+    position: fixed;
+    z-index: 999999999999999999999999999;
+    width: 100vw;
+    margin: 0;
+    margin: 0;
+    background: #E2E2E2;
+    font-family: Arial, sans-serif;
+  }
+
+  #canvasContainer {
+    text-align: center;
+  }
+
+  #canvas {
+    border: 1.7px inset #7C7C7C73;
+    display: block;
+    margin: 0 auto;
+    width: 300px;
+    height: 300px;
+    background: #FCFCFC;
+    image-rendering: pixelated;
+  }
+
+  #controlsdrw {
+    margin-bottom: 20px;
+    position: absolute;
+    top: 50px;
+  }
+
+  #outputImg {
+    margin-top: 20px;
+    width: 50px; height: 50px; display:none;
+    background: #83838359;
+  }
+</style>
+
+<Maintenance class="hidden">
+  <div id="controlsdrw">
+      <button id="startBtn">NEW</button>
+  <button onclick="hideee()">HIDE</button>
+  </div>
+
+<br>
+  <div id="canvasContainer" style="display:none;">
+    <canvas id="canvas"></canvas>
+    <div style="margin-top: 10px">
+      <input type="color" id="colorPicker">
+      <input type="range" id="brushSize" min="1" max="100" value="5">
+      <button id="eraser">Eraser</button>
+
+      <button id="saveBtn">Save as Base64</button>
+    </div>
+  </div>
+  <img id="outputImg" style="display:none;">
+  <script>
+  function hideee(){
+    document.querySelector('Maintenance').classList.toggle('hidden')
+  }
+    document.getElementById('startBtn').addEventListener('click', function() {
+      let dimensions = (prompt("Enter canvas width height:"));
+      
+      
+
+      let [width, height] = dimensions.split(' ');
+
+      width = parseInt(width);
+      height = parseInt(height);
+
+
+
+      if (width && height) {
+        const canvas = document.getElementById('canvas');
+        canvas.width = width;
+        canvas.height = height;
+
+        // Disable image smoothing for pixelated effect if resolution is low
+        if (width < 50 && height < 50) {
+          ctx.imageSmoothingEnabled = false;
+        } else {
+          ctx.imageSmoothingEnabled = true;
+        }
+
+        document.getElementById('canvasContainer').style.display = 'block';
+      }
+    });
+function startDRAWING(){
+  let dimensions = (prompt("Enter canvas width height:"));
+
+document.querySelector('Maintenance').classList.toggle('hidden')
+
+let [width, height] = dimensions.split(' ');
+
+width = parseInt(width);
+height = parseInt(height);
+
+
+
+if (width && height) {
+  const canvas = document.getElementById('canvas');
+  canvas.width = width;
+  canvas.height = height;
+
+  // Disable image smoothing for pixelated effect if resolution is low
+  if (width < 50 && height < 50) {
+    ctx.imageSmoothingEnabled = false;
+  } else {
+    ctx.imageSmoothingEnabled = true;
+  }
+
+  document.getElementById('canvasContainer').style.display = 'block';
+}
+}
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+    const colorPicker = document.getElementById('colorPicker');
+    const brushSize4 = document.getElementById('brushSize');
+    const eraser = document.getElementById('eraser');
+    const saveBtn = document.getElementById('saveBtn');
+    const outputImg = document.getElementById('outputImg');
+
+    let painting = false;
+    let erasing = false;
+
+    canvas.addEventListener('mousedown', startPosition);
+    canvas.addEventListener('mouseup', endPosition);
+    canvas.addEventListener('mousemove', draw);
+    canvas.addEventListener('touchstart', startPosition);
+    canvas.addEventListener('touchend', endPosition);
+    canvas.addEventListener('touchmove', draw);
+
+    eraser.addEventListener('click', () => {
+      erasing = !erasing;
+      if (erasing) {
+        eraser.textContent = "Drawing";
+      } else {
+        eraser.textContent = "Eraser";
+      }
+    });
+
+    saveBtn.addEventListener('click', () => {
+      const dataURL = canvas.toDataURL();
+      outputImg.src = dataURL;
+      outputImg.style.display = 'block';
+
+      let blob = new Blob([dataURL], { type: "png" });
+
+
+      let a = document.createElement("a");
+      a.href = window.URL.createObjectURL(blob);
+      a.download = "painted.png";
+      a.click();
+    });
+
+
+    function getPos(e) {
+      const rect = canvas.getBoundingClientRect();
+      if (e.touches) {
+        e = e.touches[0];
+      }
+      return {
+        x: (e.clientX - rect.left) * (canvas.width / rect.width),
+        y: (e.clientY - rect.top) * (canvas.height / rect.height)
+      };
+    }
+
+    function startPosition(e) {
+      painting = true;
+      draw(e);
+    }
+
+    function endPosition() {
+      painting = false;
+      ctx.beginPath();
+    }
+
+    function draw(e) {
+      e.preventDefault();
+      if (!painting) return;
+
+      const pos = getPos(e);
+
+      ctx.lineWidth = brushSize4.value;
+      ctx.lineCap = 'square';
+
+      if (erasing) {
+        ctx.globalCompositeOperation = 'destination-out';
+        ctx.strokeStyle = 'rgba(0,0,0,1)';
+      } else {
+        ctx.globalCompositeOperation = 'source-over';
+        ctx.strokeStyle = colorPicker.value;
+      }
+
+      // For low resolutions, use pixel drawing technique
+      if (canvas.width < 50 && canvas.height < 50) {
+        if (erasing) {
+          ctx.clearRect(Math.floor(pos.x), Math.floor(pos.y), brushSize4.value, brushSize4.value);
+        } else {
+          ctx.fillStyle = colorPicker.value;
+          ctx.fillRect(Math.floor(pos.x), Math.floor(pos.y), brushSize4.value, brushSize4.value);
+        }
+      } else {
+        ctx.lineTo(pos.x, pos.y);
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(pos.x, pos.y);
+      }
+    }
+  </script>
+</Maintenance>
+
