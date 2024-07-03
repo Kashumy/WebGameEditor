@@ -32,12 +32,14 @@ loop
 <!-- ----------------------- –->
 the config variable is a variab
 le that have your game project
+
+#Iblocks is menu with blocks that you added
 <!-– ----------------------- -->
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
 <script>
-
+// test removed in this version buildBlocksAroundPosition newtilemap
 /* edit it for your game preferences */
 
           var gmgravity = 0
@@ -62,7 +64,7 @@ le that have your game project
   font-family: font;
   src: url('./font.ttf');
 }
-* {
+body{
   font-family: font;
 }
 </style>
@@ -815,6 +817,7 @@ let selectedTileIndex = null;
 function changeTexture(index) {
     const fileInput = document.createElement('input');
     fileInput.type = 'file';
+    fileInput.accept= "image/png"
     fileInput.addEventListener('change', (event) => {
         const files = event.target.files;
         if (files.length > 0) {
@@ -4632,19 +4635,21 @@ function buildBlock(event) {
       const existingBlockIndex = tileMap[dimension].findIndex(tile => tile[0] === currentX && tile[1] === currentY);
       if (layers === 0) {
         if (existingBlockIndex !== -1) {
-
+//alert("-")
           tileMap[dimension].splice(existingBlockIndex, 1);
+          return;
         } else {
 
           tileMap[dimension].push([currentX, currentY, item]); 
-          newtilemap[dimension].push([currentX, currentY, item]); 
+        //  newtilemap[dimension].push([currentX, currentY, item]); 
         }
       } else {
 
         tileMap[dimension].push([currentX, currentY, item]);
-        newtilemap[dimension].push([currentX, currentY, item]); 
+      //  newtilemap[dimension].push([currentX, currentY, item]); 
       }
       config.savedTileMap=tileMap;
+     // alert("")
     }
   }
 
@@ -5103,8 +5108,8 @@ function toggleLayers() {
 <div onclick="toggleVS(); playUpdateSound3();toggleMENS()"  style="background: deepskyblue">
 Visuals
 </div>
-
-    <div style="background: deepskyblue" id="" onclick="hideee()">Start drawing</div>
+<div style="background: coral" onclick="visibilitytoggle('SoundMaker')">Sound Maker</div>
+    <div style="background: coral" id="" onclick="hideee()">Start drawing</div>
 <div   onclick="saveToFile()">SaveToProjectFile</div>
 <div   onclick="saveToFileasJs()">SaveAsFinnalProjectJSfile</div>
 <div onclick="togglemenu();playUpdateSound3();toggleMENS()" >
@@ -5999,7 +6004,7 @@ function toggleVS() {
         }
         * {
             margin: 0;
-            user-select: none;
+            
         }
         #devConsole {
             position: fixed;
@@ -7118,7 +7123,7 @@ function update1(){
         }
         * {
             margin: 0;
-            box-sizing: border-box;
+            
         }
         #speed2SliderContainer {
             position: fixed;
@@ -7823,11 +7828,11 @@ emitParticles()
     }
     input, textarea {
       margin-bottom: 10px;
-      width: calc(100% - 20px);
-      padding: 10px;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-      font-size: 14px;
+width: calc(100% - 20px);
+padding: 10px;
+border: 1px solid #ccc;
+border-radius: 5px;
+font-size: 14px;
     }
     .button-container {
       display: flex;
@@ -8291,7 +8296,7 @@ config.spawnY=config.spawnY+0.9
     border-radius: 0%;
   }
   *{
-    user-select: none
+    
   }
 </style>
 
@@ -8334,8 +8339,9 @@ config.spawnY=config.spawnY+0.9
     border: 1.7px inset #7C7C7C73;
     display: block;
     margin: 0 auto;
-    width: 300px;
-    height: 300px;
+    margin-top: 7px;
+    width: 220px;
+    height: 220px;
     background: #FCFCFC;
     image-rendering: pixelated;
   }
@@ -8363,7 +8369,7 @@ config.spawnY=config.spawnY+0.9
 <br>
   <div id="canvasContainer" style="display:none;">
     <canvas id="canvas"></canvas>
-    <div style="margin-top: 10px">
+    <div style="margin-top: 3px">
       <input type="color" id="colorPicker">
       <input type="range" id="brushSize" min="1" max="100" value="5">
       <button id="eraser">Eraser</button>
@@ -8546,4 +8552,213 @@ fetch(outputImg.src)
     }
   </script>
 </Maintenance>
+<script>
+  function visibilitytoggle(something){
+    document.querySelector(something).classList.toggle('hidden')
+  }
+</script>
+<style>
+  SoundMaker {
+  border: 2px inset #B5B5B5D6;
+  display: flex;
+  color:#000000;
+  flex-direction: column;
+  top: 0px;
+  height: 100vh;
+  position: fixed;
+  z-index: 999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999;
+  width: 100vw;
+  margin: 0;
+  margin: 0;
+  background: #E2E2E2;
+  font-family: monospace;
+}
+SoundMaker textarea{
+  user-select: all;
+  pointer-events: all;
+}
+</style>
+<SoundMaker class="hidden">
+ <button onclick="visibilitytoggle('SoundMaker')">Hide</button>
+  
 
+
+<body>
+
+    <button onclick="playMusic(music)">play audio</button>
+    <br>
+    <div style="width:calc(100vw - 15px); height:80vh; border: 1px inset gray">
+        <div style="margin:5px;width:calc(100% - 12px); height:40%; border: 1px inset gray; overflow: scroll;">
+            <textarea style="margin: 5px; width: 100%; height:100vh; border: none; outline: none;" id="musicNotes" ></textarea>
+        </div>
+        &nbsp;play
+        <text style="width: 60px; height:20px; background: #E1E1E1">1,2</text>
+        <div style="margin:5px;width:calc(100% - 12px); height:90px; border: 1px inset gray; overflow: scroll;">
+            engine : mm3
+            <br><br>
+            <button onclick="saveMusic()">Save Edited Music</button>
+<pre style="white-space: pre-wrap">
+  
+  
+Tutorial
+
+1. Notes for runallnotes 0
+
+[HZ, Delay for next note ms, Sound length ms, volume, easing],
+ 
+2. Notes for runallnotes 0
+
+[HZ, Delay for note from start music ms, Sound length ms, volume, easing],
+
+3. other
+
+easing :
+   0-hard
+   1-smooth
+   2-smooth reverse 
+ 
+</pre>
+        </div>
+    </div>
+    <br>
+
+    <script>
+        var music = {
+            "run": [2, 1],
+            "tempo": 0.8,
+            "loop": 1,
+            "1": {
+                "notes": [
+                  
+[100, 250, 250, 0.9, 0],
+[50, 1000, 250, 0.9, 0],
+[200, 1000, 250, 0.8, 0],
+[200, 250, 250, 1, 0],
+[250, 0, 500, 0.9, 1],
+[200, 250, 250, 0.8, 0],
+[150, 250, 500, 0.5, 1]
+                ],
+                "instrument": "sawtooth",
+                "nextSection": null,
+                "runallnotes": 0
+            },
+            "2": {
+                "notes": [
+                    [200, 0, 2000, 1, 2],
+                    [300, 0, 2000, 1, 2],
+                    [250, 0, 1000, 1, 2],
+                    [200, 0, 2000, 1, 1]
+                ],
+                "instrument": "sine",
+                "nextSection": null,
+                "runallnotes": 0
+            }
+        };
+
+        function playTone(audioContext, frequency, duration, volume, customInstrument, volumeEasing) {
+            return new Promise(resolve => {
+                const oscillator = audioContext.createOscillator();
+                let type = 'square';
+
+                switch (customInstrument) {
+                    case "sine":
+                        type = 'sine';
+                        break;
+                    case "square":
+                        type = 'square';
+                        break;
+                    case "sawtooth":
+                        type = 'sawtooth';
+                        break;
+                    case "triangle":
+                        type = 'triangle';
+                        break;
+                    default:
+                        type = customInstrument;
+                        break;
+                }
+
+                oscillator.type = type;
+                oscillator.frequency.setValueAtTime(frequency, audioContext.currentTime);
+
+                const gainNode = audioContext.createGain();
+
+                if (volumeEasing === 0) {
+                    gainNode.gain.setValueAtTime(volume, audioContext.currentTime);
+                } else if (volumeEasing === 1) {
+                    gainNode.gain.setValueAtTime(volume, audioContext.currentTime);
+                    gainNode.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + duration / 1000);
+                } else if (volumeEasing > 1) {
+                    gainNode.gain.setValueAtTime(0.001, audioContext.currentTime);
+                    gainNode.gain.exponentialRampToValueAtTime(volume, audioContext.currentTime + duration / (volumeEasing * 1000));
+                }
+
+                oscillator.connect(gainNode);
+                gainNode.connect(audioContext.destination);
+
+                oscillator.start();
+                oscillator.stop(audioContext.currentTime + duration / 1000);
+
+                oscillator.onended = resolve;
+            });
+        }
+
+        async function playSection(audioContext, sectionId) {
+            const section = music[sectionId];
+            const { notes, instrument, nextSection, runallnotes } = section;
+            const tempo = section.tempo || music.tempo;
+
+            if (runallnotes) {
+                const promises = notes.map(([hz, timeout, length, volume, volumeEasing]) => {
+                    return new Promise(resolve => {
+                        setTimeout(() => {
+                            playTone(audioContext, hz, length / tempo, volume, instrument, volumeEasing).then(resolve);
+                        }, timeout / tempo);
+                    });
+                });
+                await Promise.all(promises);
+            } else {
+                for (const note of notes) {
+                    const [hz, timeout, length, volume, volumeEasing] = note;
+                    await playTone(audioContext, hz, length / tempo, volume, instrument, volumeEasing);
+                    await new Promise(resolve => setTimeout(resolve, timeout / tempo));
+                }
+            }
+
+            if (nextSection !== null) {
+                await playSection(audioContext, nextSection);
+            }
+        }
+
+        async function playMusic(name) {
+            const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            const runSections = name.run;
+
+            const promises = runSections.map(sectionId => playSection(audioContext, sectionId));
+            await Promise.all(promises);
+        }
+
+        function saveMusic() {
+            var musicJson = document.getElementById('musicNotes').value;
+            
+            music = JSON.parse(musicJson);
+            alert(music)
+        }
+
+        function loadmusiceditor() {
+            document.getElementById('musicNotes').textContent = JSON.stringify(music, (key, value) => {
+                if (Array.isArray(value)) {
+                    return JSON.stringify(value);
+                }
+                return value;
+            }, 2).replace(/"\[/g, '[').replace(/\]"/g, ']');
+        }
+
+        loadmusiceditor();
+    </script>
+</body>
+</html>
+
+
+
+</SoundMaker>
