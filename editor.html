@@ -1,4 +1,4 @@
-
+ 
 
 <!-- PAPERMAKER 3 free license -->
 
@@ -3396,22 +3396,22 @@ function attack2() {
       switch (ostclick) {
   case "left":
     directionp = -shootingspeed;
-    speedvel=speedvel
+    speedvel=speedvel*1.2
     directionl = 0;
     break;
   case "right":
     directionp = shootingspeed;
-    speedvel=speedvel
+    speedvel=speedvel*1.2
     directionl = 0;
     break;
   case "up":
     directionl = -shootingspeed;
-    speedvel=speedvel
+    speedvel=speedvel*1.2
     directionp = 0;
     break;
   case "down":
     directionl = shootingspeed;
-    speedvel=speedvel
+    speedvel=speedvel*1.2
     directionp = 0;
     break;
   default:
@@ -3423,7 +3423,7 @@ function attack2() {
         directionX: directionp,
         directionY: directionl,
         lifespan: config.projetitlecfig.timelife||0,
-        speed:speedvel*1.2||0,
+        speed:speedvel||0,
         nomove:config.projetitlecfig.nomove||0,
         scale:scalee
       };
@@ -8826,4 +8826,3 @@ easing :
 
 
 </SoundMaker>
-
