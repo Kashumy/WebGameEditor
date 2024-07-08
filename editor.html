@@ -194,7 +194,7 @@ function playUpdateSound3() {
 </script>
 <script>
   function loadtestgame(){
-  var gccpath='./RWE.pm'
+  var gccpath='./NRW.js'
 setTimeout(function (){
   fetch(gccpath)
     .then(response => response.text())
@@ -3424,7 +3424,7 @@ function attack2() {
         directionX: directionp,
         directionY: directionl,
         lifespan: config.projetitlecfig.timelife||0,
-        speed:speedvel||0,
+        speed:speedvel*1.2||0,
         nomove:config.projetitlecfig.nomove||0,
         scale:scalee
       };
@@ -3454,7 +3454,7 @@ function animateProjectiles() {
     }
   }
   if (projectiles.length > 0) {
-    requestAnimationFrame(animateProjectiles);
+    setTimeout(animateProjectiles,frameTime);
   } else {
    // attack = 0;
     onceshootmode=0
