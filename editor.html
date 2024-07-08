@@ -194,7 +194,7 @@ function playUpdateSound3() {
 </script>
 <script>
   function loadtestgame(){
-  var gccpath='./robotwants-bugfix1.dl'
+  var gccpath='./RWE.pm'
 setTimeout(function (){
   fetch(gccpath)
     .then(response => response.text())
@@ -1778,6 +1778,7 @@ let currentbase64=''
 let currentdimension=dimension
 let currentbase64img=''
 var currentsoundformessage=''
+let oldGravity=null;
 function moveTilesRandomly() {
   if(stop==0){
     for (let tileId in tileConfig) {
@@ -1837,7 +1838,10 @@ dialiguesounds,//+stop
 ifvariablekillthiswhencollision,
 ifvariablekillthiswhenshown,
 regenerateplayerpos,
+removefroviewpirtifoutside,
+BLOCKTYPE
 
+, nothing 
         ] = tileConfig[tileId];
 
         var tiles = document.querySelectorAll(`.${tileId}`);
@@ -1910,11 +1914,17 @@ if (
   executeall2=1
 }else if(vi==1){
   executeall2=0
+  if(removefroviewpirtifoutside==1){
+    tile.remove()
+  }
 }
 if(vi!==1){
   executeall2=1
 }
   if(executeall==1&&executeall2==1){
+    
+  
+    
   function removefromtilemap(){
     const currentX = parseInt(tile.dataset.x)
 const currentY = parseInt(tile.dataset.y)
@@ -2500,7 +2510,26 @@ if (ifvariablekillthiswhenshown !== undefined && ifvariablekillthiswhenshown !==
     KillThis();
   }
 }
+if(oldGravity!==null&&oldGravity!==undefined&&distanceToPlayer > dist&&distanceToPlayer < dist+3){
+  
+  gravity=oldGravity
+  console.log(oldGravity)
+}
                 if(distanceToPlayer <= dist ){
+if (BLOCKTYPE == 'ladder') {
+  movePlayer(0, -(config.gravitypower*gravityvelocity||0.10))
+   canJUMP=1
+}
+if (BLOCKTYPE == 'water') {
+ 
+  canJUMP = 1
+}
+if (BLOCKTYPE == 'float') {
+  movePlayer(0, -(config.gravitypower * gravityvelocity || 0.10))
+  
+if(oldGravity==null||oldGravity==undefined){oldGravity=gravity}
+gravity=0
+}
 if (ifvariablekillthiswhencollision !== undefined && ifvariablekillthiswhencollision !== null) {
   let name = ifvariablekillthiswhencollision[0];
   let operator = ifvariablekillthiswhencollision[1];
@@ -3977,8 +4006,9 @@ function jump2(event) {
                 document.body.appendChild(newaudio);
 
                 newaudio.play();
-                airJump++;
+                
             }
+            airJump++;
             canClick = false;
             setTimeout(function() {
                 canClick = true;
@@ -4327,6 +4357,13 @@ if (!('oldbg' in config)) {
   if (!('maxgravityvelocity' in config)) {
 config['maxgravityvelocity'] = 1;
 } 
+if (!('gravitypower' in config)) {
+  config['gravitypower'] = 0.5;
+}
+if (!('gravityvelocityspeed' in config)) {
+  config['gravityvelocityspeed'] = 0.4;
+}
+
   if (!('savedgamestate' in config)) {
 
   config['savedgamestate'] = 0;
@@ -4354,14 +4391,14 @@ if (!('playersizeHasHitBox' in config)) {
 if(config.playersizeHasHitBox==0){
   var player = document.querySelector('.player');
 
-var scaleValue = parseInt(config.playersizeNOHITBOX);
+var scaleValue = parseFloat(config.playersizeNOHITBOX);
 
 var playerAfterStyle = window.getComputedStyle(player, '::after');
 
 var newAfterTransform = `scale(${scaleValue})`;
 player.style.setProperty('--after-transform', newAfterTransform);
 }else{
-document.querySelector('.player').style.transform=`scale(${parseInt(config.playersizeNOHITBOX)})`
+document.querySelector('.player').style.transform=`scale(${parseFloat(config.playersizeNOHITBOX)})`
 
 }
 let resizableDiv=document.getElementById('viewport')
@@ -5648,6 +5685,9 @@ if (file) {
 "ifvariablekillthiswhencollision ['definedVariable','=,>,<,!=',number] ",
 "ifvariablekillthiswhenitspawnonmap ['definedVariable','=,>,<,!=',number] ",
 "<p style='animation: 5s rainbow infinite; filter:sepia(50%);' >Interesting: </p> regenerate Player position by a ticks (10) is more like a 1 second and use one direction follow good for projectile this will reset player current position by a time (enter number) ",
+"<p style='animation: 5s rainbow infinite; filter:sepia(50%);' >Interesting: </p> delete If outside of viewport also need virtualization anabled (enter 1/0 good for blocks) ",
+"<p style='animation: 5s rainbow infinite; filter:sepia(50%);' >Interesting: </p> Block Type: 'float','ladder','water'  (enter) ",
+
 "<p style='animation: 5s rainbow infinite;'>3.0[nafu] not a finnal update  50% of this instructions configuration are not understandable for a human :P  </p>",
 /*
 playertextureleft,
@@ -5820,14 +5860,21 @@ scale
 <input type="text" id="leftInput" oninput="editInputVariable2(this.value, 'backspeed'); updspeed()">
 <hr>
 <button onclick="handleFileButtonClickA('fileInput1', 1)">player SIZE</button>
-<input type="text" id="leftInput" oninput="editInputVariable2(this.value, 'playersizeNOHITBOX'); updspeed()">
+<input type="text" id="leftInput" oninput="editInputVariable30(this.value, 'playersizeNOHITBOX'); updspeed()">
 <button onclick="handleFileButtonClickA('fileInput1', 1)">player SIZE With HITBOX(1/0)</button>
 <input type="text" id="leftInput" oninput="editInputVariable2(this.value, 'playersizeHasHitBox'); updspeed()">
 config.savedgamestate
 <input type="text" id="leftInput" oninput="editInputVariable2(this.value, 'savedgamestate'); updspeed()">(1/0) reset progress to ost save point if player died  
+
 config['maxgravityvelocity']
-<input type="text" id="leftInput" value="1" oninput="editInputVariable2(this.value, 'maxgravityvelocity'); updspeed()">(number) max gravity multiple speed def use 1
-<input type="text" id="leftInput" value="1" oninput="editInputVariable2(this.value, 'gravitypower'); updspeed()">(number) gravity power default 0.1/0.2
+<hr>
+<input type="text" id="leftInput" value="1" oninput="editInputVariable20(this.value, 'maxgravityvelocity'); updspeed()">(number) max gravity multiple speed def use 1
+<input type="text" id="leftInput" value="1" oninput="editInputVariable20(this.value, 'gravityvelocityspeed'); updspeed()">
+gravityvelocityspeed
+<input type="text" id="leftInput" value="1" oninput="editInputVariable20(this.value, 'gravitypower'); updspeed()"  >(number) gravity power default 0.1/0.2
+
+<br>
+<input type="text" id="leftInput" value="1" oninput="editInputVariable20(this.value, 'airjump'); updspeed()">airjump 
 <script>
 function updspeed(){
   speed=config.speed
@@ -5847,9 +5894,27 @@ function editInputVariable2(value, propertyName) {
 
     if (config.hasOwnProperty(propertyName)) {
         config[propertyName] = value;
+        
     } else {
         console.error("unknown properties:", propertyName);
     }
+}
+function editInputVariable30(value, propertyName) {
+
+if (config.hasOwnProperty(propertyName)) {
+config[propertyName] = parseFloat(value)
+
+} else {
+console.error("unknown properties:", propertyName);
+}
+}
+function editInputVariable20(value, propertyName) {
+
+  if (config.hasOwnProperty(propertyName)) {
+    config[propertyName] = parseFloat(value);
+  } else {
+    console.error("unknown properties:", propertyName);
+  }
 }
 function editInputVariable3(value, propertyName,name) {
 
